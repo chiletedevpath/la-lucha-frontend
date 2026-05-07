@@ -1,0 +1,32 @@
+/* =========================
+   VARIABLES GLOBALES
+========================= */
+
+:root {
+  /* COLORES PRINCIPALES */
+  --color-primary: #c0392b;
+  --color-primary-dark: #96281b;
+
+  --color-background: #fdf3e7;
+  --color-white: #ffffff;
+
+  --color-text: #2c2c2c;
+  --color-gray: #f5f5f5;
+
+  --color-accent: #d4a017;
+
+  /* TIPOGRAFÍA */
+  --font-primary: "Poppins", sans-serif;
+
+  /* TAMAÑOS */
+  --max-width: 1200px;
+
+  /* SOMBRAS */
+  --shadow-light: 0px 4px 10px rgba(0, 0, 0, 0.08);
+
+  /* BORDER RADIUS */
+  --radius: 12px;
+
+  /* TRANSICIONES */
+  --transition: all 0.3s ease;
+}
