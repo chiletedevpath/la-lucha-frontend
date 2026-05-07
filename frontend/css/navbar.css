@@ -1,0 +1,88 @@
+/* =========================
+   NAVBAR
+========================= */
+
+header {
+  background-color: var(--color-primary);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-light);
+}
+
+/* =========================
+   CONTENEDOR NAVBAR
+========================= */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 90%;
+  max-width: var(--max-width);
+
+  margin: 0 auto;
+  padding: 18px 0;
+}
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+  color: var(--color-white);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+/* =========================
+   MENÚ
+========================= */
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.nav-links a {
+  color: var(--color-white);
+  font-weight: 500;
+  position: relative;
+}
+
+/* =========================
+   HOVER LINKS
+========================= */
+
+.nav-links a:hover {
+  color: var(--color-accent);
+}
+
+/* =========================
+   EFECTO SUBRAYADO
+========================= */
+
+.nav-links a::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -5px;
+
+  width: 0%;
+  height: 2px;
+
+  background-color: var(--color-accent);
+
+  transition: var(--transition);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}

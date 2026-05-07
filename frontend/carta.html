@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Carta | La Lucha Sanguchería Criolla</title>
+
+    <!-- CSS global -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+
+    <!-- CSS específico de carta -->
+    <link rel="stylesheet" href="css/carta.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!-- Navbar cargado desde components/navbar.html -->
+    <div id="navbar-container"></div>
+
+    <main>
+      <!-- Encabezado de página -->
+      <section class="page-header">
+        <div class="container">
+          <h1>Nuestra Carta</h1>
+          <p>Productos criollos preparados con tradición, frescura y calidad.</p>
+        </div>
+      </section>
+
+      <!-- Categorías / filtros futuros -->
+      <section class="carta-categorias">
+        <div class="container">
+          <h2>Categorías</h2>
+
+          <div class="categorias-lista">
+            <button type="button">Sánguches</button>
+            <button type="button">Bebidas</button>
+            <button type="button">Postres</button>
+            <button type="button">Promociones</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Productos -->
+      <section class="carta-productos">
+        <div class="container">
+          <h2>Productos destacados</h2>
+          <div class="productos-grid" id="productos-grid"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer cargado desde components/footer.html -->
+    <div id="footer-container"></div>
+
+    <!-- JS global -->
+    <script src="js/main.js"></script>
+    <script src="data/productos.js"></script>
+    <script src="js/productos.js"></script>
+  </body>
+</html>
