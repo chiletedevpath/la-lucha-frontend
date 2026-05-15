@@ -1,1 +1,196 @@
 
+
+.page-header {
+
+  background: #c53324;
+
+  color: white;
+
+  text-align: center;
+
+  padding: 120px 20px;
+}
+
+.page-header h1 {
+
+  font-size: 3.5rem;
+
+  margin-bottom: 20px;
+
+  color: white;
+}
+
+
+.page-header p {
+
+  font-size: 1.1rem;
+
+  color: rgba(255,255,255,.9);
+}
+
+
+
+.locales-section {
+  background: #f5eee6;
+}
+
+
+.local-card {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+
+  margin-bottom: 80px;
+}
+
+/* alterna imagen derecha/izquierda */
+.local-card.reverse {
+  flex-direction: row-reverse;
+}
+
+
+
+.local-imagen {
+  flex: 1;
+}
+
+.local-imagen img {
+  width: 100%;
+  height: 350px;
+
+  object-fit: cover;
+
+  border-radius: 20px;
+
+  box-shadow: 0 10px 20px rgba(0,0,0,.15);
+}
+
+
+
+.local-info {
+  flex: 1;
+}
+
+.local-info h2 {
+  margin-bottom: 20px;
+
+  color: #c53324;
+
+  font-size: 2.3rem;
+}
+
+.local-info p {
+  margin-bottom: 15px;
+
+  color: #444;
+}
+
+.local-info a {
+  display: inline-block;
+
+  margin-top: 15px;
+  padding: 12px 24px;
+
+  background: #c53324;
+  color: white;
+
+  border-radius: 10px;
+
+  font-weight: 600;
+}
+
+.local-info a:hover {
+  background: #a6281c;
+}
+
+
+
+@media (max-width: 900px) {
+
+  .local-card,
+  .local-card.reverse {
+
+    flex-direction: column;
+  }
+
+  .local-imagen img {
+    height: 250px;
+  }
+
+  .local-info {
+    text-align: center;
+  }
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.top-bar {
+
+  background: #f2b233;
+
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  padding: 12px 0;
+}
+
+.top-bar-track {
+
+  display: inline-block;
+
+  animation: moverTexto 18s linear infinite;
+}
+
+.top-bar span {
+
+  font-weight: 500;
+
+  color: #111;
+
+  margin-right: 120px;
+}
+
+@keyframes moverTexto {
+
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* =========================
+   BOTTOM BAR
+========================= */
+
+.bottom-bar{
+
+    background:#f2b233;
+
+    overflow:hidden;
+
+    white-space:nowrap;
+
+    padding:12px 0;
+}
+
+.bottom-bar-track{
+
+    display:inline-block;
+
+    animation:moverTexto 18s linear infinite;
+}
+
+.bottom-bar span{
+
+    font-weight:500;
+
+    color:#111;
+
+    margin-right:120px;
+}
