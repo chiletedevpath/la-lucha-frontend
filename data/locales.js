@@ -27,7 +27,7 @@ const locales = [
     telefono: "956 789 123",
     imagen: "assets/img/locales/barranco.jpg",
     maps: "https://maps.app.goo.gl/9PJDogAYziw4nR1V9"
-  }
+  },
   
   {
     id: 4,
