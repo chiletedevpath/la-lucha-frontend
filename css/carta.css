@@ -1,31 +1,206 @@
 /* =========================
-   PAGE HEADER
+   HERO CARTA
 ========================= */
 
-.page-header {
-  background-color: var(--color-primary);
+.carta-hero {
+  position: relative;
 
-  color: var(--color-white);
+  min-height: 70vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
 
   text-align: center;
 
-  padding: 100px 20px;
-}
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("../assets/img/banners/banner-carta.jpg");
 
-.page-header h1 {
-  font-size: 3rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
-  margin-bottom: 20px;
+  color: var(--color-white);
 }
 
 /* =========================
-   CATEGORÍAS
+   OVERLAY
+========================= */
+
+.overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+/* =========================
+   CONTENIDO HERO
+========================= */
+
+.carta-hero-content {
+  position: relative;
+
+  z-index: 2;
+}
+
+/* =========================
+   BREADCRUMB
+========================= */
+
+.breadcrumb {
+  display: inline-block;
+
+  margin-bottom: 20px;
+
+  color: rgba(255, 255, 255, 0.75);
+
+  font-size: 0.95rem;
+}
+
+/* =========================
+   TITULO HERO
+========================= */
+
+.carta-hero h1 {
+  font-size: 4rem;
+
+  margin-bottom: 25px;
+
+  line-height: 1.2;
+}
+
+/* =========================
+   DESCRIPCIÓN HERO
+========================= */
+
+.hero-description {
+  max-width: 750px;
+
+  margin: 0 auto 40px;
+
+  font-size: 1.15rem;
+
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* =========================
+   ESTADISTICAS HERO
+========================= */
+
+.hero-stats {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 25px;
+
+  flex-wrap: wrap;
+
+  margin-top: 50px;
+}
+
+/* Card estadística */
+.stat-card {
+  background-color: rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(6px);
+
+  padding: 20px 30px;
+
+  border-radius: var(--radius);
+
+  min-width: 180px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Número */
+.stat-card strong {
+  display: block;
+
+  font-size: 2rem;
+
+  margin-bottom: 10px;
+
+  color: var(--color-accent);
+}
+
+/* Texto */
+.stat-card span {
+  font-size: 0.95rem;
+}
+
+/* =========================
+   BUSCADOR
+========================= */
+
+.buscador-section {
+  padding-top: 60px;
+
+  padding-bottom: 20px;
+}
+
+.buscador-container {
+  max-width: 600px;
+
+  margin: 0 auto;
+}
+
+/* Input */
+#buscador-input {
+  width: 100%;
+
+  padding: 18px 25px;
+
+  border: none;
+
+  border-radius: 50px;
+
+  background-color: var(--color-white);
+
+  box-shadow: var(--shadow-light);
+
+  font-size: 1rem;
+
+  outline: none;
+}
+
+/* Focus */
+#buscador-input:focus {
+  border: 2px solid var(--color-primary);
+}
+
+/* =========================
+   TITULOS GENERALES
+========================= */
+
+.section-title {
+  text-align: center;
+
+  margin-bottom: 40px;
+}
+
+/* Texto */
+.section-title p {
+  color: var(--color-text);
+}
+
+/* =========================
+   CATEGORIAS
 ========================= */
 
 .carta-categorias {
   text-align: center;
+
+  padding-top: 20px;
 }
 
+/* Lista botones */
 .categorias-lista {
   display: flex;
 
@@ -35,23 +210,46 @@
 
   flex-wrap: wrap;
 
-  margin-top: 30px;
+  margin-top: 35px;
 }
 
+/* Botones */
 .categorias-lista button {
   background-color: var(--color-primary);
 
   color: var(--color-white);
 
-  padding: 12px 25px;
+  padding: 14px 28px;
 
-  border-radius: var(--radius);
+  border-radius: 50px;
 
   font-weight: 600;
+
+  font-size: 0.95rem;
+
+  box-shadow: var(--shadow-light);
 }
 
+/* Hover */
 .categorias-lista button:hover {
   background-color: var(--color-primary-dark);
+
+  transform: translateY(-3px);
+}
+
+/* Botón activo */
+.categorias-lista button.activo {
+  background-color: var(--color-primary-dark);
+
+  transform: scale(1.05);
+}
+
+/* =========================
+   PRODUCTOS
+========================= */
+
+.carta-productos {
+  padding-top: 50px;
 }
 
 /* =========================
@@ -61,11 +259,17 @@
 .productos-grid {
   display: grid;
 
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 
-  gap: 30px;
+  gap: 35px;
+}
 
-  margin-top: 40px;
+/* =========================
+   LINK CARD
+========================= */
+
+.producto-link {
+  display: block;
 }
 
 /* =========================
@@ -82,10 +286,15 @@
   box-shadow: var(--shadow-light);
 
   transition: var(--transition);
+
+  height: 100%;
 }
 
+/* Hover */
 .producto-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+
+  box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.12);
 }
 
 /* =========================
@@ -95,7 +304,7 @@
 .producto-card img {
   width: 100%;
 
-  height: 250px;
+  height: 260px;
 
   object-fit: cover;
 }
@@ -105,21 +314,60 @@
 ========================= */
 
 .producto-info {
-  padding: 20px;
+  padding: 25px;
 }
 
+/* Nombre */
 .producto-info h3 {
   margin-bottom: 15px;
+
+  color: var(--color-text);
 }
 
+/* Descripción */
 .producto-info p {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
+/* Precio */
 .producto-info span {
   color: var(--color-primary);
 
-  font-weight: 700;
+  font-size: 1.3rem;
 
-  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* =========================
+   PAGINACION
+========================= */
+
+.paginacion {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 20px;
+
+  margin-top: 60px;
+}
+
+/* Botones */
+.paginacion button {
+  background-color: var(--color-primary);
+
+  color: var(--color-white);
+
+  padding: 12px 24px;
+
+  border-radius: 50px;
+
+  font-weight: 600;
+}
+
+/* Hover */
+.paginacion button:hover {
+  background-color: var(--color-primary-dark);
+
+  transform: translateY(-2px);
 }

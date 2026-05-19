@@ -1,23 +1,46 @@
 <!doctype html>
 <html lang="es">
   <head>
+    <!-- =========================
+       META TAGS
+  ========================== -->
+
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- =========================
+       TITLE
+  ========================== -->
 
     <title>Carta | La Lucha Sanguchería Criolla</title>
 
-    <!-- CSS global -->
+    <!-- =========================
+       CSS GLOBAL
+  ========================== -->
+
     <link rel="stylesheet" href="css/variables.css" />
+
     <link rel="stylesheet" href="css/layout.css" />
+
     <link rel="stylesheet" href="css/navbar.css" />
+
     <link rel="stylesheet" href="css/footer.css" />
 
-    <!-- CSS específico de carta -->
+    <!-- =========================
+       CSS CARTA
+  ========================== -->
+
     <link rel="stylesheet" href="css/carta.css" />
 
-    <!-- Google Fonts -->
+    <!-- =========================
+       GOOGLE FONTS
+  ========================== -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -25,47 +48,152 @@
   </head>
 
   <body>
-    <!-- Navbar cargado desde components/navbar.html -->
+    <!-- =========================
+       NAVBAR DINÁMICO
+  ========================== -->
+
     <div id="navbar-container"></div>
 
+    <!-- =========================
+       MAIN CONTENT
+  ========================== -->
+
     <main>
-      <!-- Encabezado de página -->
-      <section class="page-header">
-        <div class="container">
-          <h1>Nuestra Carta</h1>
-          <p>Productos criollos preparados con tradición, frescura y calidad.</p>
-        </div>
-      </section>
+      <!-- =========================
+         HERO CARTA
+    ========================== -->
 
-      <!-- Categorías / filtros futuros -->
-      <section class="carta-categorias">
-        <div class="container">
-          <h2>Categorías</h2>
+      <section class="carta-hero">
+        <!-- Overlay oscuro -->
+        <div class="overlay"></div>
 
-          <div class="categorias-lista">
-            <button type="button">Sánguches</button>
-            <button type="button">Bebidas</button>
-            <button type="button">Postres</button>
-            <button type="button">Promociones</button>
+        <div class="container carta-hero-content">
+          <!-- Breadcrumb -->
+          <span class="breadcrumb">Inicio / Carta</span>
+
+          <!-- Título principal -->
+          <h1>Nuestra Carta Criolla</h1>
+
+          <!-- Descripción -->
+          <p class="hero-description">
+            Descubre los auténticos sabores peruanos preparados con ingredientes frescos, tradición
+            artesanal y calidad premium.
+          </p>
+
+          <!-- Estadísticas -->
+          <div class="hero-stats">
+            <div class="stat-card">
+              <strong>+20</strong>
+
+              <span>Especialidades</span>
+            </div>
+
+            <div class="stat-card">
+              <strong>100%</strong>
+
+              <span>Sabor peruano</span>
+            </div>
+
+            <div class="stat-card">
+              <strong>Premium</strong>
+
+              <span>Ingredientes frescos</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- Productos -->
+      <!-- =========================
+         BUSCADOR
+    ========================== -->
+
+      <section class="buscador-section">
+        <div class="container">
+          <div class="buscador-container">
+            <input
+              type="text"
+              id="buscador-input"
+              placeholder="Buscar sánguches, bebidas o postres..."
+            />
+          </div>
+        </div>
+      </section>
+      <!-- =========================
+         CATEGORÍAS
+    ========================== -->
+
+      <section class="carta-categorias">
+        <div class="container">
+          <!-- Título sección -->
+          <div class="section-title">
+            <h2>Explora nuestras categorías</h2>
+
+            <p>Encuentra tu combinación favorita.</p>
+          </div>
+
+          <!-- Botones filtros -->
+          <div class="categorias-lista">
+            <button type="button" data-categoria="todos" class="activo">🍽 Todos</button>
+
+            <button type="button" data-categoria="sanguches">🥪 Sánguches</button>
+
+            <button type="button" data-categoria="bebidas">🥤 Bebidas</button>
+
+            <button type="button" data-categoria="postres">🍰 Postres</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+         PRODUCTOS
+    ========================== -->
+
       <section class="carta-productos">
         <div class="container">
-          <h2>Productos destacados</h2>
+          <!-- Encabezado -->
+          <div class="section-title">
+            <h2>Productos destacados</h2>
+
+            <p>Los favoritos de nuestros clientes.</p>
+          </div>
+
+          <!-- Productos renderizados desde JS -->
           <div class="productos-grid" id="productos-grid"></div>
+
+          <!-- Estado dinámico -->
+          <div class="productos-estado" id="productos-estado"></div>
+          <!-- Paginación futura -->
+          <div class="paginacion">
+            <button type="button">← Anterior</button>
+
+            <button type="button">Siguiente →</button>
+          </div>
         </div>
       </section>
     </main>
 
-    <!-- Footer cargado desde components/footer.html -->
+    <!-- =========================
+       FOOTER DINÁMICO
+  ========================== -->
+
     <div id="footer-container"></div>
 
-    <!-- JS global -->
+    <!-- =========================
+       JS GLOBAL
+  ========================== -->
+
     <script src="js/main.js"></script>
+
+    <!-- =========================
+       DATA PRODUCTOS
+  ========================== -->
+
     <script src="data/productos.js"></script>
+
+    <!-- =========================
+       JS CARTA
+  ========================== -->
+
     <script src="js/productos.js"></script>
   </body>
 </html>
