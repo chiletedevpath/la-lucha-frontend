@@ -1,31 +1,45 @@
-/* Carga componentes HTML dinámicamente */
-async function cargarComponente(idContenedor, rutaArchivo) {
-  /* Busca el contenedor en el HTML */
+/* =========================
+   COMPONENT LOADER
+========================= */
+
+async function cargarComponente(idContenedor, rutaArchivo, callback) {
   const contenedor = document.getElementById(idContenedor);
 
-  /* Evita error si el contenedor no existe */
-  if (!contenedor) return;
+  if (!contenedor) {
+    return false;
+  }
 
   try {
-    /* Obtiene el archivo HTML */
     const respuesta = await fetch(rutaArchivo);
 
-    /* Convierte respuesta a texto */
-    const contenido = await respuesta.text();
+    if (!respuesta.ok) {
+      throw new Error(`No se pudo cargar ${rutaArchivo}. Estado: ${respuesta.status}`);
+    }
 
-    /* Inserta el HTML en el contenedor */
+    const contenido = await respuesta.text();
     contenedor.innerHTML = contenido;
+
+    if (typeof callback === "function") {
+      callback(contenedor);
+    }
+
+    return true;
   } catch (error) {
-    /* Muestra error en consola */
     console.error("Error al cargar componente:", rutaArchivo, error);
+    return false;
   }
 }
 
-/* Navbar */
-cargarComponente("navbar-container", "components/navbar.html");
+/* =========================
+   APP INIT
+========================= */
 
-/* Hero principal */
-cargarComponente("hero-container", "components/hero.html");
+async function inicializarComponentes() {
+  await Promise.all([
+    cargarComponente("navbar-container", "components/navbar.html", window.initNavbar),
+    cargarComponente("hero-container", "components/hero.html"),
+    cargarComponente("footer-container", "components/footer.html")
+  ]);
+}
 
-/* Footer */
-cargarComponente("footer-container", "components/footer.html");
+document.addEventListener("DOMContentLoaded", inicializarComponentes);

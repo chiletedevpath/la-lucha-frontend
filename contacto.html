@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -113,7 +113,7 @@
               <span class="info-card__icono">📞</span>
               <div>
                 <span class="info-card__label">Teléfono</span>
-                <span class="info-card__valor">(01) 123-4567</span>
+                <a class="info-card__valor" href="tel:+5111234567">(01) 123-4567</a>
               </div>
             </div>
  
@@ -121,7 +121,7 @@
               <span class="info-card__icono">✉️</span>
               <div>
                 <span class="info-card__label">Correo</span>
-                <span class="info-card__valor">contacto@lalucha.pe</span>
+                <a class="info-card__valor" href="mailto:contacto@lalucha.pe">contacto@lalucha.pe</a>
               </div>
             </div>
  
@@ -136,8 +136,8 @@
             <div class="contacto-redes">
               <p class="contacto-redes__titulo">Síguenos en redes</p>
               <div class="contacto-redes__iconos">
-                <a href="#" class="red-social" title="Instagram">📷 Instagram</a>
-                <a href="#" class="red-social" title="Facebook">📘 Facebook</a>
+                <span class="red-social red-social--disabled" aria-disabled="true">📷 Instagram</span>
+                <span class="red-social red-social--disabled" aria-disabled="true">📘 Facebook</span>
               </div>
             </div>
  
@@ -150,6 +150,7 @@
     <!-- FOOTER -->
     <div id="footer-container"></div>
  
+    <script src="js/menu.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>
