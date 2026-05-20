@@ -1,183 +1,65 @@
+/* =========================
+   PAGE HEADER
+========================= */
 
 .page-header {
-
-  background: #c53324;
-
-  color: white;
-
+  padding-block: var(--space-10);
+  color: var(--color-surface);
   text-align: center;
-
-  padding: 120px 20px;
+  background: var(--color-brand);
 }
 
 .page-header h1 {
-
-  font-size: 3.5rem;
-
-  margin-bottom: 20px;
-
-  color: white;
+  margin-bottom: var(--space-4);
+  color: var(--color-surface);
+  font-size: var(--text-3xl);
 }
-
 
 .page-header p {
-
-  font-size: 1.1rem;
-
-  color: rgba(255,255,255,.9);
-}
-
-
-
-.promociones-section {
-  background: #f5eee6;
-}
-
-
-.promociones-card {
-  display: flex;
-  width: 80%;
-  margin: 40px auto; /*separación entre tarjetas*/
-  background: white;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-  text-align: center;
-}
-
-/* alterna imagen derecha/izquierda */
-.promociones-card.reverse {
-  flex-direction: row-reverse;
-}
-/*agranda el tamaño de la imagen*/
-.promociones-imagen {
-  flex: 1;
-}
-
-/* tamaño de la imagen de las promos*/
-.promociones-imagen img {
-  width: 100%;
-  height: 450px;
-
-  object-fit: cover;
-
-  border-radius: 20px;
-
-  box-shadow: 0 10px 20px rgba(0,0,0,.15);
-}
-
-
-
-.promociones-info {
-  flex: 1;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 50px;
-}
-
-.promociones-info h2 {
-  margin-bottom: 20px;
-  color: #c53324;
-  font-size: 3.6rem; /*cambia tamaño de nombre de la promo*/
-  line-height:1;
-}
-
-.promociones-info p {
-  margin-bottom: 5px;
-  
-  color: #444;
-}
-
-.precio-original {
-  text-decoration:line-through;
-  color: #777;
-  font-size:2rem;
-}
-
-.precio-promo {
-  color: #c53324;
-  font-size: 4rem;
-  font-weight: bold;
-}
-
-.promo-extra {
-  color: #777;
-  font-size: 0.95rem;
-  font-style: italic;
-}
-
-.promociones-info a {
-  display: inline-block;
-
-  margin-top: 15px;
-  padding: 12px 24px;
-
-  background: #c53324;
-  color: white;
-
-  border-radius: 10px;
-
-  font-weight: 600;
-}
-
-.promociones-info a:hover {
-  background: #a6281c;
-}
-
-
-
-@media (max-width: 900px) {
-
-  .promociones-card,
-  .promociones-card.reverse {
-
-    flex-direction: column;
-  }
-
-  .promociones-imagen img {
-    height: 250px;
-  }
-
-  .promociones-info {
-    text-align: center;
-  }
+  margin-inline: auto;
+  color: var(--color-surface-warm);
+  font-size: var(--text-md);
 }
 
 /* =========================
-   TOP BAR
+   PROMOCIONES
 ========================= */
 
-.top-bar {
-
-  background: #f2b233;
-
-  overflow: hidden;
-
-  white-space: nowrap;
-
-  padding: 12px 0;
+.promociones-section {
+  background: var(--color-background);
 }
 
-.top-bar-track {
+#promociones-container {
+  display: grid;
+  gap: var(--space-7);
+}
 
+/* =========================
+   INFO BARS
+========================= */
+
+.top-bar,
+.bottom-bar {
+  overflow: hidden;
+  padding-block: var(--space-3);
+  color: var(--color-ink);
+  background: var(--color-accent);
+  white-space: nowrap;
+}
+
+.top-bar-track,
+.bottom-bar-track {
   display: inline-block;
-
   animation: moverTexto 18s linear infinite;
 }
 
-.top-bar span {
-
-  font-weight: 500;
-
-  color: #111;
-
-  margin-right: 120px;
+.top-bar span,
+.bottom-bar span {
+  margin-right: var(--space-10);
+  font-weight: 600;
 }
 
 @keyframes moverTexto {
-
   from {
     transform: translateX(0);
   }
@@ -185,35 +67,4 @@
   to {
     transform: translateX(-50%);
   }
-}
-
-/* =========================
-   BOTTOM BAR
-========================= */
-
-.bottom-bar{
-
-    background:#f2b233;
-
-    overflow:hidden;
-
-    white-space:nowrap;
-
-    padding:12px 0;
-}
-
-.bottom-bar-track{
-
-    display:inline-block;
-
-    animation:moverTexto 18s linear infinite;
-}
-
-.bottom-bar span{
-
-    font-weight:500;
-
-    color:#111;
-
-    margin-right:120px;
 }

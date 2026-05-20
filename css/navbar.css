@@ -1,88 +1,235 @@
 /* =========================
-   NAVBAR
+   SITE HEADER
 ========================= */
 
-header {
-  background-color: var(--color-primary);
+.site-header {
   position: sticky;
   top: 0;
-  z-index: 1000;
-  box-shadow: var(--shadow-light);
+  z-index: var(--z-header);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface-warm);
+  box-shadow: var(--shadow-sm);
 }
 
-/* =========================
-   CONTENEDOR NAVBAR
-========================= */
-
-.navbar {
+.site-header__inner {
+  position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-
-  width: 90%;
-  max-width: var(--max-width);
-
-  margin: 0 auto;
-  padding: 18px 0;
+  justify-content: space-between;
+  width: min(100% - calc(var(--container-padding) * 2), var(--container));
+  min-height: var(--header-height);
+  margin-inline: auto;
+  gap: var(--space-5);
 }
 
 /* =========================
    LOGO
 ========================= */
 
-.logo {
-  color: var(--color-white);
-  font-size: 1.8rem;
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-brand-dark);
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
   font-weight: 700;
+  line-height: var(--line-tight);
+  letter-spacing: 0;
+}
+
+.site-logo:hover {
+  color: var(--color-brand);
 }
 
 /* =========================
-   MENÚ
+   TOGGLE
 ========================= */
 
-.nav-links {
-  display: flex;
-  gap: 30px;
-}
-
-/* =========================
-   LINKS
-========================= */
-
-.nav-links a {
-  color: var(--color-white);
-  font-weight: 500;
+.site-nav-toggle {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-brand-dark);
+  background: var(--color-surface);
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
-/* =========================
-   HOVER LINKS
-========================= */
-
-.nav-links a:hover {
-  color: var(--color-accent);
+.site-nav-toggle:hover {
+  color: var(--color-surface);
+  border-color: var(--color-brand);
+  background: var(--color-brand);
 }
 
-/* =========================
-   EFECTO SUBRAYADO
-========================= */
-
-.nav-links a::after {
-  content: "";
-
+.site-nav-toggle__line {
   position: absolute;
-
-  left: 0;
-  bottom: -5px;
-
-  width: 0%;
+  width: 18px;
   height: 2px;
-
-  background-color: var(--color-accent);
-
-  transition: var(--transition);
+  border-radius: var(--radius-pill);
+  background: currentColor;
+  transition:
+    transform var(--transition-base),
+    opacity var(--transition-fast);
 }
 
-.nav-links a:hover::after {
-  width: 100%;
+.site-nav-toggle__line:nth-child(1) {
+  transform: translateY(-6px);
+}
+
+.site-nav-toggle__line:nth-child(3) {
+  transform: translateY(6px);
+}
+
+.site-header[data-state="open"] .site-nav-toggle__line:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.site-header[data-state="open"] .site-nav-toggle__line:nth-child(2) {
+  opacity: 0;
+}
+
+.site-header[data-state="open"] .site-nav-toggle__line:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.site-nav {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  right: 0;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(calc(var(--space-2) * -1));
+  transition:
+    opacity var(--transition-base),
+    transform var(--transition-base),
+    visibility var(--transition-base);
+}
+
+.site-header[data-state="open"] .site-nav {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.site-nav__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.site-nav__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-pill);
+  color: var(--color-text);
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.site-nav__link:hover {
+  color: var(--color-brand-dark);
+  background: var(--color-brand-soft);
+}
+
+.site-nav__link[aria-current="page"] {
+  color: var(--color-brand-dark);
+  background: var(--color-accent-soft);
+}
+
+.site-nav__link[aria-current="page"]::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-right: var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+}
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media (min-width: 64rem) {
+  .site-nav-toggle {
+    display: none;
+  }
+
+  .site-nav {
+    position: static;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+
+  .site-nav__list {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .site-nav__link {
+    min-height: 40px;
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .site-nav__link::after {
+    content: "";
+    position: absolute;
+    left: var(--space-3);
+    right: var(--space-3);
+    bottom: var(--space-1);
+    height: 2px;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+  }
+
+  .site-nav__link:hover {
+    background: transparent;
+  }
+
+  .site-nav__link:hover::after,
+  .site-nav__link[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+
+  .site-nav__link[aria-current="page"] {
+    background: transparent;
+  }
+
+  .site-nav__link[aria-current="page"]::before {
+    display: none;
+  }
 }
