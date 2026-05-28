@@ -1,18 +1,16 @@
-/* =========================
-   HERO SECTION
-========================= */
 
 .hero {
-  min-height: 90vh;
-
+  min-height: 92vh;
   display: flex;
   align-items: center;
   justify-content: center;
-
   text-align: center;
 
   background:
-    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    linear-gradient(
+      rgba(0, 0, 0, 0.72),
+      rgba(0, 0, 0, 0.72)
+    ),
     url("../assets/img/banners/hero-banner.png");
 
   background-size: cover;
@@ -22,55 +20,49 @@
   color: var(--color-white);
 }
 
-/* =========================
-   HERO CONTENT
-========================= */
-
 .hero .container {
-  max-width: 800px;
+  max-width: 900px;
 }
-
-/* =========================
-   HERO TITLE
-========================= */
 
 .hero h1 {
-  font-size: 4rem;
-  margin-bottom: 20px;
-  line-height: 1.2;
+  color: #ffffff;
+  font-size: clamp(3rem, 7vw, 5.4rem);
+  line-height: 1.05;
+  margin-bottom: 24px;
+  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
 }
-
-/* =========================
-   HERO TEXT
-========================= */
 
 .hero p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
+  margin-inline: auto;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.25rem;
+  margin-bottom: 36px;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
 }
 
-/* =========================
-   HERO BUTTON
-========================= */
-
 .hero-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding-inline: 36px;
+  border-radius: var(--radius-pill);
 
-  background-color: var(--color-primary);
+  background: var(--color-brand);
 
   color: var(--color-white);
 
-  padding: 15px 35px;
+  font-weight: 700;
 
-  border-radius: var(--radius);
-
-  font-weight: 600;
-
-  transition: var(--transition);
+  transition:
+    transform var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .hero-btn:hover {
-  background-color: var(--color-primary-dark);
-
+  background: var(--color-brand-dark);
   transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
+
