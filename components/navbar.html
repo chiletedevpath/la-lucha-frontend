@@ -1,43 +1,197 @@
-<header class="site-header" data-navbar data-state="closed">
-  <div class="site-header__inner">
-    <a class="site-logo" href="index.html" aria-label="La Lucha - Ir al inicio">
-      La Lucha
-    </a>
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  border-bottom: 1px solid var(--color-border);
+  background: white;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+}
 
-    <button
-      class="site-nav-toggle"
-      type="button"
-      aria-label="Abrir menú de navegación"
-      aria-controls="primary-navigation"
-      aria-expanded="false"
-      data-nav-toggle
-    >
-      <span class="site-nav-toggle__line" aria-hidden="true"></span>
-      <span class="site-nav-toggle__line" aria-hidden="true"></span>
-      <span class="site-nav-toggle__line" aria-hidden="true"></span>
-    </button>
+.site-header__inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: min(100% - calc(var(--container-padding) * 2), var(--container));
+  min-height: 88px;
+  margin-inline: auto;
+  gap: var(--space-6);
+}
 
-    <nav class="site-nav" aria-label="Navegación principal">
-      <ul class="site-nav__list" id="primary-navigation" data-nav-menu>
-        <li class="site-nav__item">
-          <a class="site-nav__link" href="index.html">Inicio</a>
-        </li>
-        <li class="site-nav__item">
-          <a class="site-nav__link" href="carta.html">Carta</a>
-        </li>
-        <li class="site-nav__item">
-          <a class="site-nav__link" href="nosotros.html">Nosotros</a>
-        </li>
-        <li class="site-nav__item">
-          <a class="site-nav__link" href="locales.html">Locales</a>
-        </li>
-        <li class="site-nav__item">
-          <a class="site-nav__link" href="contacto.html">Contacto</a>
-        </li>
-        <li class="site-nav__item">
-          <a class="site-nav__link" href="promociones.html">Promociones</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header>
+.site-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.site-logo__img {
+  width: 220px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.site-nav {
+  position: static;
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+}
+
+.site-nav__list {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  gap: var(--space-5);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.site-nav__list--left {
+  justify-content: flex-end;
+}
+
+.site-nav__list--right {
+  justify-content: flex-start;
+}
+
+.site-nav__item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.site-nav__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding-inline: var(--space-4);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  transition:
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.site-nav__link:hover {
+  color: var(--color-brand);
+  transform: translateY(-2px);
+}
+
+.site-nav__link::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  bottom: -4px;
+  width: 80%;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--transition-base);
+}
+
+.site-nav__link:hover::after,
+.site-nav__link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+.site-nav-toggle {
+  display: none;
+}
+
+@media (max-width: 63.9375rem) {
+  .site-header__inner {
+    display: flex;
+    justify-content: space-between;
+    min-height: 72px;
+  }
+
+  .site-logo__img {
+    width: 170px;
+  }
+
+  .site-nav-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+  }
+
+  .site-nav-toggle__line {
+    position: absolute;
+    width: 18px;
+    height: 2px;
+    border-radius: var(--radius-pill);
+    background: currentColor;
+    transition:
+      transform var(--transition-base),
+      opacity var(--transition-fast);
+  }
+
+  .site-nav-toggle__line:nth-child(1) {
+    transform: translateY(-6px);
+  }
+
+  .site-nav-toggle__line:nth-child(3) {
+    transform: translateY(6px);
+  }
+
+  .site-header[data-state="open"] .site-nav-toggle__line:nth-child(1) {
+    transform: rotate(45deg);
+  }
+
+  .site-header[data-state="open"] .site-nav-toggle__line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .site-header[data-state="open"] .site-nav-toggle__line:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+
+  .site-nav {
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    left: 0;
+    right: 0;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition:
+      opacity var(--transition-base),
+      transform var(--transition-base),
+      visibility var(--transition-base);
+  }
+
+  .site-header[data-state="open"] .site-nav {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .site-nav__list {
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  .site-nav__item {
+    width: 100%;
+  }
+}
+
