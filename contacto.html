@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contacto | La Lucha Sanguchería Criolla</title>
+ 
+    <!-- CSS del proyecto -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+
+    <link rel="stylesheet" href="css/contacto.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+ 
+    <!-- NAVBAR -->
+    <div id="navbar-container"></div>
+
+    <section class="contacto-hero">
+      <div class="contacto-hero__overlay"></div>
+      <div class="contacto-hero__content">
+        <p class="contacto-hero__subtitulo">Estamos para ayudarte</p>
+        <h1 class="contacto-hero__titulo">Contáctanos</h1>
+        <p class="contacto-hero__descripcion">
+          Escríbenos y nos pondremos en contacto contigo a la brevedad.
+        </p>
+      </div>
+    </section>
+
+    <section class="contacto-main">
+      <div class="container">
+        <div class="contacto-main__grid">
+ 
+          <div class="contacto-form-wrapper">
+            <span class="contacto-label">Envíanos un mensaje</span>
+            <h2 class="contacto-form-titulo">¿Tienes alguna consulta?</h2>
+ 
+            <form class="contacto-form" action="#" method="POST">
+ 
+              <div class="form-grupo">
+                <label for="nombre">Nombre completo</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  placeholder="Ej: Juan Pérez"
+                  required
+                />
+              </div>
+ 
+              <div class="form-grupo">
+                <label for="correo">Correo electrónico</label>
+                <input
+                  type="email"
+                  id="correo"
+                  name="correo"
+                  placeholder="Ej: juan@correo.com"
+                  required
+                />
+              </div>
+ 
+              <div class="form-grupo">
+                <label for="asunto">Asunto</label>
+                <input
+                  type="text"
+                  id="asunto"
+                  name="asunto"
+                  placeholder="Ej: Consulta sobre locales"
+                  required
+                />
+              </div>
+ 
+              <div class="form-grupo">
+                <label for="mensaje">Mensaje</label>
+                <textarea
+                  id="mensaje"
+                  name="mensaje"
+                  rows="5"
+                  placeholder="Escribe tu mensaje aquí..."
+                  required
+                ></textarea>
+              </div>
+ 
+              <button type="submit" class="contacto-btn">
+                Enviar mensaje
+              </button>
+ 
+            </form>
+          </div>
+ 
+          <div class="contacto-info">
+            <span class="contacto-label">Información de contacto</span>
+            <h2 class="contacto-info-titulo">Encuéntranos</h2>
+ 
+            <div class="info-card">
+              <span class="info-card__icono">📍</span>
+              <div>
+                <span class="info-card__label">Dirección principal</span>
+                <span class="info-card__valor">Miraflores, Lima, Perú</span>
+              </div>
+            </div>
+ 
+            <div class="info-card">
+              <span class="info-card__icono">📞</span>
+              <div>
+                <span class="info-card__label">Teléfono</span>
+                <a class="info-card__valor" href="tel:+5111234567">(01) 123-4567</a>
+              </div>
+            </div>
+ 
+            <div class="info-card">
+              <span class="info-card__icono">✉️</span>
+              <div>
+                <span class="info-card__label">Correo</span>
+                <a class="info-card__valor" href="mailto:contacto@lalucha.pe">contacto@lalucha.pe</a>
+              </div>
+            </div>
+ 
+            <div class="info-card">
+              <span class="info-card__icono">🕐</span>
+              <div>
+                <span class="info-card__label">Horario de atención</span>
+                <span class="info-card__valor">Lunes a Domingo: 8:00 am – 10:00 pm</span>
+              </div>
+            </div>
+
+            <div class="contacto-redes">
+              <p class="contacto-redes__titulo">Síguenos en redes</p>
+              <div class="contacto-redes__iconos">
+                <span class="red-social red-social--disabled" aria-disabled="true">📷 Instagram</span>
+                <span class="red-social red-social--disabled" aria-disabled="true">📘 Facebook</span>
+              </div>
+            </div>
+ 
+          </div>
+ 
+        </div>
+      </div>
+    </section>
+ 
+    <!-- FOOTER -->
+    <div id="footer-container"></div>
+ 
+    <script src="js/menu.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
+ 

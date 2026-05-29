@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Detalle de producto | La Lucha Sanguchería Criolla</title>
+
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <link rel="stylesheet" href="css/cards.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+    <div id="navbar-container"></div>
+
+    <main id="main-content">
+      <section class="product-detail section" aria-labelledby="product-detail-title">
+        <div class="container">
+          <a class="product-detail__back" href="carta.html">Volver a la carta</a>
+
+          <article class="product-detail__layout" id="product-detail">
+            <div class="product-detail__empty">
+              <p class="section-eyebrow">Cargando producto</p>
+              <h1 id="product-detail-title">Preparando el detalle</h1>
+              <p class="section-description">
+                Estamos cargando la información del producto seleccionado.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="js/menu.js"></script>
+    <script src="js/main.js"></script>
+    <script src="data/productos.js"></script>
+    <script src="js/detalle-producto.js"></script>
+  </body>
+</html>
