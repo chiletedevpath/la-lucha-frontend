@@ -1,10 +1,15 @@
 
 .page-header {
+<<<<<<< Updated upstream
 
   background: #c53324;
 
   color: white;
 
+=======
+  padding-block: var(--space-5);
+  color: var(--color-surface);
+>>>>>>> Stashed changes
   text-align: center;
 
   padding: 120px 20px;
