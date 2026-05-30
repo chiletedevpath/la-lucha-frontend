@@ -16,8 +16,8 @@ function crearCardPromocion(promocion, index) {
   const posicionInvertida = index % 2 !== 0;
 
   const articulo = document.createElement("article");
-  articulo.className = `card card--promo card--horizontal card--featured ${
-    posicionInvertida ? "card--reverse" : ""
+  articulo.className = `card card--promo card--horizontal card--featured reveal ${
+    posicionInvertida ? "card--reverse reveal-delay-1" : ""
   }`;
 
   const media = document.createElement("div");
@@ -31,10 +31,6 @@ function crearCardPromocion(promocion, index) {
 
   const body = document.createElement("div");
   body.className = "card__body";
-
-  const eyebrow = document.createElement("p");
-  eyebrow.className = "card__eyebrow";
-  eyebrow.textContent = "Promoción";
 
   const titulo = document.createElement("h3");
   titulo.className = "card__title";
@@ -71,7 +67,7 @@ function crearCardPromocion(promocion, index) {
 
   actions.append(precios);
   media.append(imagen);
-  body.append(eyebrow, titulo, incluye);
+  body.append(titulo, incluye);
 
   if (meta.children.length > 0) {
     body.append(meta);

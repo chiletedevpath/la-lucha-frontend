@@ -2,75 +2,185 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <meta name="theme-color" content="#6f1f17" />
+    <meta
+      name="description"
+      content="La Lucha Sanguchería Criolla: sánguches artesanales, bebidas tradicionales, promociones y locales."
+    />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+    <link rel="icon" href="assets/icons/icon-192.png" />
     <title>La Lucha Sanguchería Criolla</title>
-
-    <!-- CSS -->
 
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/layout.css" />
     <link rel="stylesheet" href="css/navbar.css" />
     <link rel="stylesheet" href="css/footer.css" />
     <link rel="stylesheet" href="css/hero.css" />
-    <!-- GOOGLE FONTS -->
+    <link rel="stylesheet" href="css/cards.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/inicio.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <!-- =========================
-         HEADER / NAVBAR
-    ========================== -->
-
     <div id="navbar-container"></div>
 
-    <!-- =========================
-         HERO PRINCIPAL
-    ========================== -->
+    <main>
+      <div id="hero-container"></div>
 
-    <div id="hero-container"></div>
+      <section class="inicio-intro section reveal">
+        <div class="container inicio-intro__grid">
+          <div>
+            <p class="section-eyebrow">Bienvenidos</p>
+            <h2>Una experiencia criolla hecha para disfrutar</h2>
+          </div>
+          <p>
+            La Lucha Sanguchería Criolla combina pan artesanal, insumos frescos y recetas peruanas
+            para ofrecer sánguches contundentes, bebidas tradicionales y promociones para compartir.
+          </p>
+        </div>
+      </section>
 
-    <!-- =========================
-         BIENVENIDA
-    ========================== -->
+      <section class="inicio-categorias section surface reveal">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-eyebrow">Explora</p>
+            <h2 class="section-title">Encuentra tu favorito</h2>
+            <p class="section-description">
+              Accede rápido a las secciones principales del sitio.
+            </p>
+          </div>
 
-    <section class="bienvenida">
-      <div class="container">
-        <h2>Bienvenidos</h2>
+          <div class="inicio-feature-grid">
+            <a class="inicio-feature reveal reveal-delay-1" href="carta.html">
+              <span class="material-symbols-rounded inicio-feature__icono" aria-hidden="true">lunch_dining</span>
+              <span class="inicio-feature__titulo">Sánguches</span>
+              <span class="inicio-feature__texto">Especialidades criollas en pan artesanal.</span>
+            </a>
 
-        <p>
-          La Lucha Sanguchería Criolla representa la tradición gastronómica peruana a través de
-          productos artesanales elaborados con ingredientes frescos y de alta calidad.
-        </p>
-      </div>
-    </section>
+            <a class="inicio-feature reveal reveal-delay-2" href="carta.html">
+              <span class="material-symbols-rounded inicio-feature__icono" aria-hidden="true">local_cafe</span>
+              <span class="inicio-feature__titulo">Bebidas</span>
+              <span class="inicio-feature__texto">Chicha, café y opciones tradicionales.</span>
+            </a>
 
-    <!-- =========================
-         PROMOCIONES
-    ========================== -->
+            <a class="inicio-feature reveal reveal-delay-3" href="promociones.html">
+              <span class="material-symbols-rounded inicio-feature__icono" aria-hidden="true">sell</span>
+              <span class="inicio-feature__titulo">Promociones</span>
+              <span class="inicio-feature__texto">Combos y beneficios para compartir.</span>
+            </a>
 
-    <section class="promociones">
-      <div class="container">
-        <h2>Promociones Destacadas</h2>
+            <a class="inicio-feature reveal reveal-delay-1" href="locales.html">
+              <span class="material-symbols-rounded inicio-feature__icono" aria-hidden="true">storefront</span>
+              <span class="inicio-feature__titulo">Locales</span>
+              <span class="inicio-feature__texto">Ubica la tienda más cercana.</span>
+            </a>
+          </div>
+        </div>
+      </section>
 
-        <p>Próximamente encontrarás nuestras promociones y productos más destacados.</p>
-      </div>
-    </section>
+      <section class="inicio-destacados section reveal">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-eyebrow">Los más pedidos</p>
+            <h2 class="section-title">Favoritos de la casa</h2>
+          </div>
 
-    <!-- =========================
-         FOOTER
-    ========================== -->
+          <div class="inicio-destacados__grid">
+            <article class="card card--product card--interactive reveal reveal-delay-1">
+              <a class="card__link" href="detalle-producto.html?id=1">
+                <div class="card__media">
+                  <img class="card__image" src="assets/img/productos/sanguches/chicharron.jpg" alt="Sánguche de Chicharrón" loading="lazy" />
+                  <span class="card__badge">Más pedido</span>
+                </div>
+                <div class="card__body">
+                  <h3 class="card__title">Sánguche de Chicharrón</h3>
+                  <p class="card__text">Pan artesanal con chicharrón crocante, camote frito y salsa criolla.</p>
+                  <div class="card__actions">
+                    <span class="card__price">S/ 18.90</span>
+                    <span class="card__action">Ver detalle</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+
+            <article class="card card--product card--interactive reveal reveal-delay-2">
+              <a class="card__link" href="detalle-producto.html?id=2">
+                <div class="card__media">
+                  <img class="card__image" src="assets/img/productos/sanguches/pavo.jpg" alt="Sánguche de Pavo" loading="lazy" />
+                  <span class="card__badge">Favorito</span>
+                </div>
+                <div class="card__body">
+                  <h3 class="card__title">Sánguche de Pavo</h3>
+                  <p class="card__text">Pavo jugoso acompañado de pan artesanal y salsas de la casa.</p>
+                  <div class="card__actions">
+                    <span class="card__price">S/ 19.90</span>
+                    <span class="card__action">Ver detalle</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="inicio-promo section surface-warm reveal">
+        <div class="container inicio-promo__grid">
+          <div class="inicio-promo__media">
+            <img src="assets/img/promos/combocriollo.jpg" alt="Combo Criollo" loading="lazy" />
+          </div>
+          <div class="inicio-promo__content">
+            <p class="section-eyebrow">Promoción destacada</p>
+            <h2>Combo Criollo</h2>
+            <p>
+              Pan con chicharrón, café pasado y camote frito. Una combinación clásica para empezar
+              el día con sabor peruano.
+            </p>
+            <a class="card__action" href="promociones.html">Ver promociones</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="inicio-confianza section reveal">
+        <div class="container inicio-confianza__grid">
+          <div class="inicio-confianza__item reveal reveal-delay-1">
+            <span class="material-symbols-rounded" aria-hidden="true">bakery_dining</span>
+            <strong>Pan artesanal</strong>
+            <p>Preparaciones frescas y hechas con cuidado.</p>
+          </div>
+          <div class="inicio-confianza__item reveal reveal-delay-2">
+            <span class="material-symbols-rounded" aria-hidden="true">eco</span>
+            <strong>Insumos frescos</strong>
+            <p>Ingredientes seleccionados para cada producto.</p>
+          </div>
+          <div class="inicio-confianza__item reveal reveal-delay-3">
+            <span class="material-symbols-rounded" aria-hidden="true">delivery_dining</span>
+            <strong>Local y delivery</strong>
+            <p>Compra en tienda o pide desde tu sede más cercana.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="inicio-cta reveal">
+        <div class="container inicio-cta__content">
+          <h2>Explora la carta criolla</h2>
+          <p>Revisa los productos disponibles y arma tu próxima visita con sabor peruano.</p>
+          <a class="hero-btn" href="carta.html">Ver carta completa</a>
+        </div>
+      </section>
+    </main>
 
     <div id="footer-container"></div>
+
     <script src="js/menu.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/animaciones.js"></script>
   </body>
 </html>

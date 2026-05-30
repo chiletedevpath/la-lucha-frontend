@@ -6,7 +6,7 @@
   margin-top: var(--space-8);
   border-top: 1px solid var(--color-border);
   color: var(--color-surface-warm);
-  background: var(--color-brand-dark);
+  background: #6f211a;
 }
 
 .site-footer__inner {
@@ -83,6 +83,35 @@
 .site-footer__link:hover {
   color: var(--color-accent);
   transform: translateX(var(--space-1));
+}
+
+.site-footer__socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.site-footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-surface);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  background: color-mix(in srgb, var(--color-surface) 12%, transparent);
+  border: 1px solid var(--color-border-inverse);
+  border-radius: var(--radius-pill);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.site-footer__social-link:hover {
+  color: var(--color-ink);
+  background: var(--color-accent);
 }
 
 /* =========================

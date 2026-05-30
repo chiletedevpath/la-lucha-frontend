@@ -30,7 +30,9 @@ function crearCardLocal(local, index) {
   const posicionInvertida = index % 2 !== 0;
 
   const articulo = document.createElement("article");
-  articulo.className = `card card--location card--horizontal ${posicionInvertida ? "card--reverse" : ""}`;
+  articulo.className = `card card--location card--horizontal reveal ${
+    posicionInvertida ? "card--reverse reveal-delay-1" : ""
+  }`;
 
   const media = document.createElement("div");
   media.className = "card__media";

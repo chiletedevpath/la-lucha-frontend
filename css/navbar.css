@@ -1,20 +1,22 @@
 
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: var(--z-header);
   border-bottom: 1px solid var(--color-border);
-  background: white;
-  backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--color-surface) 96%, var(--color-surface-warm));
   box-shadow: var(--shadow-sm);
 }
 
 .site-header__inner {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   width: min(100% - calc(var(--container-padding) * 2), var(--container));
-  min-height: 88px;
+  min-height: var(--header-height);
   margin-inline: auto;
   gap: var(--space-6);
 }
@@ -25,10 +27,13 @@
   justify-content: center;
 }
 
-.site-logo__img {
-  width: 220px;
-  max-width: 100%;
-  object-fit: contain;
+.site-logo__text {
+  color: var(--color-brand);
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .site-nav {
@@ -36,6 +41,10 @@
   visibility: visible;
   opacity: 1;
   transform: none;
+}
+
+.site-nav-mobile {
+  display: none;
 }
 
 .site-nav__list {
@@ -110,12 +119,13 @@
 @media (max-width: 63.9375rem) {
   .site-header__inner {
     display: flex;
+    flex-wrap: nowrap;
     justify-content: space-between;
-    min-height: 72px;
+    min-height: var(--header-height);
   }
 
-  .site-logo__img {
-    width: 170px;
+  .site-logo__text {
+    font-size: var(--text-2xl);
   }
 
   .site-nav-toggle {
@@ -123,11 +133,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-pill);
     background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
   }
 
   .site-nav-toggle__line {
@@ -161,38 +172,73 @@
     transform: rotate(-45deg);
   }
 
-  .site-nav {
+  .site-nav--desktop {
+    display: none;
+  }
+
+  .site-nav-mobile {
     position: absolute;
-    top: calc(100% + var(--space-2));
-    left: 0;
+    top: 100%;
     right: 0;
-    visibility: hidden;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition:
-      opacity var(--transition-base),
-      transform var(--transition-base),
-      visibility var(--transition-base);
-  }
-
-  .site-header[data-state="open"] .site-nav {
+    width: min(22rem, calc(100vw - calc(var(--container-padding) * 2)));
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
     visibility: visible;
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 0;
+    transition:
+      grid-template-rows var(--transition-base),
+      opacity var(--transition-fast);
   }
 
-  .site-nav__list {
-    flex-direction: column;
+  .site-header[data-state="open"] .site-nav-mobile {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .site-nav-mobile__list {
+    display: grid;
+    min-height: 0;
     gap: var(--space-2);
-    padding: var(--space-3);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
+    margin-top: var(--space-2);
+    padding: var(--space-2);
+    border: 1px solid color-mix(in srgb, var(--color-border) 72%, var(--color-accent));
+    border-radius: var(--radius-md);
     background: var(--color-surface);
     box-shadow: var(--shadow-md);
   }
 
-  .site-nav__item {
+  .site-nav-mobile .site-nav__link {
+    justify-content: flex-start;
     width: 100%;
+    min-height: 42px;
+    padding-inline: var(--space-4);
+    border-radius: var(--radius-sm);
+  }
+
+  .site-nav-mobile .site-nav__link:hover,
+  .site-nav-mobile .site-nav__link[aria-current="page"] {
+    color: var(--color-brand-dark);
+    background: var(--color-accent-soft);
+    transform: none;
+  }
+
+  .site-nav-mobile .site-nav__link::after {
+    display: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .site-header__inner {
+    width: min(100% - 1.5rem, var(--container));
+  }
+
+  .site-nav-mobile {
+    width: 100%;
+  }
+
+  .site-logo__text {
+    font-size: clamp(2rem, 11vw, 2.45rem);
   }
 }
 

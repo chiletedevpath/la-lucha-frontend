@@ -3,10 +3,12 @@
 ========================= */
 
 .page-header {
-  padding-block: var(--space-10);
+  padding-block: var(--space-9);
   color: var(--color-surface);
   text-align: center;
-  background: var(--color-brand);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(216, 149, 32, 0.22), transparent 24rem),
+    linear-gradient(135deg, var(--color-brand-deep) 0%, var(--color-brand-dark) 48%, var(--color-brand) 100%);
 }
 
 .page-header h1 {
@@ -26,12 +28,15 @@
 ========================= */
 
 .promociones-section {
-  background: var(--color-background);
+  background:
+    linear-gradient(180deg, var(--color-background), var(--color-surface-warm));
 }
 
 #promociones-container {
   display: grid;
-  gap: var(--space-7);
+  gap: var(--space-5);
+  max-width: 920px;
+  margin-inline: auto;
 }
 
 /* =========================
@@ -42,8 +47,8 @@
 .bottom-bar {
   overflow: hidden;
   padding-block: var(--space-3);
-  color: var(--color-ink);
-  background: var(--color-accent);
+  color: #21180b;
+  background: linear-gradient(90deg, #e3aa31, var(--color-accent), #c68418);
   white-space: nowrap;
 }
 
