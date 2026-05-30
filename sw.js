@@ -1,4 +1,4 @@
-const CACHE_NAME = "la-luchona-v9";
+const CACHE_NAME = "la-lucha-v1";
 
 const APP_SHELL = [
   "./",
@@ -53,9 +53,7 @@ const APP_SHELL = [
 ];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
   self.skipWaiting();
 });
 
@@ -76,9 +74,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (event.request.mode === "navigate") {
-    event.respondWith(
-      fetch(event.request).catch(() => caches.match("./offline.html"))
-    );
+    event.respondWith(fetch(event.request).catch(() => caches.match("./offline.html")));
     return;
   }
 

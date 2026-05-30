@@ -1,7 +1,7 @@
 {
-  "name": "La Luchona Criolla",
-  "short_name": "La Luchona",
-  "description": "Sitio web de La Luchona Criolla con carta, promociones, locales y contacto.",
+  "name": "La Lucha Sanguchería Criolla",
+  "short_name": "La Lucha",
+  "description": "Sitio web de La Lucha Sanguchería Criolla con carta, promociones, locales y contacto.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

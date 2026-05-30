@@ -1,48 +1,83 @@
 <footer class="site-footer">
   <div class="site-footer__inner">
-    <section class="site-footer__brand" aria-label="Información de La Lucha">
-      <a class="site-footer__logo" href="index.html" aria-label="La Lucha - Ir a la página principal">
+    <!-- ================================
+         MARCA / DESCRIPCIÓN
+    ================================= -->
+    <section class="site-footer__brand" aria-labelledby="footer-brand-title">
+      <a
+        class="site-footer__logo"
+        href="index.html"
+        aria-label="La Lucha Sanguchería Criolla - Ir a la página principal"
+      >
         La Lucha
       </a>
+
+      <h2 class="site-footer__title" id="footer-brand-title">Sanguchería Criolla</h2>
 
       <p class="site-footer__description">
         Tradición criolla, pan artesanal y sabor peruano preparado con cuidado en cada sánguche.
       </p>
     </section>
 
-    <nav class="site-footer__nav" aria-label="Enlaces del sitio">
-      <h2 class="site-footer__title">Enlaces</h2>
+    <!-- ================================
+         NAVEGACIÓN
+    ================================= -->
+    <nav class="site-footer__nav" aria-labelledby="footer-nav-title">
+      <h2 class="site-footer__title" id="footer-nav-title">Enlaces</h2>
 
       <ul class="site-footer__list">
         <li class="site-footer__item">
+          <a class="site-footer__link" href="index.html">Inicio</a>
+        </li>
+
+        <li class="site-footer__item">
           <a class="site-footer__link" href="carta.html">Carta</a>
         </li>
+
         <li class="site-footer__item">
           <a class="site-footer__link" href="nosotros.html">Nosotros</a>
         </li>
+
         <li class="site-footer__item">
           <a class="site-footer__link" href="locales.html">Locales</a>
         </li>
-        <li class="site-footer__item">
-          <a class="site-footer__link" href="contacto.html">Contacto</a>
-        </li>
+
         <li class="site-footer__item">
           <a class="site-footer__link" href="promociones.html">Promociones</a>
+        </li>
+
+        <li class="site-footer__item">
+          <a class="site-footer__link" href="contacto.html">Contacto</a>
         </li>
       </ul>
     </nav>
 
-    <section class="site-footer__contact" aria-labelledby="site-footer-contact-title">
-      <h2 class="site-footer__title" id="site-footer-contact-title">Contacto</h2>
+    <!-- ================================
+         CONTACTO
+    ================================= -->
+    <section class="site-footer__contact" aria-labelledby="footer-contact-title">
+      <h2 class="site-footer__title" id="footer-contact-title">Contacto</h2>
 
-      <ul class="site-footer__list">
-        <li class="site-footer__item">
-          <a class="site-footer__link" href="mailto:contacto@lalucha.com">contacto@lalucha.com</a>
-        </li>
-        <li class="site-footer__item">
-          <a class="site-footer__link" href="tel:+51999999999">+51 999 999 999</a>
-        </li>
-      </ul>
+      <address class="site-footer__address">
+        <ul class="site-footer__list">
+          <li class="site-footer__item">
+            <a class="site-footer__link" href="mailto:contacto@lalucha.pe">contacto@lalucha.pe</a>
+          </li>
+
+          <li class="site-footer__item">
+            <a class="site-footer__link" href="tel:+51900000000">+51 900 000 000</a>
+          </li>
+
+          <li class="site-footer__item">Lima, Perú</li>
+        </ul>
+      </address>
+    </section>
+
+    <!-- ================================
+         REDES SOCIALES
+    ================================= -->
+    <section class="site-footer__social" aria-labelledby="footer-social-title">
+      <h2 class="site-footer__title" id="footer-social-title">Síguenos</h2>
 
       <div class="site-footer__socials">
         <a
@@ -50,16 +85,17 @@
           href="https://www.facebook.com/laluchasangucheriacriolla/?locale=es_LA"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Síguenos en Facebook"
+          aria-label="Visitar Facebook de La Lucha Sanguchería Criolla"
         >
           Facebook
         </a>
+
         <a
           class="site-footer__social-link"
           href="https://www.instagram.com/laluchasangucheria/?hl=es"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Síguenos en Instagram"
+          aria-label="Visitar Instagram de La Lucha Sanguchería Criolla"
         >
           Instagram
         </a>
@@ -67,7 +103,12 @@
     </section>
   </div>
 
+  <!-- ================================
+       DERECHOS / CRÉDITO ACADÉMICO
+  ================================= -->
   <div class="site-footer__bottom">
-    <p class="site-footer__copyright">© 2026 La Lucha Sanguchería Criolla - Proyecto UTP</p>
+    <p class="site-footer__copyright">
+      © 2026 La Lucha Sanguchería Criolla. Proyecto académico UTP.
+    </p>
   </div>
 </footer>
