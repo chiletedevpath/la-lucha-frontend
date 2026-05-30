@@ -1,3 +1,4 @@
+// Datos referenciales del prototipo frontend. Telefonos y horarios deben validarse antes de publicar.
 const locales = [
   {
     id: 1,
@@ -5,7 +6,7 @@ const locales = [
     direccion: "Av. Diagonal 308",
     horario: "Lunes a Domingo | 8:00 am - 11:00 pm",
     telefono: "987 654 321",
-    imagen: "assets/img/locales/miraflores.jpg",
+    imagen: "assets/img/locales/miraflores.webp",
     maps: "https://maps.app.goo.gl/Yz6yMKe6F9J82jYp6"
   },
 

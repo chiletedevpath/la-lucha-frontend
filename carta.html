@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
   <head>
     <!-- =========================
@@ -9,9 +9,22 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <meta name="theme-color" content="#6f1f17" />
+
+    <meta
+      name="description"
+      content="La Lucha Sanguchería Criolla: carta, promociones, locales y contacto."
+    />
+
+    <link rel="manifest" href="site.webmanifest" />
+
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+
+    <link rel="icon" href="assets/icons/icon-192.png" />
+
     <!-- =========================
        TITLE
-  ========================== -->
+    ========================== -->
 
     <title>Carta | La Lucha Sanguchería Criolla</title>
 
@@ -30,6 +43,7 @@
     <link rel="stylesheet" href="css/carta.css" />
 
     <link rel="stylesheet" href="css/cards.css" />
+    <link rel="stylesheet" href="css/animations.css" />
 
     <!-- =========================
        GOOGLE FONTS
@@ -108,6 +122,7 @@
             <input
               type="text"
               id="buscador-input"
+              aria-label="Buscar productos en la carta"
               placeholder="Buscar sánguches, bebidas o postres..."
             />
           </div>
@@ -128,13 +143,13 @@
 
           <!-- Botones filtros -->
           <div class="categorias-lista">
-            <button type="button" data-categoria="todos" class="activo">🍽 Todos</button>
+            <button type="button" data-categoria="todos" class="activo">Todos</button>
 
-            <button type="button" data-categoria="sanguches">🥪 Sánguches</button>
+            <button type="button" data-categoria="sanguches">Sánguches</button>
 
-            <button type="button" data-categoria="bebidas">🥤 Bebidas</button>
+            <button type="button" data-categoria="bebidas">Bebidas</button>
 
-            <button type="button" data-categoria="postres">🍰 Postres</button>
+            <button type="button" data-categoria="postres">Postres</button>
           </div>
         </div>
       </section>
@@ -157,12 +172,30 @@
 
           <!-- Estado dinámico -->
           <div class="productos-estado" id="productos-estado"></div>
-          <!-- Paginación futura -->
-          <div class="paginacion">
-            <button type="button">← Anterior</button>
+          <!-- =========================
+            PAGINACIÓN
+          ========================== -->
+          <nav class="paginacion" aria-label="Paginación de productos">
+            <button
+              class="paginacion__btn"
+              id="btn-anterior"
+              type="button"
+              aria-label="Ir a la página anterior"
+            >
+              Anterior
+            </button>
 
-            <button type="button">Siguiente →</button>
-          </div>
+            <div class="paginacion__numeros" id="paginacion-numeros"></div>
+
+            <button
+              class="paginacion__btn"
+              id="btn-siguiente"
+              type="button"
+              aria-label="Ir a la página siguiente"
+            >
+              Siguiente
+            </button>
+          </nav>
         </div>
       </section>
     </main>

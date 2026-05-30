@@ -6,24 +6,44 @@ const contenedorProductos = document.getElementById("productos-grid");
 const buscadorInput = document.getElementById("buscador-input");
 const botonesCategorias = document.querySelectorAll(".categorias-lista button");
 
+const btnAnterior = document.getElementById("btn-anterior");
+const btnSiguiente = document.getElementById("btn-siguiente");
+const contenedorPaginacion = document.getElementById("paginacion-numeros");
+
+const PRODUCTOS_POR_PAGINA = 6;
+
 let categoriaActual = "todos";
 let textoBusqueda = "";
+let paginaActual = 1;
+let productosActuales = [];
 
 /* =========================
-   RENDER PRODUCTOS
+   UTILIDADES
 ========================= */
 
 function formatearPrecio(precio) {
   return `S/ ${Number(precio).toFixed(2)}`;
 }
 
+function obtenerTotalPaginas(listaProductos) {
+  return Math.ceil(listaProductos.length / PRODUCTOS_POR_PAGINA);
+}
+
+function obtenerProductosPagina(listaProductos) {
+  const inicio = (paginaActual - 1) * PRODUCTOS_POR_PAGINA;
+  const fin = inicio + PRODUCTOS_POR_PAGINA;
+
+  return listaProductos.slice(inicio, fin);
+}
+
+/* =========================
+   CREAR CARD PRODUCTO
+========================= */
+
 function crearCardProducto(producto) {
   const articulo = document.createElement("article");
   articulo.className = "card card--product card--interactive reveal";
-
-  const link = document.createElement("a");
-  link.className = "card__link";
-  link.href = `detalle-producto.html?id=${producto.id}`;
+  articulo.setAttribute("aria-label", `Producto ${producto.nombre}`);
 
   const media = document.createElement("div");
   media.className = "card__media";
@@ -56,18 +76,23 @@ function crearCardProducto(producto) {
   precio.className = "card__price";
   precio.textContent = formatearPrecio(producto.precio);
 
-  const accion = document.createElement("span");
-  accion.className = "card__action";
-  accion.textContent = "Ver más";
+  const accion = document.createElement("a");
+  accion.className = "card__action card__action--button";
+  accion.href = `pedido.html?producto=${encodeURIComponent(producto.nombre)}`;
+  accion.textContent = "Pedir producto";
+  accion.setAttribute("aria-label", `Pedir ${producto.nombre}`);
 
   media.append(imagen, badge);
   actions.append(precio, accion);
   body.append(titulo, descripcion, actions);
-  link.append(media, body);
-  articulo.append(link);
+  articulo.append(media, body);
 
   return articulo;
 }
+
+/* =========================
+   RENDER PRODUCTOS
+========================= */
 
 function renderizarProductos(listaProductos) {
   if (!contenedorProductos) return;
@@ -79,16 +104,79 @@ function renderizarProductos(listaProductos) {
     mensaje.className = "sin-productos";
     mensaje.textContent = "No se encontraron productos.";
     contenedorProductos.append(mensaje);
+    renderizarPaginacion([]);
     return;
   }
 
+  const productosPagina = obtenerProductosPagina(listaProductos);
   const fragmento = document.createDocumentFragment();
 
-  listaProductos.forEach((producto) => {
+  productosPagina.forEach((producto) => {
     fragmento.append(crearCardProducto(producto));
   });
 
   contenedorProductos.append(fragmento);
+  renderizarPaginacion(listaProductos);
+}
+
+/* =========================
+   PAGINACIÓN
+========================= */
+
+function renderizarPaginacion(listaProductos) {
+  if (!contenedorPaginacion || !btnAnterior || !btnSiguiente) return;
+
+  const totalPaginas = obtenerTotalPaginas(listaProductos);
+
+  contenedorPaginacion.innerHTML = "";
+
+  if (totalPaginas <= 1) {
+    btnAnterior.disabled = true;
+    btnSiguiente.disabled = true;
+    return;
+  }
+
+  btnAnterior.disabled = paginaActual === 1;
+  btnSiguiente.disabled = paginaActual === totalPaginas;
+
+  for (let numeroPagina = 1; numeroPagina <= totalPaginas; numeroPagina++) {
+    const botonPagina = document.createElement("button");
+    botonPagina.type = "button";
+    botonPagina.className = "paginacion__numero";
+    botonPagina.textContent = numeroPagina;
+    botonPagina.setAttribute("aria-label", `Ir a la página ${numeroPagina}`);
+
+    if (numeroPagina === paginaActual) {
+      botonPagina.classList.add("paginacion__numero--activo");
+      botonPagina.setAttribute("aria-current", "page");
+    }
+
+    botonPagina.addEventListener("click", () => {
+      paginaActual = numeroPagina;
+      renderizarProductos(productosActuales);
+      contenedorProductos.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    contenedorPaginacion.append(botonPagina);
+  }
+}
+
+function irPaginaAnterior() {
+  if (paginaActual > 1) {
+    paginaActual--;
+    renderizarProductos(productosActuales);
+    contenedorProductos.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+function irPaginaSiguiente() {
+  const totalPaginas = obtenerTotalPaginas(productosActuales);
+
+  if (paginaActual < totalPaginas) {
+    paginaActual++;
+    renderizarProductos(productosActuales);
+    contenedorProductos.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
 /* =========================
@@ -112,7 +200,10 @@ function filtrarProductos() {
     );
   }
 
-  renderizarProductos(productosFiltrados);
+  productosActuales = productosFiltrados;
+  paginaActual = 1;
+
+  renderizarProductos(productosActuales);
 }
 
 /* =========================
@@ -127,6 +218,7 @@ botonesCategorias.forEach((boton) => {
 
     boton.classList.add("activo");
     categoriaActual = boton.dataset.categoria;
+
     filtrarProductos();
   });
 });
@@ -138,10 +230,19 @@ if (buscadorInput) {
   });
 }
 
+if (btnAnterior) {
+  btnAnterior.addEventListener("click", irPaginaAnterior);
+}
+
+if (btnSiguiente) {
+  btnSiguiente.addEventListener("click", irPaginaSiguiente);
+}
+
 /* =========================
    CARGA INICIAL
 ========================= */
 
 if (Array.isArray(productos)) {
-  renderizarProductos(productos);
+  productosActuales = productos;
+  renderizarProductos(productosActuales);
 }

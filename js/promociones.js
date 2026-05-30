@@ -4,84 +4,86 @@
 
 const contenedorPromociones = document.getElementById("promociones-container");
 
-function crearTextoClase(clase, texto) {
-  const elemento = document.createElement("p");
+/* =========================
+   UTILIDADES
+========================= */
+
+function crearElementoTexto(etiqueta, clase, texto) {
+  const elemento = document.createElement(etiqueta);
   elemento.className = clase;
   elemento.textContent = texto;
 
   return elemento;
 }
 
+/* =========================
+   CREAR CARD PROMOCIÓN
+========================= */
+
 function crearCardPromocion(promocion, index) {
   const posicionInvertida = index % 2 !== 0;
 
   const articulo = document.createElement("article");
-  articulo.className = `card card--promo card--horizontal card--featured ${
-    posicionInvertida ? "card--reverse" : ""
+  articulo.className = `promocion-card reveal ${
+    posicionInvertida ? "promocion-card--reverse reveal-delay-1" : ""
   }`;
+  articulo.setAttribute("aria-label", `Promoción ${promocion.nombre}`);
 
   const media = document.createElement("div");
-  media.className = "card__media";
+  media.className = "promocion-imagen";
 
   const imagen = document.createElement("img");
-  imagen.className = "card__image";
   imagen.src = promocion.imagen;
-  imagen.alt = promocion.nombre;
+  imagen.alt = `Promoción ${promocion.nombre}`;
   imagen.loading = "lazy";
 
-  const body = document.createElement("div");
-  body.className = "card__body";
+  const contenido = document.createElement("div");
+  contenido.className = "promocion-contenido";
 
-  const eyebrow = document.createElement("p");
-  eyebrow.className = "card__eyebrow";
-  eyebrow.textContent = "Promoción";
+  const badge = crearElementoTexto(
+    "span",
+    "promocion-badge",
+    promocion.badge || "Promoción especial"
+  );
 
-  const titulo = document.createElement("h3");
-  titulo.className = "card__title";
-  titulo.textContent = promocion.nombre;
+  const incluye = crearElementoTexto("p", "promocion-incluye", promocion.incluye);
 
-  const incluye = document.createElement("p");
-  incluye.className = "card__text";
-  incluye.textContent = promocion.incluye;
-
-  const meta = document.createElement("div");
-  meta.className = "card__meta";
-
-  if (promocion.extra) {
-    meta.append(crearTextoClase("card__meta-item", promocion.extra));
-  }
-
-  const actions = document.createElement("div");
-  actions.className = "card__actions";
+  const extra = crearElementoTexto("p", "promocion-extra", promocion.extra);
 
   const precios = document.createElement("div");
-  precios.className = "card__meta";
+  precios.className = "promocion-precios";
+  precios.setAttribute("aria-label", "Precio de la promoción");
 
   if (promocion.precioOriginal) {
-    const precioOriginal = document.createElement("span");
-    precioOriginal.className = "card__price-old";
-    precioOriginal.textContent = promocion.precioOriginal;
+    const precioOriginal = crearElementoTexto(
+      "span",
+      "promocion-precio-original",
+      promocion.precioOriginal
+    );
+
     precios.append(precioOriginal);
   }
 
-  const precioPromo = document.createElement("span");
-  precioPromo.className = "card__price";
-  precioPromo.textContent = promocion.precioPromo;
+  const precioPromo = crearElementoTexto("strong", "promocion-precio-final", promocion.precioPromo);
+
   precios.append(precioPromo);
 
-  actions.append(precios);
+  const boton = document.createElement("a");
+  boton.className = "promocion-btn";
+  boton.href = `pedido.html?promocion=${encodeURIComponent(promocion.nombre)}`;
+  boton.textContent = promocion.cta || "Pedir promoción";
+  boton.setAttribute("aria-label", `Pedir promoción ${promocion.nombre}`);
+
   media.append(imagen);
-  body.append(eyebrow, titulo, incluye);
-
-  if (meta.children.length > 0) {
-    body.append(meta);
-  }
-
-  body.append(actions);
-  articulo.append(media, body);
+  contenido.append(badge, incluye, extra, precios, boton);
+  articulo.append(media, contenido);
 
   return articulo;
 }
+
+/* =========================
+   RENDER PROMOCIONES
+========================= */
 
 function renderizarPromociones(listaPromociones) {
   if (!contenedorPromociones) return;
@@ -104,6 +106,10 @@ function renderizarPromociones(listaPromociones) {
 
   contenedorPromociones.append(fragmento);
 }
+
+/* =========================
+   CARGA INICIAL
+========================= */
 
 if (Array.isArray(promociones)) {
   renderizarPromociones(promociones);

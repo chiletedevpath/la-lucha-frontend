@@ -1,67 +1,75 @@
+// Datos referenciales del prototipo frontend. La disponibilidad final se confirmara con backend.
 const promociones = [
   {
     id: 1,
     nombre: "Combo Criollo",
+    badge: "Promoción criolla",
     incluye: "Pan con chicharrón + café pasado + camote frito",
-    extra: "Tan peruano que dices 'causa' despues de cada mordida",
+    extra: "Un clásico peruano para empezar el día con sabor criollo.",
     precioOriginal: "S/. 24.90",
     precioPromo: "S/. 18.90",
-    imagen: "assets/img/promos/combocriollo.png",
+    cta: "Pedir promoción",
+    imagen: "assets/img/promos/combocriollo.webp"
   },
-
   {
     id: 2,
     nombre: "La Brava de la Casa",
-    incluye: "Sanguche especial de asado + papas + gaseosa",
-    extra: "Promo del día",
-    extra: "Tan deliciosa que ni Burger King cambiará tu opinión",
+    badge: "Especial de la casa",
+    incluye: "Sánguche especial de asado + papas + gaseosa",
+    extra: "Una combinación contundente con el toque especial de La Lucha.",
     precioPromo: "S/. 21.90",
-    imagen: "assets/img/promos/labrava.png",
+    cta: "Pedir promoción",
+    imagen: "assets/img/promos/labrava.webp"
   },
-
-    {
+  {
     id: 3,
     nombre: "Promo Universitario",
-    incluye: "Hamburguesa criaolla + papas personales + bebida",
-    extra: " solo de lunes a viernes, la desearas mas que terminar tu tesis",
+    badge: "Precio estudiante",
+    incluye: "Hamburguesa criolla + papas personales + bebida",
+    extra: "Disponible de lunes a viernes para disfrutar entre clases.",
     precioOriginal: "S/. 24.90",
     precioPromo: "S/. 12.90",
-    imagen: "assets/img/promos/universitario.png",
+    cta: "Pedir promoción",
+    imagen: "assets/img/promos/universitario.webp"
   },
-
-    {
+  {
     id: 4,
     nombre: "Combo Full Ají",
+    badge: "Sabor intenso",
     incluye: "Pan con pollo deshilachado + cremas de la casa",
-    extra: "cremitas con la receta secreta de la abuela Lucha, pica cuando entra y pica mas cuando sale, pidela con extra picante, para matar el helicobarcter pilori",
+    extra: "Ideal para quienes buscan una opción sabrosa con cremas criollas.",
     precioPromo: "S/. 15.90",
-    imagen: "assets/img/promos/full.png",
+    cta: "Pedir promoción",
+    imagen: "assets/img/promos/full.webp"
   },
-
-    {
+  {
     id: 5,
     nombre: "Promo Familiar",
-    incluye: "4 sanguches + papas familiares + gaseosa 1.5L",
-    extra: "Alcanza para 4... si nadie repite, estaremos observando",
+    badge: "Para compartir",
+    incluye: "4 sánguches + papas familiares + gaseosa 1.5L",
+    extra: "Pensada para disfrutar en familia o con amigos.",
     precioPromo: "S/. 54.90",
-    imagen: "assets/img/promos/familiar.png",
+    cta: "Pedir promoción",
+    imagen: "assets/img/promos/familiar.webp"
   },
-
-    {
+  {
     id: 6,
     nombre: "Martes 2x1",
-    incluye: "Leva 2 hamburguesas criollas por el precio 1",
-    extra: "Solo martes desde las 6 pm, ven con tu esposa, con la toxixa igual ambas te responden cada 3 horas",
+    badge: "Oferta limitada",
+    incluye: "2 hamburguesas criollas por el precio de 1",
+    extra: "Promoción válida los martes desde las 6:00 p. m.",
     precioPromo: "S/. 7.90",
-    imagen: "assets/img/promos/martes.png",
+    cta: "Pedir promoción",
+    imagen: "assets/img/promos/martes.webp"
   },
-
-    {
+  {
     id: 7,
-    nombre: "Donde comen 2 comen 3",
+    nombre: "Donde Comen 2 Comen 3",
+    badge: "Promo grupal",
     incluye: "Combo para compartir: hamburguesa criolla + papas + gaseosa 1.5L",
-    extra: "si vienes con la esposa y la amante, solo pagas una hamburguesa",
+    extra: "Una opción generosa para disfrutar en grupo.",
     precioPromo: "S/. 19.90",
-    imagen: "assets/img/promos/dondecomen.png",
-  },
+    cta: "Pedir promoción",
+    imagen: "assets/img/promos/dondecomen.webp"
+  }
 ];
