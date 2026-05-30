@@ -4,81 +4,84 @@
 
 const contenedorPromociones = document.getElementById("promociones-container");
 
-function crearTextoClase(clase, texto) {
-  const elemento = document.createElement("p");
+/**
+ * Crea un elemento HTML con clase y texto.
+ * Sirve para evitar repetir muchas veces document.createElement + className + textContent.
+ */
+function crearElementoTexto(etiqueta, clase, texto) {
+  const elemento = document.createElement(etiqueta);
   elemento.className = clase;
   elemento.textContent = texto;
 
   return elemento;
 }
 
+/**
+ * Crea la tarjeta visual de una promoción.
+ * El nombre de la promoción no se muestra como título porque ya aparece dentro de la imagen.
+ * Aun así, se conserva en alt y aria-label para accesibilidad.
+ */
 function crearCardPromocion(promocion, index) {
   const posicionInvertida = index % 2 !== 0;
 
   const articulo = document.createElement("article");
-  articulo.className = `card card--promo card--horizontal card--featured reveal ${
-    posicionInvertida ? "card--reverse reveal-delay-1" : ""
-  }`;
+  articulo.className = `promocion-card reveal ${posicionInvertida ? "promocion-card--reverse reveal-delay-1" : ""}`;
+  articulo.setAttribute("aria-label", `Promoción ${promocion.nombre}`);
 
   const media = document.createElement("div");
-  media.className = "card__media";
+  media.className = "promocion-imagen";
 
   const imagen = document.createElement("img");
-  imagen.className = "card__image";
   imagen.src = promocion.imagen;
-  imagen.alt = promocion.nombre;
+  imagen.alt = `Promoción ${promocion.nombre}`;
   imagen.loading = "lazy";
 
   const body = document.createElement("div");
-  body.className = "card__body";
+  body.className = "promocion-contenido";
 
-  const titulo = document.createElement("h3");
-  titulo.className = "card__title";
-  titulo.textContent = promocion.nombre;
+  const badge = crearElementoTexto(
+    "span",
+    "promocion-badge",
+    promocion.badge || "Promoción especial"
+  );
 
-  const incluye = document.createElement("p");
-  incluye.className = "card__text";
-  incluye.textContent = promocion.incluye;
+  const incluye = crearElementoTexto("p", "promocion-incluye", promocion.incluye);
 
-  const meta = document.createElement("div");
-  meta.className = "card__meta";
-
-  if (promocion.extra) {
-    meta.append(crearTextoClase("card__meta-item", promocion.extra));
-  }
-
-  const actions = document.createElement("div");
-  actions.className = "card__actions";
+  const extra = crearElementoTexto("p", "promocion-extra", promocion.extra);
 
   const precios = document.createElement("div");
-  precios.className = "card__meta";
+  precios.className = "promocion-precios";
+  precios.setAttribute("aria-label", "Precio de la promoción");
 
   if (promocion.precioOriginal) {
-    const precioOriginal = document.createElement("span");
-    precioOriginal.className = "card__price-old";
-    precioOriginal.textContent = promocion.precioOriginal;
+    const precioOriginal = crearElementoTexto(
+      "span",
+      "promocion-precio-original",
+      promocion.precioOriginal
+    );
+
     precios.append(precioOriginal);
   }
 
-  const precioPromo = document.createElement("span");
-  precioPromo.className = "card__price";
-  precioPromo.textContent = promocion.precioPromo;
+  const precioPromo = crearElementoTexto("strong", "promocion-precio-final", promocion.precioPromo);
   precios.append(precioPromo);
 
-  actions.append(precios);
+  const boton = document.createElement("a");
+  boton.className = "promocion-btn";
+  boton.href = "contacto.html";
+  boton.textContent = promocion.cta || "Pedir promoción";
+  boton.setAttribute("aria-label", `Pedir promoción ${promocion.nombre}`);
+
   media.append(imagen);
-  body.append(titulo, incluye);
-
-  if (meta.children.length > 0) {
-    body.append(meta);
-  }
-
-  body.append(actions);
+  body.append(badge, incluye, extra, precios, boton);
   articulo.append(media, body);
 
   return articulo;
 }
 
+/**
+ * Renderiza todas las promociones dentro del contenedor principal.
+ */
 function renderizarPromociones(listaPromociones) {
   if (!contenedorPromociones) return;
 

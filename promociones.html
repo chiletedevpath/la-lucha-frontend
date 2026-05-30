@@ -63,8 +63,25 @@
         </div>
       </div>
 
-      <section class="promociones-section reveal">
-        <div class="container" id="promociones-container"></div>
+      <section class="promociones-section reveal" aria-labelledby="promociones-title">
+        <div class="container">
+          <div class="promociones-section__header">
+            <p class="section-eyebrow">Ofertas especiales</p>
+
+            <h2 id="promociones-title">Promociones para disfrutar más por menos</h2>
+
+            <p class="section-description">
+              Elige tu promoción favorita y consulta la disponibilidad en el local más cercano.
+            </p>
+          </div>
+
+          <!--
+            Las promociones se renderizan dinámicamente desde:
+            - data/promociones.js
+            - js/promociones.js
+          -->
+          <div class="promociones-grid" id="promociones-container" aria-live="polite"></div>
+        </div>
       </section>
     </main>
 
