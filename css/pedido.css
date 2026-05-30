@@ -1,0 +1,242 @@
+/* =========================
+   PEDIDO HERO
+========================= */
+
+.pedido-hero {
+  padding-block: var(--space-9);
+  color: var(--color-surface);
+  text-align: center;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(240, 180, 41, 0.26), transparent 24rem),
+    linear-gradient(
+      135deg,
+      var(--color-brand-deep) 0%,
+      var(--color-brand-dark) 48%,
+      var(--color-brand) 100%
+    );
+}
+
+.pedido-hero__content {
+  max-width: var(--container-narrow);
+}
+
+.pedido-hero h1 {
+  margin-bottom: var(--space-4);
+  color: var(--color-surface);
+  font-size: var(--text-3xl);
+}
+
+.pedido-hero p {
+  margin-inline: auto;
+  color: var(--color-on-dark-muted);
+  font-size: var(--text-md);
+}
+
+/* =========================
+   PEDIDO SECTION
+========================= */
+
+.pedido-section {
+  padding-block: var(--space-8);
+  background: linear-gradient(180deg, var(--color-background), var(--color-surface-warm));
+}
+
+.pedido-layout {
+  display: grid;
+  gap: var(--space-6);
+  align-items: start;
+  min-width: 0;
+}
+
+/* =========================
+   RESUMEN
+========================= */
+
+.pedido-resumen {
+  padding: var(--space-6);
+  background:
+    radial-gradient(circle at top left, rgba(240, 180, 41, 0.16), transparent 18rem),
+    var(--color-surface);
+  border: 1px solid rgba(111, 31, 23, 0.12);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.pedido-resumen__label,
+.contacto-label {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-brand-dark);
+  font-size: var(--text-xs);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-pill);
+}
+
+.pedido-resumen h2 {
+  margin-bottom: var(--space-3);
+  color: var(--color-brand-dark);
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+}
+
+.pedido-resumen__texto,
+.pedido-resumen__nota {
+  color: var(--color-muted);
+}
+
+.pedido-resumen__box {
+  display: grid;
+  gap: var(--space-2);
+  margin-block: var(--space-5);
+  padding: var(--space-5);
+  background: linear-gradient(135deg, var(--color-brand), var(--color-brand-dark));
+  border-radius: var(--radius-lg);
+  box-shadow: 0 18px 34px rgba(104, 29, 22, 0.24);
+}
+
+.pedido-resumen__tipo {
+  color: var(--color-accent-soft);
+  font-size: var(--text-xs);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pedido-resumen__nombre {
+  color: var(--color-surface);
+  font-size: var(--text-xl);
+  line-height: var(--line-heading);
+}
+
+/* =========================
+   FORMULARIO
+========================= */
+
+.pedido-form {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid rgba(111, 31, 23, 0.12);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.pedido-form__header {
+  margin-bottom: var(--space-2);
+}
+
+.pedido-form__title {
+  color: var(--color-brand-dark);
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+}
+
+.form-grupo {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.form-grupo label {
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: 800;
+}
+
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+  width: 100%;
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-text);
+  font: inherit;
+  background: var(--color-surface-warm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus,
+.form-grupo textarea:focus {
+  background: var(--color-surface);
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 4px rgba(184, 50, 39, 0.12);
+}
+
+.pedido-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  margin-top: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  color: var(--color-surface);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--color-brand), var(--color-brand-dark));
+  border: 0;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 14px 30px rgba(104, 29, 22, 0.28);
+  cursor: pointer;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.pedido-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(104, 29, 22, 0.34);
+}
+
+.pedido-form__feedback {
+  min-height: 1.5rem;
+  margin-bottom: 0;
+  color: var(--color-success);
+  font-size: var(--text-sm);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (min-width: 56rem) {
+  .pedido-layout {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  }
+
+  .pedido-resumen {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-5));
+  }
+}
+
+@media (max-width: 35rem) {
+  .pedido-hero {
+    padding-block: var(--space-7);
+  }
+
+  .pedido-form,
+  .pedido-resumen {
+    padding: var(--space-5);
+  }
+
+  .pedido-btn {
+    width: 100%;
+  }
+}

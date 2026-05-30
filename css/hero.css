@@ -18,7 +18,7 @@
       color-mix(in srgb, var(--color-brand-dark) 66%, transparent) 48%,
       color-mix(in srgb, var(--color-ink) 18%, transparent) 100%
     ),
-    url("../assets/img/banners/hero-banner.png") center / cover no-repeat;
+    url("../assets/img/banners/hero-banner.webp") center / cover no-repeat;
 }
 
 .hero::after {
@@ -40,21 +40,26 @@
 
 .hero__eyebrow {
   margin: 0;
+  max-width: 100%;
   color: var(--color-accent-soft);
   font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 .hero h1 {
+  max-width: 100%;
   color: var(--color-surface);
   font-size: var(--text-hero);
   line-height: var(--line-tight);
   text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 .hero p {
+  max-width: 100%;
   margin: 0;
   color: color-mix(in srgb, var(--color-surface-warm) 92%, transparent);
   font-size: var(--text-md);
@@ -128,11 +133,27 @@
         color-mix(in srgb, var(--color-ink) 76%, transparent),
         color-mix(in srgb, var(--color-brand-dark) 68%, transparent)
       ),
-      url("../assets/img/banners/hero-banner.png") center / cover no-repeat;
+      url("../assets/img/banners/hero-banner.webp") center / cover no-repeat;
   }
 
   .hero__content {
+    width: min(100% - calc(var(--container-padding) * 2), var(--container-narrow));
     justify-items: center;
+  }
+
+  .hero__eyebrow {
+    width: min(100%, 28ch);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+
+  .hero h1 {
+    width: min(100%, 12ch);
+  }
+
+  .hero p {
+    width: min(100%, 31ch);
   }
 
   .hero__actions {

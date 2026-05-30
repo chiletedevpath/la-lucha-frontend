@@ -4,10 +4,10 @@
 
 const contenedorPromociones = document.getElementById("promociones-container");
 
-/**
- * Crea un elemento HTML con clase y texto.
- * Sirve para evitar repetir muchas veces document.createElement + className + textContent.
- */
+/* =========================
+   UTILIDADES
+========================= */
+
 function crearElementoTexto(etiqueta, clase, texto) {
   const elemento = document.createElement(etiqueta);
   elemento.className = clase;
@@ -16,16 +16,17 @@ function crearElementoTexto(etiqueta, clase, texto) {
   return elemento;
 }
 
-/**
- * Crea la tarjeta visual de una promoción.
- * El nombre de la promoción no se muestra como título porque ya aparece dentro de la imagen.
- * Aun así, se conserva en alt y aria-label para accesibilidad.
- */
+/* =========================
+   CREAR CARD PROMOCIÓN
+========================= */
+
 function crearCardPromocion(promocion, index) {
   const posicionInvertida = index % 2 !== 0;
 
   const articulo = document.createElement("article");
-  articulo.className = `promocion-card reveal ${posicionInvertida ? "promocion-card--reverse reveal-delay-1" : ""}`;
+  articulo.className = `promocion-card reveal ${
+    posicionInvertida ? "promocion-card--reverse reveal-delay-1" : ""
+  }`;
   articulo.setAttribute("aria-label", `Promoción ${promocion.nombre}`);
 
   const media = document.createElement("div");
@@ -36,8 +37,8 @@ function crearCardPromocion(promocion, index) {
   imagen.alt = `Promoción ${promocion.nombre}`;
   imagen.loading = "lazy";
 
-  const body = document.createElement("div");
-  body.className = "promocion-contenido";
+  const contenido = document.createElement("div");
+  contenido.className = "promocion-contenido";
 
   const badge = crearElementoTexto(
     "span",
@@ -64,24 +65,26 @@ function crearCardPromocion(promocion, index) {
   }
 
   const precioPromo = crearElementoTexto("strong", "promocion-precio-final", promocion.precioPromo);
+
   precios.append(precioPromo);
 
   const boton = document.createElement("a");
   boton.className = "promocion-btn";
-  boton.href = "contacto.html";
+  boton.href = `pedido.html?promocion=${encodeURIComponent(promocion.nombre)}`;
   boton.textContent = promocion.cta || "Pedir promoción";
   boton.setAttribute("aria-label", `Pedir promoción ${promocion.nombre}`);
 
   media.append(imagen);
-  body.append(badge, incluye, extra, precios, boton);
-  articulo.append(media, body);
+  contenido.append(badge, incluye, extra, precios, boton);
+  articulo.append(media, contenido);
 
   return articulo;
 }
 
-/**
- * Renderiza todas las promociones dentro del contenedor principal.
- */
+/* =========================
+   RENDER PROMOCIONES
+========================= */
+
 function renderizarPromociones(listaPromociones) {
   if (!contenedorPromociones) return;
 
@@ -103,6 +106,10 @@ function renderizarPromociones(listaPromociones) {
 
   contenedorPromociones.append(fragmento);
 }
+
+/* =========================
+   CARGA INICIAL
+========================= */
 
 if (Array.isArray(promociones)) {
   renderizarPromociones(promociones);

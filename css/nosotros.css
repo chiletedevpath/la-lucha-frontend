@@ -39,7 +39,7 @@
       color-mix(in srgb, var(--color-brand-dark) 94%, transparent),
       color-mix(in srgb, var(--color-brand) 82%, transparent)
     ),
-    url("../assets/img/banners/hero-banner.png") center / cover,
+    url("../assets/img/banners/hero-banner.webp") center / cover,
     var(--color-brand-dark);
 }
 
@@ -127,12 +127,15 @@
 .nosotros-empresa__datos {
   display: grid;
   gap: var(--space-3);
+  min-width: 0;
 }
 
 .dato-card {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: var(--space-4);
   align-items: center;
+  min-width: 0;
   padding: var(--space-4);
   background: var(--color-surface-warm);
   border: 1px solid var(--color-border);
@@ -142,6 +145,7 @@
 
 .dato-card__icono {
   display: inline-grid;
+  grid-row: span 2;
   flex: 0 0 auto;
   width: 2.35rem;
   height: 2.35rem;
@@ -169,6 +173,7 @@
   font-size: var(--text-sm);
   font-weight: 600;
   line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 /* Mission and vision */
@@ -252,6 +257,7 @@
 }
 
 .valor-card {
+  min-width: 0;
   padding: var(--space-6) var(--space-5);
   text-align: center;
   background:
@@ -371,6 +377,21 @@
 
   .nosotros-mv__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 35rem) {
+  .dato-card {
+    gap: var(--space-3);
+    padding: var(--space-3);
+  }
+
+  .nosotros-valores__grid {
+    gap: var(--space-4);
+  }
+
+  .valor-card {
+    padding: var(--space-5) var(--space-4);
   }
 }
 

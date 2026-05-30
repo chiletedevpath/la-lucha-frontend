@@ -16,7 +16,7 @@
       rgba(111, 31, 23, 0.78) 48%,
       rgba(184, 50, 39, 0.58) 100%
     ),
-    url("../assets/img/banners/hero-banner.png") center / cover no-repeat;
+    url("../assets/img/banners/hero-banner.webp") center / cover no-repeat;
 }
 
 .page-header::before {
@@ -108,6 +108,7 @@
 
 .promocion-card {
   display: grid;
+  min-width: 0;
   overflow: hidden;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 247, 233, 0.96));
   border: 1px solid rgba(111, 31, 23, 0.12);
@@ -183,6 +184,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 0;
   padding: var(--space-6);
   gap: var(--space-4);
 }
@@ -294,6 +296,7 @@
 
 .top-bar,
 .bottom-bar {
+  max-width: 100%;
   overflow: hidden;
   padding-block: var(--space-3);
   color: #21180b;
@@ -355,8 +358,27 @@
 }
 
 @media (max-width: 47.9375rem) {
+  .page-header {
+    padding-block: clamp(4rem, 18vw, 6rem);
+  }
+
+  .page-header h1,
+  .page-header p {
+    max-width: 31ch;
+  }
+
   .promociones-section {
     padding-block: var(--space-6);
+  }
+
+  .promociones-grid,
+  #promociones-container {
+    gap: var(--space-5);
+  }
+
+  .promocion-imagen {
+    min-height: 13rem;
+    padding: var(--space-3);
   }
 
   .promocion-contenido {

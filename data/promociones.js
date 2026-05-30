@@ -1,3 +1,4 @@
+// Datos referenciales del prototipo frontend. La disponibilidad final se confirmara con backend.
 const promociones = [
   {
     id: 1,
@@ -8,7 +9,7 @@ const promociones = [
     precioOriginal: "S/. 24.90",
     precioPromo: "S/. 18.90",
     cta: "Pedir promoción",
-    imagen: "assets/img/promos/combocriollo.jpg"
+    imagen: "assets/img/promos/combocriollo.webp"
   },
   {
     id: 2,
@@ -18,7 +19,7 @@ const promociones = [
     extra: "Una combinación contundente con el toque especial de La Lucha.",
     precioPromo: "S/. 21.90",
     cta: "Pedir promoción",
-    imagen: "assets/img/promos/labrava.jpg"
+    imagen: "assets/img/promos/labrava.webp"
   },
   {
     id: 3,
@@ -29,7 +30,7 @@ const promociones = [
     precioOriginal: "S/. 24.90",
     precioPromo: "S/. 12.90",
     cta: "Pedir promoción",
-    imagen: "assets/img/promos/universitario.jpg"
+    imagen: "assets/img/promos/universitario.webp"
   },
   {
     id: 4,
@@ -39,7 +40,7 @@ const promociones = [
     extra: "Ideal para quienes buscan una opción sabrosa con cremas criollas.",
     precioPromo: "S/. 15.90",
     cta: "Pedir promoción",
-    imagen: "assets/img/promos/full.jpg"
+    imagen: "assets/img/promos/full.webp"
   },
   {
     id: 5,
@@ -49,7 +50,7 @@ const promociones = [
     extra: "Pensada para disfrutar en familia o con amigos.",
     precioPromo: "S/. 54.90",
     cta: "Pedir promoción",
-    imagen: "assets/img/promos/familiar.jpg"
+    imagen: "assets/img/promos/familiar.webp"
   },
   {
     id: 6,
@@ -59,7 +60,7 @@ const promociones = [
     extra: "Promoción válida los martes desde las 6:00 p. m.",
     precioPromo: "S/. 7.90",
     cta: "Pedir promoción",
-    imagen: "assets/img/promos/martes.jpg"
+    imagen: "assets/img/promos/martes.webp"
   },
   {
     id: 7,
@@ -69,6 +70,6 @@ const promociones = [
     extra: "Una opción generosa para disfrutar en grupo.",
     precioPromo: "S/. 19.90",
     cta: "Pedir promoción",
-    imagen: "assets/img/promos/dondecomen.jpg"
+    imagen: "assets/img/promos/dondecomen.webp"
   }
 ];

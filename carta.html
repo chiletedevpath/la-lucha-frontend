@@ -172,12 +172,30 @@
 
           <!-- Estado dinámico -->
           <div class="productos-estado" id="productos-estado"></div>
-          <!-- Paginación futura -->
-          <div class="paginacion">
-            <button type="button">Anterior</button>
+          <!-- =========================
+            PAGINACIÓN
+          ========================== -->
+          <nav class="paginacion" aria-label="Paginación de productos">
+            <button
+              class="paginacion__btn"
+              id="btn-anterior"
+              type="button"
+              aria-label="Ir a la página anterior"
+            >
+              Anterior
+            </button>
 
-            <button type="button">Siguiente</button>
-          </div>
+            <div class="paginacion__numeros" id="paginacion-numeros"></div>
+
+            <button
+              class="paginacion__btn"
+              id="btn-siguiente"
+              type="button"
+              aria-label="Ir a la página siguiente"
+            >
+              Siguiente
+            </button>
+          </nav>
         </div>
       </section>
     </main>

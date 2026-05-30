@@ -1,3 +1,4 @@
+// Datos referenciales del prototipo frontend. Las imagenes se ajustaran con assets finales.
 const productos = [
   {
     id: 1,

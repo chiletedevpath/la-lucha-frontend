@@ -20,6 +20,7 @@ html {
 body {
   min-height: 100vh;
   padding-top: var(--header-height);
+  overflow-x: clip;
   font-family: var(--font-primary);
   font-size: var(--text-base);
   line-height: var(--line-body);

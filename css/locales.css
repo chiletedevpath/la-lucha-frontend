@@ -39,8 +39,29 @@
   margin: 0;
 }
 
+#locales-container .card--location {
+  min-height: 0;
+}
+
+#locales-container .card--location .card__media {
+  min-height: clamp(14rem, 24vw, 18rem);
+}
+
+#locales-container .card--location .card__image {
+  object-position: center;
+}
+
+#locales-container .card--location .card__body {
+  min-height: auto;
+}
+
+#locales-container .card--location .card__actions {
+  margin-top: var(--space-4);
+}
+
 .top-bar,
 .bottom-bar {
+  max-width: 100%;
   overflow: hidden;
   padding-block: var(--space-3);
   color: #21180b;
