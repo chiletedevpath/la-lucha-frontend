@@ -7,26 +7,34 @@
 :root {
   /* Brand */
   --color-brand: #b83227;
-  --color-brand-dark: #681d16;
-  --color-brand-deep: #3f120e;
+  --color-brand-dark: #6f1f17;
+  --color-brand-deep: #3b0f0b;
   --color-brand-soft: #f8d8d1;
 
   /* Accent */
-  --color-accent: #d89520;
-  --color-accent-dark: #7a4b0a;
-  --color-accent-soft: #fff0c2;
+  --color-accent: #f0b429;
+  --color-accent-dark: #8a5208;
+  --color-accent-soft: #ffe7a3;
   --color-fresh: #3f7d52;
   --color-fresh-soft: #e7f1e8;
 
   /* Neutral */
   --color-ink: #1c1613;
-  --color-text: #352b25;
-  --color-muted: #66574d;
-  --color-border: #d7c2b1;
-  --color-border-inverse: rgba(255, 246, 232, 0.24);
+  --color-text: #332720;
+  --color-muted: #6c5a4d;
+  --color-border: #d8bfa9;
+  --color-border-inverse: rgba(255, 247, 233, 0.28);
   --color-surface: #ffffff;
   --color-surface-warm: #fff7e9;
-  --color-background: #f3eadc;
+  --color-background: #f4eadb;
+
+  /* Surfaces on dark backgrounds */
+  --color-on-dark: #ffffff;
+  --color-on-dark-muted: #ffe8bd;
+  --color-footer-bg: #681d16;
+  --color-footer-bg-deep: #4a120d;
+  --color-footer-button: rgba(255, 255, 255, 0.16);
+  --color-footer-button-hover: var(--color-accent);
 
   /* Semantic */
   --color-success: #2f7d4f;
