@@ -13,12 +13,13 @@
   color: var(--color-surface);
   text-align: center;
   background:
+    radial-gradient(circle at 22% 18%, rgba(240, 180, 41, 0.24), transparent 20rem),
     linear-gradient(
       135deg,
-      color-mix(in srgb, var(--color-brand-dark) 96%, transparent),
-      color-mix(in srgb, var(--color-brand) 86%, transparent)
+      color-mix(in srgb, var(--color-fresh) 82%, var(--color-brand-dark)),
+      color-mix(in srgb, var(--color-ink) 86%, var(--color-fresh))
     ),
-    var(--color-brand-dark);
+    var(--color-fresh);
 }
 
 .contacto-hero::after {
@@ -100,6 +101,14 @@
   box-shadow: var(--shadow-sm);
 }
 
+.contacto-form-wrapper {
+  border-left: 0.35rem solid var(--color-fresh);
+}
+
+.contacto-info {
+  border-top: 0.35rem solid var(--color-accent);
+}
+
 .contacto-form-titulo,
 .contacto-info-titulo {
   margin-bottom: var(--space-5);
@@ -159,9 +168,9 @@
 .form-grupo input:focus,
 .form-grupo textarea:focus {
   background: var(--color-surface);
-  border-color: var(--color-brand);
+  border-color: var(--color-fresh);
   outline: none;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-brand) 12%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-fresh) 14%, transparent);
 }
 
 .contacto-btn {
@@ -176,8 +185,8 @@
   font-weight: 700;
   line-height: 1.2;
   text-align: center;
-  background: var(--color-brand);
-  border: 1px solid var(--color-brand);
+  background: linear-gradient(135deg, var(--color-fresh), color-mix(in srgb, var(--color-fresh) 68%, var(--color-ink)));
+  border: 1px solid var(--color-fresh);
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
@@ -189,8 +198,8 @@
 }
 
 .contacto-btn:hover {
-  background: var(--color-brand-dark);
-  border-color: var(--color-brand-dark);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--color-fresh) 82%, var(--color-ink)), var(--color-ink));
+  border-color: color-mix(in srgb, var(--color-fresh) 70%, var(--color-ink));
   box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
@@ -231,10 +240,10 @@
   width: 2.6rem;
   height: 2.6rem;
   place-items: center;
-  color: var(--color-brand);
+  color: var(--color-fresh);
   font-size: 1.45rem;
   line-height: 1;
-  background: var(--color-brand-soft);
+  background: color-mix(in srgb, var(--color-fresh-soft) 72%, var(--color-surface));
   border-radius: var(--radius-pill);
 }
 
@@ -259,7 +268,7 @@
 }
 
 a.info-card__valor:hover {
-  color: var(--color-brand);
+  color: var(--color-fresh);
 }
 
 .contacto-redes {
@@ -320,6 +329,21 @@ a.info-card__valor:hover {
 }
 
 @media (max-width: 35rem) {
+  .contacto-hero {
+    min-height: 22rem;
+    padding: calc(var(--header-height) + var(--space-5)) var(--container-padding) var(--space-6);
+  }
+
+  .contacto-main {
+    padding-block: var(--space-6);
+  }
+
+  .contacto-form-wrapper,
+  .contacto-info {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+
   .contacto-form-titulo,
   .contacto-info-titulo {
     font-size: clamp(1.8rem, 11vw, 2.25rem);
@@ -333,6 +357,17 @@ a.info-card__valor:hover {
   .contacto-redes__iconos,
   .red-social {
     width: 100%;
+  }
+}
+
+@media (max-width: 26rem) {
+  .info-card {
+    flex-direction: column;
+  }
+
+  .form-grupo input,
+  .form-grupo textarea {
+    padding-inline: var(--space-3);
   }
 }
 

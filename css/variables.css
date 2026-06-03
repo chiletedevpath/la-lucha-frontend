@@ -111,8 +111,15 @@
   --transition: var(--transition-base);
 }
 
-@media (max-width: 63.9375rem) {
+@media (max-width: 70rem) {
   :root {
     --header-height: 72px;
+  }
+}
+
+@media (max-width: 48rem) {
+  :root {
+    --container-padding: clamp(0.875rem, 4vw, 1.25rem);
+    --section-y: clamp(3rem, 10vw, 4.5rem);
   }
 }

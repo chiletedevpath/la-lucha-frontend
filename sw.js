@@ -1,4 +1,4 @@
-const CACHE_NAME = "la-lucha-v4";
+const CACHE_NAME = "la-lucha-v24";
 
 const APP_SHELL = [
   "./",

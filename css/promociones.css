@@ -397,3 +397,45 @@
     width: 100%;
   }
 }
+
+@media (max-width: 35rem) {
+  .page-header {
+    padding-block: var(--space-6);
+  }
+
+  .promociones-section__header {
+    margin-bottom: var(--space-5);
+  }
+
+  .promociones-section__header h2 {
+    font-size: clamp(1.85rem, 10vw, 2.35rem);
+  }
+
+  .promocion-card {
+    border-radius: var(--radius-lg);
+  }
+
+  .promocion-imagen {
+    min-height: 11rem;
+    padding: var(--space-2);
+  }
+
+  .promocion-imagen::before {
+    inset: var(--space-2);
+  }
+
+  .promocion-contenido {
+    padding: var(--space-4);
+  }
+
+  .top-bar,
+  .bottom-bar {
+    padding-block: var(--space-2);
+  }
+
+  .top-bar span,
+  .bottom-bar span {
+    margin-right: var(--space-6);
+    font-size: var(--text-sm);
+  }
+}
