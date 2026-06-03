@@ -66,115 +66,92 @@
 
     <div id="navbar-container"></div>
 
-    <!-- =========================
-       MAIN CONTENT
-  ========================== -->
-
     <main>
-      <!-- =========================
-         HERO CARTA
-    ========================== -->
-
-      <section class="carta-hero">
-        <!-- Overlay oscuro -->
+      <section class="carta-hero reveal">
         <div class="overlay"></div>
 
         <div class="container carta-hero-content">
-          <!-- Título principal -->
+          <p class="section-eyebrow">Carta criolla</p>
           <h1>Nuestra Carta Criolla</h1>
 
-          <!-- Descripción -->
           <p class="hero-description">
-            Descubre los auténticos sabores peruanos preparados con ingredientes frescos, tradición
-            artesanal y calidad premium.
+            Sánguches artesanales, bebidas tradicionales y acompañamientos pensados para pedir con
+            sabor peruano.
           </p>
 
-          <!-- Estadísticas -->
           <div class="hero-stats">
             <div class="stat-card">
-              <strong>+20</strong>
-
-              <span>Especialidades</span>
+              <strong>8</strong>
+              <span>productos base</span>
             </div>
 
             <div class="stat-card">
-              <strong>100%</strong>
-
-              <span>Sabor peruano</span>
+              <strong>3</strong>
+              <span>categorías</span>
             </div>
 
             <div class="stat-card">
-              <strong>Premium</strong>
-
-              <span>Ingredientes frescos</span>
+              <strong>6</strong>
+              <span>por página</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- =========================
-         BUSCADOR
-    ========================== -->
-
-      <section class="buscador-section">
+      <section class="carta-productos reveal" aria-labelledby="productos-title">
         <div class="container">
-          <div class="buscador-container">
-            <input
-              type="text"
-              id="buscador-input"
-              aria-label="Buscar productos en la carta"
-              placeholder="Buscar sánguches, bebidas o postres..."
-            />
-          </div>
-        </div>
-      </section>
-      <!-- =========================
-         CATEGORÍAS
-    ========================== -->
-
-      <section class="carta-categorias">
-        <div class="container">
-          <!-- Título sección -->
           <div class="section-title">
-            <h2>Explora nuestras categorías</h2>
-
-            <p>Encuentra tu combinación favorita.</p>
+            <p class="section-eyebrow">Carta interactiva</p>
+            <h2 id="productos-title">Sabores listos para pedir</h2>
+            <p>Busca, filtra y elige tu favorito sin perder de vista los productos.</p>
           </div>
 
-          <!-- Botones filtros -->
-          <div class="categorias-lista">
-            <button type="button" data-categoria="todos" class="activo">Todos</button>
+          <div class="carta-toolbar" aria-label="Buscar y filtrar productos">
+            <div class="buscador-container">
+              <span class="material-symbols-rounded" aria-hidden="true">search</span>
+              <input
+                type="text"
+                id="buscador-input"
+                aria-label="Buscar productos en la carta"
+                placeholder="Buscar chicharrón, café, chicha..."
+              />
+            </div>
 
-            <button type="button" data-categoria="sanguches">Sánguches</button>
+            <div class="categorias-lista" aria-label="Filtrar productos por categoría">
+              <button type="button" data-categoria="todos" class="activo">
+                <span class="material-symbols-rounded" aria-hidden="true">apps</span>
+                <span class="categoria-label">Todos</span>
+                <span class="categoria-count">0</span>
+              </button>
 
-            <button type="button" data-categoria="bebidas">Bebidas</button>
+              <button type="button" data-categoria="sanguches">
+                <span class="material-symbols-rounded" aria-hidden="true">lunch_dining</span>
+                <span class="categoria-label">Sánguches</span>
+                <span class="categoria-count">0</span>
+              </button>
 
-            <button type="button" data-categoria="postres">Postres</button>
+              <button type="button" data-categoria="bebidas">
+                <span class="material-symbols-rounded" aria-hidden="true">local_cafe</span>
+                <span class="categoria-label">Bebidas</span>
+                <span class="categoria-count">0</span>
+              </button>
+
+              <button type="button" data-categoria="postres">
+                <span class="material-symbols-rounded" aria-hidden="true">bakery_dining</span>
+                <span class="categoria-label">Postres</span>
+                <span class="categoria-count">0</span>
+              </button>
+            </div>
+
+            <button class="carta-toolbar__clear" id="limpiar-filtros" type="button" hidden>
+              Limpiar
+            </button>
           </div>
-        </div>
-      </section>
 
-      <!-- =========================
-         PRODUCTOS
-    ========================== -->
+          <div class="productos-estado" id="productos-estado" aria-live="polite"></div>
 
-      <section class="carta-productos">
-        <div class="container">
-          <!-- Encabezado -->
-          <div class="section-title">
-            <h2>Productos destacados</h2>
-
-            <p>Los favoritos de nuestros clientes.</p>
-          </div>
-
-          <!-- Productos renderizados desde JS -->
           <div class="productos-grid" id="productos-grid"></div>
 
-          <!-- Estado dinámico -->
-          <div class="productos-estado" id="productos-estado"></div>
-          <!-- =========================
-            PAGINACIÓN
-          ========================== -->
           <nav class="paginacion" aria-label="Paginación de productos">
             <button
               class="paginacion__btn"

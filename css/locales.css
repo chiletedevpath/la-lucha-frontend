@@ -59,38 +59,6 @@
   margin-top: var(--space-4);
 }
 
-.top-bar,
-.bottom-bar {
-  max-width: 100%;
-  overflow: hidden;
-  padding-block: var(--space-3);
-  color: #21180b;
-  background: linear-gradient(90deg, #e3aa31, var(--color-accent), #c68418);
-  white-space: nowrap;
-}
-
-.top-bar-track,
-.bottom-bar-track {
-  display: inline-block;
-  animation: moverTexto 18s linear infinite;
-}
-
-.top-bar span,
-.bottom-bar span {
-  margin-right: var(--space-10);
-  font-weight: 600;
-}
-
-@keyframes moverTexto {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @media (max-width: 48rem) {
   .card--horizontal {
     display: flex;
@@ -99,5 +67,31 @@
 
   .card__media {
     aspect-ratio: 16 / 10;
+  }
+}
+
+@media (max-width: 35rem) {
+  .page-header {
+    padding-block: var(--space-6);
+  }
+
+  .locales-section {
+    padding-block: var(--space-6);
+  }
+
+  #locales-container {
+    padding-inline: 0;
+  }
+
+  #locales-container .card--location .card__media {
+    min-height: 12rem;
+  }
+
+  #locales-container .card--location .card__actions {
+    align-items: stretch;
+  }
+
+  #locales-container .card--location .card__action {
+    width: 100%;
   }
 }

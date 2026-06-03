@@ -9,6 +9,9 @@ const botonesCategorias = document.querySelectorAll(".categorias-lista button");
 const btnAnterior = document.getElementById("btn-anterior");
 const btnSiguiente = document.getElementById("btn-siguiente");
 const contenedorPaginacion = document.getElementById("paginacion-numeros");
+const estadoProductos = document.getElementById("productos-estado");
+const seccionProductos = document.querySelector(".carta-productos");
+const btnLimpiarFiltros = document.getElementById("limpiar-filtros");
 
 const PRODUCTOS_POR_PAGINA = 6;
 
@@ -25,6 +28,14 @@ function formatearPrecio(precio) {
   return `S/ ${Number(precio).toFixed(2)}`;
 }
 
+function normalizarTexto(texto) {
+  return String(texto)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
 function obtenerTotalPaginas(listaProductos) {
   return Math.ceil(listaProductos.length / PRODUCTOS_POR_PAGINA);
 }
@@ -36,13 +47,117 @@ function obtenerProductosPagina(listaProductos) {
   return listaProductos.slice(inicio, fin);
 }
 
+function obtenerEtiquetaCategoria(categoria) {
+  if (categoria === "todos") return "productos";
+
+  const botonActivo = document.querySelector(`[data-categoria="${categoria}"]`);
+
+  if (!botonActivo) return categoria;
+
+  return botonActivo.querySelector(".categoria-label")?.textContent.trim().toLowerCase() || categoria;
+}
+
+function obtenerEtiquetaPopularidad(pedido) {
+  if (Number(pedido) >= 90) return "Más pedido";
+  if (Number(pedido) >= 80) return "Favorito criollo";
+  return "Para acompañar";
+}
+
+function actualizarEstadoProductos(totalProductos) {
+  if (!estadoProductos) return;
+
+  const etiquetaCategoria = obtenerEtiquetaCategoria(categoriaActual);
+  const busqueda = textoBusqueda.trim();
+  const totalPaginas = obtenerTotalPaginas(productosActuales);
+
+  if (totalProductos === 0) {
+    estadoProductos.textContent = busqueda
+      ? `No encontramos resultados para "${busqueda}" en ${etiquetaCategoria}.`
+      : `No hay productos disponibles en ${etiquetaCategoria}.`;
+    return;
+  }
+
+  const rangoInicio = (paginaActual - 1) * PRODUCTOS_POR_PAGINA + 1;
+  const rangoFin = Math.min(paginaActual * PRODUCTOS_POR_PAGINA, totalProductos);
+  const detalleBusqueda = busqueda ? ` con la búsqueda "${busqueda}"` : "";
+
+  estadoProductos.textContent =
+    `Mostrando ${rangoInicio}-${rangoFin} de ${totalProductos} ${etiquetaCategoria}${detalleBusqueda}.` +
+    (totalPaginas > 1 ? ` Página ${paginaActual} de ${totalPaginas}.` : "");
+}
+
+function desplazarAResultados() {
+  if (!seccionProductos) return;
+
+  seccionProductos.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function animarResultados() {
+  if (!contenedorProductos) return;
+
+  contenedorProductos.classList.remove("is-refreshing");
+  window.requestAnimationFrame(() => {
+    contenedorProductos.classList.add("is-refreshing");
+  });
+}
+
+function contarPorCategoria(categoria) {
+  if (typeof productos === "undefined" || !Array.isArray(productos)) return 0;
+  if (categoria === "todos") return productos.length;
+
+  return productos.filter(
+    (producto) => normalizarTexto(producto.categoria) === normalizarTexto(categoria)
+  ).length;
+}
+
+function actualizarConteosCategorias() {
+  botonesCategorias.forEach((boton) => {
+    const contador = boton.querySelector(".categoria-count");
+    if (!contador) return;
+
+    contador.textContent = contarPorCategoria(boton.dataset.categoria);
+  });
+}
+
+function actualizarBotonLimpiar() {
+  if (!btnLimpiarFiltros) return;
+
+  const hayCategoriaFiltrada = categoriaActual !== "todos";
+  const hayBusqueda = textoBusqueda.trim() !== "";
+
+  btnLimpiarFiltros.hidden = !hayCategoriaFiltrada && !hayBusqueda;
+}
+
+function activarCategoria(categoria) {
+  botonesCategorias.forEach((boton) => {
+    const esActivo = boton.dataset.categoria === categoria;
+
+    boton.classList.toggle("activo", esActivo);
+    boton.setAttribute("aria-pressed", String(esActivo));
+  });
+
+  categoriaActual = categoria;
+}
+
+function limpiarFiltros() {
+  textoBusqueda = "";
+
+  if (buscadorInput) {
+    buscadorInput.value = "";
+    buscadorInput.focus();
+  }
+
+  activarCategoria("todos");
+  filtrarProductos();
+}
+
 /* =========================
    CREAR CARD PRODUCTO
 ========================= */
 
 function crearCardProducto(producto) {
   const articulo = document.createElement("article");
-  articulo.className = "card card--product card--interactive reveal";
+  articulo.className = "card card--product card--interactive";
   articulo.setAttribute("aria-label", `Producto ${producto.nombre}`);
 
   const media = document.createElement("div");
@@ -60,6 +175,17 @@ function crearCardProducto(producto) {
 
   const body = document.createElement("div");
   body.className = "card__body";
+
+  const popularidad = document.createElement("span");
+  popularidad.className = "card__popularidad";
+
+  const popularidadIcono = document.createElement("span");
+  popularidadIcono.className = "material-symbols-rounded";
+  popularidadIcono.setAttribute("aria-hidden", "true");
+  popularidadIcono.textContent = "local_fire_department";
+
+  const popularidadTexto = document.createElement("span");
+  popularidadTexto.textContent = obtenerEtiquetaPopularidad(producto.pedido);
 
   const titulo = document.createElement("h3");
   titulo.className = "card__title";
@@ -83,8 +209,9 @@ function crearCardProducto(producto) {
   accion.setAttribute("aria-label", `Pedir ${producto.nombre}`);
 
   media.append(imagen, badge);
+  popularidad.append(popularidadIcono, popularidadTexto);
   actions.append(precio, accion);
-  body.append(titulo, descripcion, actions);
+  body.append(popularidad, titulo, descripcion, actions);
   articulo.append(media, body);
 
   return articulo;
@@ -98,11 +225,12 @@ function renderizarProductos(listaProductos) {
   if (!contenedorProductos) return;
 
   contenedorProductos.innerHTML = "";
+  actualizarEstadoProductos(listaProductos.length);
 
   if (listaProductos.length === 0) {
     const mensaje = document.createElement("p");
     mensaje.className = "sin-productos";
-    mensaje.textContent = "No se encontraron productos.";
+    mensaje.textContent = "Prueba con otra categoría o limpia la búsqueda para ver toda la carta.";
     contenedorProductos.append(mensaje);
     renderizarPaginacion([]);
     return;
@@ -117,6 +245,7 @@ function renderizarProductos(listaProductos) {
 
   contenedorProductos.append(fragmento);
   renderizarPaginacion(listaProductos);
+  animarResultados();
 }
 
 /* =========================
@@ -133,11 +262,15 @@ function renderizarPaginacion(listaProductos) {
   if (totalPaginas <= 1) {
     btnAnterior.disabled = true;
     btnSiguiente.disabled = true;
+    btnAnterior.setAttribute("aria-disabled", "true");
+    btnSiguiente.setAttribute("aria-disabled", "true");
     return;
   }
 
   btnAnterior.disabled = paginaActual === 1;
   btnSiguiente.disabled = paginaActual === totalPaginas;
+  btnAnterior.setAttribute("aria-disabled", String(btnAnterior.disabled));
+  btnSiguiente.setAttribute("aria-disabled", String(btnSiguiente.disabled));
 
   for (let numeroPagina = 1; numeroPagina <= totalPaginas; numeroPagina++) {
     const botonPagina = document.createElement("button");
@@ -184,19 +317,30 @@ function irPaginaSiguiente() {
 ========================= */
 
 function filtrarProductos() {
-  let productosFiltrados = productos;
+  if (typeof productos === "undefined" || !Array.isArray(productos)) {
+    productosActuales = [];
+    renderizarProductos(productosActuales);
+    return;
+  }
+
+  const busquedaNormalizada = normalizarTexto(textoBusqueda);
+  let productosFiltrados = [...productos];
 
   if (categoriaActual !== "todos") {
     productosFiltrados = productosFiltrados.filter(
-      (producto) => producto.categoria === categoriaActual
+      (producto) => normalizarTexto(producto.categoria) === normalizarTexto(categoriaActual)
     );
   }
 
-  if (textoBusqueda.trim() !== "") {
+  if (busquedaNormalizada !== "") {
     productosFiltrados = productosFiltrados.filter(
-      (producto) =>
-        producto.nombre.toLowerCase().includes(textoBusqueda.toLowerCase()) ||
-        producto.descripcion.toLowerCase().includes(textoBusqueda.toLowerCase())
+      (producto) => {
+        const textoProducto = normalizarTexto(
+          `${producto.nombre} ${producto.descripcion} ${producto.categoria}`
+        );
+
+        return textoProducto.includes(busquedaNormalizada);
+      }
     );
   }
 
@@ -204,6 +348,7 @@ function filtrarProductos() {
   paginaActual = 1;
 
   renderizarProductos(productosActuales);
+  actualizarBotonLimpiar();
 }
 
 /* =========================
@@ -212,13 +357,7 @@ function filtrarProductos() {
 
 botonesCategorias.forEach((boton) => {
   boton.addEventListener("click", () => {
-    botonesCategorias.forEach((btn) => {
-      btn.classList.remove("activo");
-    });
-
-    boton.classList.add("activo");
-    categoriaActual = boton.dataset.categoria;
-
+    activarCategoria(boton.dataset.categoria);
     filtrarProductos();
   });
 });
@@ -228,6 +367,10 @@ if (buscadorInput) {
     textoBusqueda = event.target.value;
     filtrarProductos();
   });
+}
+
+if (btnLimpiarFiltros) {
+  btnLimpiarFiltros.addEventListener("click", limpiarFiltros);
 }
 
 if (btnAnterior) {
@@ -242,7 +385,15 @@ if (btnSiguiente) {
    CARGA INICIAL
 ========================= */
 
-if (Array.isArray(productos)) {
+botonesCategorias.forEach((boton) => {
+  boton.setAttribute("aria-pressed", String(boton.classList.contains("activo")));
+});
+
+actualizarConteosCategorias();
+
+if (typeof productos !== "undefined" && Array.isArray(productos)) {
   productosActuales = productos;
   renderizarProductos(productosActuales);
+} else {
+  renderizarProductos([]);
 }

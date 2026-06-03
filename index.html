@@ -35,86 +35,120 @@
     <main>
       <div id="hero-container"></div>
 
-      <section class="index-intro section reveal">
-        <div class="container index-intro__grid">
-          <div>
+      <section class="index-presentacion section reveal" aria-labelledby="presentacion-title">
+        <div class="container index-presentacion__grid">
+          <div class="index-presentacion__content">
             <p class="section-eyebrow">Bienvenidos</p>
-            <h2>Una experiencia criolla hecha para disfrutar</h2>
+            <h2 id="presentacion-title">Sabor criollo, pan artesanal y atención cercana</h2>
+            <p>
+              En La Lucha reunimos recetas peruanas, insumos frescos y sánguches contundentes para
+              que cada visita empiece con antojo y termine con ganas de volver.
+            </p>
           </div>
-          <p>
-            La Lucha Sanguchería Criolla combina pan artesanal, insumos frescos y recetas peruanas
-            para ofrecer sánguches contundentes, bebidas tradicionales y promociones para compartir.
-          </p>
+
+          <div class="index-presentacion__datos" aria-label="Datos destacados de La Lucha">
+            <div>
+              <strong>3</strong>
+              <span>rutas rápidas</span>
+            </div>
+            <div>
+              <strong>8</strong>
+              <span>productos base</span>
+            </div>
+            <div>
+              <strong>7</strong>
+              <span>promociones</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="index-categorias section surface reveal">
+      <section class="index-rutas section reveal" aria-labelledby="rutas-title">
         <div class="container">
           <div class="section-header">
             <p class="section-eyebrow">Explora</p>
-            <h2 class="section-title">Encuentra tu favorito</h2>
-            <p class="section-description">Accede rápido a las secciones principales del sitio.</p>
+            <h2 class="section-title" id="rutas-title">Elige por dónde empezar</h2>
+            <p class="section-description">
+              Accesos directos a las acciones principales, sin duplicar rutas ni mezclar consultas
+              con pedidos.
+            </p>
           </div>
 
-          <div class="index-feature-grid">
-            <a class="index-feature reveal reveal-delay-1" href="carta.html">
-              <span class="material-symbols-rounded index-feature__icono" aria-hidden="true">
+          <div class="index-rutas__grid">
+            <a class="index-ruta index-ruta--principal reveal reveal-delay-1" href="carta.html">
+              <span class="material-symbols-rounded index-ruta__icono" aria-hidden="true">
                 lunch_dining
               </span>
-              <span class="index-feature__titulo">Sánguches</span>
-              <span class="index-feature__texto">Especialidades criollas en pan artesanal.</span>
-            </a>
-
-            <a class="index-feature reveal reveal-delay-2" href="carta.html">
-              <span class="material-symbols-rounded index-feature__icono" aria-hidden="true">
-                local_cafe
+              <span class="index-ruta__titulo">Carta criolla</span>
+              <span class="index-ruta__texto">
+                Revisa sánguches, bebidas y acompañamientos antes de solicitar.
               </span>
-              <span class="index-feature__titulo">Bebidas</span>
-              <span class="index-feature__texto">Chicha, café y opciones tradicionales.</span>
             </a>
 
-            <a class="index-feature reveal reveal-delay-3" href="promociones.html">
-              <span class="material-symbols-rounded index-feature__icono" aria-hidden="true">
+            <a class="index-ruta reveal reveal-delay-2" href="promociones.html">
+              <span class="material-symbols-rounded index-ruta__icono" aria-hidden="true">
                 sell
               </span>
-              <span class="index-feature__titulo">Promociones</span>
-              <span class="index-feature__texto">Combos y beneficios para compartir.</span>
+              <span class="index-ruta__titulo">Promociones</span>
+              <span class="index-ruta__texto">
+                Combos y beneficios para compartir con sabor peruano.
+              </span>
             </a>
 
-            <a class="index-feature reveal reveal-delay-1" href="locales.html">
-              <span class="material-symbols-rounded index-feature__icono" aria-hidden="true">
+            <a class="index-ruta reveal reveal-delay-3" href="locales.html">
+              <span class="material-symbols-rounded index-ruta__icono" aria-hidden="true">
                 storefront
               </span>
-              <span class="index-feature__titulo">Locales</span>
-              <span class="index-feature__texto">Ubica la tienda más cercana.</span>
+              <span class="index-ruta__titulo">Locales</span>
+              <span class="index-ruta__texto">Encuentra la sede más cercana para recojo o visita.</span>
+            </a>
+
+            <a class="index-ruta index-ruta--pedido reveal reveal-delay-1" href="pedido.html">
+              <span class="material-symbols-rounded index-ruta__icono" aria-hidden="true">
+                edit_note
+              </span>
+              <span class="index-ruta__titulo">Solicitud de pedido</span>
+              <span class="index-ruta__texto">
+                Formulario preparado para integrarse luego con backend.
+              </span>
             </a>
           </div>
         </div>
       </section>
 
-      <section
-        class="index-destacados section reveal"
-        id="pedir-ahora"
-        aria-labelledby="pedir-ahora-title"
-      >
-        <div class="container">
-          <div class="section-header">
+      <section class="index-pedido section reveal" id="pedir-ahora" aria-labelledby="pedido-title">
+        <div class="container index-pedido__grid">
+          <div class="index-pedido__content">
             <p class="section-eyebrow">Pide ahora</p>
-
-            <h2 class="section-title" id="pedir-ahora-title">Los favoritos de la casa</h2>
-
-            <p class="section-description">
-              Elige uno de nuestros productos más pedidos y envía tu solicitud para confirmar
-              disponibilidad.
+            <h2 id="pedido-title">Favoritos listos para solicitar</h2>
+            <p>
+              Elige un producto destacado y envía una solicitud honesta: no procesa pagos ni confirma
+              compra definitiva. La disponibilidad se valida después.
             </p>
-          </div>
-        </div>
 
-        <div class="index-productos-slider" aria-label="Productos destacados">
-          <div class="index-productos-track">
-            <!-- Grupo original -->
-            <article class="index-producto-card">
-              <div class="index-producto-card__media">
+            <div class="index-pedido__pasos" aria-label="Flujo de solicitud">
+              <div>
+                <span>1</span>
+                <p>Elige un producto o promoción.</p>
+              </div>
+              <div>
+                <span>2</span>
+                <p>Completa tus datos de contacto.</p>
+              </div>
+              <div>
+                <span>3</span>
+                <p>La atención se confirma posteriormente.</p>
+              </div>
+            </div>
+
+            <a class="index-btn index-btn--secundario" href="pedido.html">
+              Consultar disponibilidad
+            </a>
+          </div>
+
+          <div class="index-pedido__productos" aria-label="Productos destacados para solicitar">
+            <article class="index-producto-mini reveal reveal-delay-1">
+              <div class="index-producto-mini__media">
                 <img
                   src="assets/img/productos/sanguches/chicharron.jpg"
                   alt="Sánguche de Chicharrón"
@@ -122,22 +156,20 @@
                 />
                 <span>Más pedido</span>
               </div>
-
-              <div class="index-producto-card__body">
+              <div class="index-producto-mini__body">
                 <h3>Sánguche de Chicharrón</h3>
-                <p>Pan artesanal con chicharrón crocante, camote frito y salsa criolla.</p>
-
-                <div class="index-producto-card__footer">
+                <p>Chicharrón crocante, camote frito y salsa criolla.</p>
+                <div>
                   <strong>S/ 18.90</strong>
                   <a href="pedido.html?producto=S%C3%A1nguche%20de%20Chicharr%C3%B3n">
-                    Pedir ahora
+                    Solicitar
                   </a>
                 </div>
               </div>
             </article>
 
-            <article class="index-producto-card">
-              <div class="index-producto-card__media">
+            <article class="index-producto-mini reveal reveal-delay-2">
+              <div class="index-producto-mini__media">
                 <img
                   src="assets/img/productos/sanguches/pavo.jpg"
                   alt="Sánguche de Pavo"
@@ -145,131 +177,12 @@
                 />
                 <span>Favorito</span>
               </div>
-
-              <div class="index-producto-card__body">
+              <div class="index-producto-mini__body">
                 <h3>Sánguche de Pavo</h3>
-                <p>Pavo jugoso acompañado de pan artesanal y salsas de la casa.</p>
-
-                <div class="index-producto-card__footer">
+                <p>Pavo jugoso, pan artesanal y salsas de la casa.</p>
+                <div>
                   <strong>S/ 19.90</strong>
-                  <a href="pedido.html?producto=S%C3%A1nguche%20de%20Pavo">Pedir ahora</a>
-                </div>
-              </div>
-            </article>
-
-            <article class="index-producto-card">
-              <div class="index-producto-card__media">
-                <img
-                  src="assets/img/productos/bebidas/chicha.jpg"
-                  alt="Chicha Morada"
-                  loading="lazy"
-                />
-                <span>Tradicional</span>
-              </div>
-
-              <div class="index-producto-card__body">
-                <h3>Chicha Morada</h3>
-                <p>Bebida tradicional peruana preparada con maíz morado, frutas y especias.</p>
-
-                <div class="index-producto-card__footer">
-                  <strong>S/ 8.90</strong>
-                  <a href="pedido.html?producto=Chicha%20Morada">Pedir ahora</a>
-                </div>
-              </div>
-            </article>
-
-            <article class="index-producto-card">
-              <div class="index-producto-card__media">
-                <img
-                  src="assets/img/productos/sanguches/chicharron.jpg"
-                  alt="Combo Criollo Personal"
-                  loading="lazy"
-                />
-                <span>Combo</span>
-              </div>
-
-              <div class="index-producto-card__body">
-                <h3>Combo Criollo Personal</h3>
-                <p>Sánguche de la casa con bebida tradicional y acompañamiento.</p>
-
-                <div class="index-producto-card__footer">
-                  <strong>S/ 24.90</strong>
-                  <a href="pedido.html?producto=Combo%20Criollo%20Personal">Pedir ahora</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- Grupo duplicado para efecto infinito -->
-            <article class="index-producto-card" aria-hidden="true">
-              <div class="index-producto-card__media">
-                <img src="assets/img/productos/sanguches/chicharron.jpg" alt="" loading="lazy" />
-                <span>Más pedido</span>
-              </div>
-
-              <div class="index-producto-card__body">
-                <h3>Sánguche de Chicharrón</h3>
-                <p>Pan artesanal con chicharrón crocante, camote frito y salsa criolla.</p>
-
-                <div class="index-producto-card__footer">
-                  <strong>S/ 18.90</strong>
-                  <a href="pedido.html?producto=S%C3%A1nguche%20de%20Chicharr%C3%B3n" tabindex="-1">
-                    Pedir ahora
-                  </a>
-                </div>
-              </div>
-            </article>
-
-            <article class="index-producto-card" aria-hidden="true">
-              <div class="index-producto-card__media">
-                <img src="assets/img/productos/sanguches/pavo.jpg" alt="" loading="lazy" />
-                <span>Favorito</span>
-              </div>
-
-              <div class="index-producto-card__body">
-                <h3>Sánguche de Pavo</h3>
-                <p>Pavo jugoso acompañado de pan artesanal y salsas de la casa.</p>
-
-                <div class="index-producto-card__footer">
-                  <strong>S/ 19.90</strong>
-                  <a href="pedido.html?producto=S%C3%A1nguche%20de%20Pavo" tabindex="-1">
-                    Pedir ahora
-                  </a>
-                </div>
-              </div>
-            </article>
-
-            <article class="index-producto-card" aria-hidden="true">
-              <div class="index-producto-card__media">
-                <img src="assets/img/productos/bebidas/chicha.jpg" alt="" loading="lazy" />
-                <span>Tradicional</span>
-              </div>
-
-              <div class="index-producto-card__body">
-                <h3>Chicha Morada</h3>
-                <p>Bebida tradicional peruana preparada con maíz morado, frutas y especias.</p>
-
-                <div class="index-producto-card__footer">
-                  <strong>S/ 8.90</strong>
-                  <a href="pedido.html?producto=Chicha%20Morada" tabindex="-1">Pedir ahora</a>
-                </div>
-              </div>
-            </article>
-
-            <article class="index-producto-card" aria-hidden="true">
-              <div class="index-producto-card__media">
-                <img src="assets/img/productos/sanguches/chicharron.jpg" alt="" loading="lazy" />
-                <span>Combo</span>
-              </div>
-
-              <div class="index-producto-card__body">
-                <h3>Combo Criollo Personal</h3>
-                <p>Sánguche de la casa con bebida tradicional y acompañamiento.</p>
-
-                <div class="index-producto-card__footer">
-                  <strong>S/ 24.90</strong>
-                  <a href="pedido.html?producto=Combo%20Criollo%20Personal" tabindex="-1">
-                    Pedir ahora
-                  </a>
+                  <a href="pedido.html?producto=S%C3%A1nguche%20de%20Pavo">Solicitar</a>
                 </div>
               </div>
             </article>
@@ -277,48 +190,124 @@
         </div>
       </section>
 
-      <section class="index-promo section surface-warm reveal">
+      <section class="index-promo section reveal" aria-labelledby="promo-title">
         <div class="container index-promo__grid">
           <div class="index-promo__media">
             <img src="assets/img/promos/combocriollo.webp" alt="Combo Criollo" loading="lazy" />
           </div>
           <div class="index-promo__content">
             <p class="section-eyebrow">Promoción destacada</p>
-            <h2>Combo Criollo</h2>
+            <h2 id="promo-title">Combo Criollo</h2>
             <p>
               Pan con chicharrón, café pasado y camote frito. Una combinación clásica para empezar
               el día con sabor peruano.
             </p>
-            <a class="card__action" href="promociones.html">Ver promociones</a>
+            <a class="index-btn index-btn--primario" href="promociones.html">Ver promociones</a>
           </div>
         </div>
       </section>
 
-      <section class="index-confianza section reveal">
-        <div class="container index-confianza__grid">
-          <div class="index-confianza__item reveal reveal-delay-1">
-            <span class="material-symbols-rounded" aria-hidden="true">bakery_dining</span>
-            <strong>Pan artesanal</strong>
-            <p>Preparaciones frescas y hechas con cuidado.</p>
+      <section class="index-confianza section reveal" aria-labelledby="confianza-title">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-eyebrow">Confianza</p>
+            <h2 class="section-title" id="confianza-title">Lo que sostiene la experiencia</h2>
           </div>
-          <div class="index-confianza__item reveal reveal-delay-2">
-            <span class="material-symbols-rounded" aria-hidden="true">eco</span>
-            <strong>Insumos frescos</strong>
-            <p>Ingredientes seleccionados para cada producto.</p>
-          </div>
-          <div class="index-confianza__item reveal reveal-delay-3">
-            <span class="material-symbols-rounded" aria-hidden="true">delivery_dining</span>
-            <strong>Local y delivery</strong>
-            <p>Compra en tienda o pide desde tu sede más cercana.</p>
+
+          <div class="index-confianza__grid">
+            <div class="index-confianza__item reveal reveal-delay-1">
+              <span class="material-symbols-rounded" aria-hidden="true">bakery_dining</span>
+              <strong>Pan artesanal</strong>
+              <p>Preparaciones frescas y hechas con cuidado.</p>
+            </div>
+            <div class="index-confianza__item reveal reveal-delay-2">
+              <span class="material-symbols-rounded" aria-hidden="true">eco</span>
+              <strong>Insumos frescos</strong>
+              <p>Ingredientes seleccionados para cada producto.</p>
+            </div>
+            <div class="index-confianza__item reveal reveal-delay-3">
+              <span class="material-symbols-rounded" aria-hidden="true">delivery_dining</span>
+              <strong>Local y delivery</strong>
+              <p>Compra en tienda o pide desde tu sede más cercana.</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="index-cta reveal">
-        <div class="container index-cta__content">
-          <h2>Explora la carta criolla</h2>
-          <p>Revisa los productos disponibles y arma tu próxima visita con sabor peruano.</p>
-          <a class="hero-btn" href="carta.html">Ver carta completa</a>
+      <section class="index-opiniones section reveal" aria-labelledby="opiniones-title">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-eyebrow">Opiniones</p>
+            <h2 class="section-title" id="opiniones-title">Lo que dicen nuestros clientes</h2>
+            <p class="section-description">
+              Experiencias referenciales que reflejan sabor, atención y rapidez.
+            </p>
+          </div>
+
+          <div class="index-opiniones__grid">
+            <article class="index-opinion-card index-opinion-card--instagram reveal reveal-delay-1">
+              <div class="index-opinion-card__header">
+                <span class="index-opinion-card__avatar" aria-hidden="true">ML</span>
+                <div>
+                  <h3>María L.</h3>
+                  <span class="index-opinion-card__platform">
+                    <span class="material-symbols-rounded" aria-hidden="true">photo_camera</span>
+                    Instagram
+                  </span>
+                </div>
+              </div>
+              <p>
+                “El pan llegó suave, el chicharrón bien servido y la salsa criolla con ese toque de
+                casa. Volvería a pedirlo.”
+              </p>
+            </article>
+
+            <article class="index-opinion-card index-opinion-card--facebook reveal reveal-delay-2">
+              <div class="index-opinion-card__header">
+                <span class="index-opinion-card__avatar" aria-hidden="true">JP</span>
+                <div>
+                  <h3>Jorge P.</h3>
+                  <span class="index-opinion-card__platform">
+                    <span class="index-opinion-card__brand-mark" aria-hidden="true">f</span>
+                    Facebook
+                  </span>
+                </div>
+              </div>
+              <p>
+                “La combinación de café pasado y sánguche criollo funciona perfecto para empezar el
+                día. Se siente fresco y contundente.”
+              </p>
+            </article>
+
+            <article class="index-opinion-card index-opinion-card--tiktok reveal reveal-delay-3">
+              <div class="index-opinion-card__header">
+                <span class="index-opinion-card__avatar" aria-hidden="true">AC</span>
+                <div>
+                  <h3>Ana C.</h3>
+                  <span class="index-opinion-card__platform">
+                    <span class="material-symbols-rounded" aria-hidden="true">music_note</span>
+                    TikTok
+                  </span>
+                </div>
+              </div>
+              <p>
+                “La solicitud fue clara y rápida. Me gustó poder elegir el producto y dejar
+                indicaciones antes de confirmar.”
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="index-cierre reveal">
+        <div class="container index-cierre__content">
+          <p class="section-eyebrow">Siguiente paso</p>
+          <h2>Arma tu próxima visita con sabor criollo</h2>
+          <p>Revisa la carta completa o envía una solicitud si ya sabes qué quieres consultar.</p>
+          <div class="index-cierre__acciones">
+            <a class="index-btn index-btn--primario" href="carta.html">Ver carta completa</a>
+            <a class="index-btn index-btn--secundario" href="pedido.html">Enviar solicitud</a>
+          </div>
         </div>
       </section>
     </main>

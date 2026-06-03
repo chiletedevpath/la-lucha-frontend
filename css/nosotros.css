@@ -146,6 +146,8 @@
 .dato-card__icono {
   display: inline-grid;
   grid-row: span 2;
+  align-self: center;
+  justify-self: center;
   flex: 0 0 auto;
   width: 2.35rem;
   height: 2.35rem;
@@ -206,6 +208,8 @@
 
 .mv-card__icono {
   display: inline-grid;
+  align-items: center;
+  justify-items: center;
   width: 3rem;
   height: 3rem;
   margin-bottom: var(--space-4);
@@ -277,6 +281,8 @@
 
 .valor-card__icono {
   display: inline-grid;
+  align-items: center;
+  justify-items: center;
   width: 2.4rem;
   height: 2.4rem;
   margin-bottom: var(--space-3);
@@ -320,6 +326,8 @@
 }
 
 .cifra-card {
+  display: grid;
+  justify-items: center;
   padding: var(--space-5);
   color: var(--color-surface);
   text-align: center;
@@ -381,6 +389,23 @@
 }
 
 @media (max-width: 35rem) {
+  .nosotros-hero {
+    min-height: 23rem;
+    padding: calc(var(--header-height) + var(--space-5)) var(--container-padding) var(--space-6);
+  }
+
+  .nosotros-empresa,
+  .nosotros-mv,
+  .nosotros-valores,
+  .nosotros-frase {
+    padding-block: var(--space-6);
+  }
+
+  .nosotros-seccion-titulo {
+    margin-bottom: var(--space-5);
+    font-size: clamp(1.85rem, 10vw, 2.3rem);
+  }
+
   .dato-card {
     gap: var(--space-3);
     padding: var(--space-3);
@@ -392,6 +417,22 @@
 
   .valor-card {
     padding: var(--space-5) var(--space-4);
+  }
+}
+
+@media (max-width: 26rem) {
+  .dato-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .dato-card__icono {
+    grid-row: auto;
+  }
+
+  .mv-card,
+  .valor-card {
+    padding: var(--space-4);
   }
 }
 
