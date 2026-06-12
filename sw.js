@@ -1,4 +1,4 @@
-const CACHE_NAME = "la-lucha-v24";
+const CACHE_NAME = "la-lucha-v25";
 
 const APP_SHELL = [
   "./",
@@ -30,12 +30,12 @@ const APP_SHELL = [
   "./css/pedido.css",
   "./js/main.js",
   "./js/menu.js",
+  "./js/api-config.js",
   "./js/pedido.js",
   "./js/productos.js",
   "./js/locales.js",
   "./js/promociones.js",
   "./js/animaciones.js",
-  "./data/productos.js",
   "./data/locales.js",
   "./data/promociones.js",
   "./assets/img/banners/hero-banner.webp",

@@ -12,13 +12,29 @@ const contenedorPaginacion = document.getElementById("paginacion-numeros");
 const estadoProductos = document.getElementById("productos-estado");
 const seccionProductos = document.querySelector(".carta-productos");
 const btnLimpiarFiltros = document.getElementById("limpiar-filtros");
+const totalProductosHero = document.getElementById("carta-total-productos");
+const totalCategoriasHero = document.getElementById("carta-total-categorias");
 
+const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl;
+const PRODUCTO_ID_MAX_CATALOGO = 20;
 const PRODUCTOS_POR_PAGINA = 6;
+const IMAGENES_FALLBACK = {
+  chicharron: "assets/img/productos/sanguches/chicharron.jpg",
+  pavo: "assets/img/productos/sanguches/pavo.jpg",
+  chicha: "assets/img/productos/bebidas/chicha.jpg",
+  sanguches: "assets/img/productos/sanguches/chicharron.jpg",
+  bebidas: "assets/img/productos/bebidas/chicha.jpg",
+  acompanamientos: "assets/img/productos/sanguches/chicharron.jpg",
+  combos: "assets/img/productos/sanguches/chicharron.jpg",
+  postres: "assets/img/productos/sanguches/chicharron.jpg",
+  promociones: "assets/img/productos/sanguches/chicharron.jpg"
+};
 
 let categoriaActual = "todos";
 let textoBusqueda = "";
 let paginaActual = 1;
 let productosActuales = [];
+let productosCatalogo = [];
 
 /* =========================
    UTILIDADES
@@ -34,6 +50,101 @@ function normalizarTexto(texto) {
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .trim();
+}
+
+function normalizarCategoriaApi(nombreCategoria) {
+  const categoria = normalizarTexto(nombreCategoria);
+
+  if (categoria.includes("sanguch")) return "sanguches";
+  if (categoria.includes("bebida")) return "bebidas";
+  if (categoria.includes("acompan")) return "acompanamientos";
+  if (categoria.includes("combo")) return "combos";
+  if (categoria.includes("postre")) return "postres";
+  if (categoria.includes("promocion")) return "promociones";
+
+  return "sanguches";
+}
+
+function obtenerCategoriaPorId(categoriaId, categoriasPorId) {
+  const categoriaNormalizada = categoriasPorId[categoriaId];
+
+  if (categoriaNormalizada) return categoriaNormalizada;
+  if (categoriaId === 1) return "sanguches";
+  if (categoriaId === 2) return "bebidas";
+  if (categoriaId === 3) return "acompanamientos";
+  if (categoriaId === 4) return "combos";
+  if (categoriaId === 5) return "postres";
+  if (categoriaId === 6) return "promociones";
+
+  return "sanguches";
+}
+
+function resolverImagenProducto(producto, categoria) {
+  const nombreNormalizado = normalizarTexto(producto.nombre);
+
+  if (nombreNormalizado.includes("chicharron")) return IMAGENES_FALLBACK.chicharron;
+  if (nombreNormalizado.includes("pavo")) return IMAGENES_FALLBACK.pavo;
+  if (nombreNormalizado.includes("chicha")) return IMAGENES_FALLBACK.chicha;
+
+  return IMAGENES_FALLBACK[categoria] || IMAGENES_FALLBACK.sanguches;
+}
+
+function adaptarProductoApi(producto, categoriasPorId) {
+  const categoria = obtenerCategoriaPorId(producto.categoriaId, categoriasPorId);
+
+  return {
+    id: producto.productoId,
+    nombre: producto.nombre,
+    categoria,
+    descripcion: producto.descripcion,
+    precio: producto.precio,
+    pedido: producto.destacado ? 90 : 70,
+    imagen: resolverImagenProducto(producto, categoria)
+  };
+}
+
+async function obtenerJsonApi(ruta) {
+  if (!API_BASE_URL) {
+    throw new Error("No se encontro la configuracion de la API publica.");
+  }
+
+  const respuesta = await fetch(`${API_BASE_URL}${ruta}`);
+
+  if (!respuesta.ok) {
+    throw new Error(`La API respondio ${respuesta.status} en ${ruta}`);
+  }
+
+  return respuesta.json();
+}
+
+async function cargarProductosDesdeApi() {
+  const [productosApi, categoriasApi] = await Promise.all([
+    obtenerJsonApi("/productos"),
+    obtenerJsonApi("/categorias")
+  ]);
+
+  const categoriasPorId = categoriasApi.reduce((mapa, categoria) => {
+    mapa[categoria.categoriaId] = normalizarCategoriaApi(categoria.nombre);
+    return mapa;
+  }, {});
+
+  return productosApi
+    .filter(
+      (producto) =>
+        producto.estado !== false && Number(producto.productoId) <= PRODUCTO_ID_MAX_CATALOGO
+    )
+    .map((producto) => adaptarProductoApi(producto, categoriasPorId));
+}
+
+function actualizarMetricasHero() {
+  if (totalProductosHero) {
+    totalProductosHero.textContent = productosCatalogo.length;
+  }
+
+  if (totalCategoriasHero) {
+    const categoriasUnicas = new Set(productosCatalogo.map((producto) => producto.categoria));
+    totalCategoriasHero.textContent = categoriasUnicas.size;
+  }
 }
 
 function obtenerTotalPaginas(listaProductos) {
@@ -54,7 +165,9 @@ function obtenerEtiquetaCategoria(categoria) {
 
   if (!botonActivo) return categoria;
 
-  return botonActivo.querySelector(".categoria-label")?.textContent.trim().toLowerCase() || categoria;
+  return (
+    botonActivo.querySelector(".categoria-label")?.textContent.trim().toLowerCase() || categoria
+  );
 }
 
 function obtenerEtiquetaPopularidad(pedido) {
@@ -102,10 +215,9 @@ function animarResultados() {
 }
 
 function contarPorCategoria(categoria) {
-  if (typeof productos === "undefined" || !Array.isArray(productos)) return 0;
-  if (categoria === "todos") return productos.length;
+  if (categoria === "todos") return productosCatalogo.length;
 
-  return productos.filter(
+  return productosCatalogo.filter(
     (producto) => normalizarTexto(producto.categoria) === normalizarTexto(categoria)
   ).length;
 }
@@ -317,14 +429,14 @@ function irPaginaSiguiente() {
 ========================= */
 
 function filtrarProductos() {
-  if (typeof productos === "undefined" || !Array.isArray(productos)) {
+  if (!Array.isArray(productosCatalogo)) {
     productosActuales = [];
     renderizarProductos(productosActuales);
     return;
   }
 
   const busquedaNormalizada = normalizarTexto(textoBusqueda);
-  let productosFiltrados = [...productos];
+  let productosFiltrados = [...productosCatalogo];
 
   if (categoriaActual !== "todos") {
     productosFiltrados = productosFiltrados.filter(
@@ -333,15 +445,13 @@ function filtrarProductos() {
   }
 
   if (busquedaNormalizada !== "") {
-    productosFiltrados = productosFiltrados.filter(
-      (producto) => {
-        const textoProducto = normalizarTexto(
-          `${producto.nombre} ${producto.descripcion} ${producto.categoria}`
-        );
+    productosFiltrados = productosFiltrados.filter((producto) => {
+      const textoProducto = normalizarTexto(
+        `${producto.nombre} ${producto.descripcion} ${producto.categoria}`
+      );
 
-        return textoProducto.includes(busquedaNormalizada);
-      }
-    );
+      return textoProducto.includes(busquedaNormalizada);
+    });
   }
 
   productosActuales = productosFiltrados;
@@ -389,11 +499,31 @@ botonesCategorias.forEach((boton) => {
   boton.setAttribute("aria-pressed", String(boton.classList.contains("activo")));
 });
 
-actualizarConteosCategorias();
+async function inicializarCarta() {
+  if (estadoProductos) {
+    estadoProductos.textContent = "Cargando productos desde el backend...";
+  }
 
-if (typeof productos !== "undefined" && Array.isArray(productos)) {
-  productosActuales = productos;
+  try {
+    productosCatalogo = await cargarProductosDesdeApi();
+  } catch (error) {
+    console.error("No se pudo cargar productos desde la API publica.", error);
+    productosCatalogo = [];
+    actualizarConteosCategorias();
+
+    if (estadoProductos) {
+      estadoProductos.textContent =
+        "No se pudo cargar la carta desde el backend publico. Intenta nuevamente en unos segundos.";
+    }
+
+    renderizarPaginacion([]);
+    return;
+  }
+
+  actualizarMetricasHero();
+  actualizarConteosCategorias();
+  productosActuales = productosCatalogo;
   renderizarProductos(productosActuales);
-} else {
-  renderizarProductos([]);
 }
+
+inicializarCarta();

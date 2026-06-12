@@ -81,12 +81,12 @@
 
           <div class="hero-stats">
             <div class="stat-card">
-              <strong>8</strong>
+              <strong id="carta-total-productos">--</strong>
               <span>productos base</span>
             </div>
 
             <div class="stat-card">
-              <strong>3</strong>
+              <strong id="carta-total-categorias">--</strong>
               <span>categorías</span>
             </div>
 
@@ -136,9 +136,27 @@
                 <span class="categoria-count">0</span>
               </button>
 
+              <button type="button" data-categoria="acompanamientos">
+                <span class="material-symbols-rounded" aria-hidden="true">restaurant</span>
+                <span class="categoria-label">Acompañamientos</span>
+                <span class="categoria-count">0</span>
+              </button>
+
+              <button type="button" data-categoria="combos">
+                <span class="material-symbols-rounded" aria-hidden="true">fastfood</span>
+                <span class="categoria-label">Combos</span>
+                <span class="categoria-count">0</span>
+              </button>
+
               <button type="button" data-categoria="postres">
                 <span class="material-symbols-rounded" aria-hidden="true">bakery_dining</span>
                 <span class="categoria-label">Postres</span>
+                <span class="categoria-count">0</span>
+              </button>
+
+              <button type="button" data-categoria="promociones">
+                <span class="material-symbols-rounded" aria-hidden="true">sell</span>
+                <span class="categoria-label">Promociones</span>
                 <span class="categoria-count">0</span>
               </button>
             </div>
@@ -189,12 +207,7 @@
 
     <script src="js/menu.js"></script>
     <script src="js/main.js"></script>
-
-    <!-- =========================
-       DATA PRODUCTOS
-  ========================== -->
-
-    <script src="data/productos.js"></script>
+    <script src="js/api-config.js"></script>
 
     <!-- =========================
        JS CARTA
