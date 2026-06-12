@@ -3,7 +3,7 @@
 ========================= */
 
 function inicializarReveals() {
-  const elementosReveal = document.querySelectorAll(".reveal");
+  const elementosReveal = document.querySelectorAll(".reveal:not(.active)");
 
   if (!elementosReveal.length) {
     return;
@@ -32,4 +32,10 @@ function inicializarReveals() {
   elementosReveal.forEach((elemento) => observer.observe(elemento));
 }
 
-document.addEventListener("DOMContentLoaded", inicializarReveals);
+window.inicializarReveals = inicializarReveals;
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", inicializarReveals);
+} else {
+  inicializarReveals();
+}

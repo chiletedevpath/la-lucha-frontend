@@ -182,6 +182,20 @@ function renderizarLocales(listaLocales) {
   });
 
   contenedorLocales.append(fragmento);
+  activarRevealsDinamicos(contenedorLocales);
+}
+
+function activarRevealsDinamicos(contenedor) {
+  requestAnimationFrame(() => {
+    if (typeof window.inicializarReveals === "function") {
+      window.inicializarReveals();
+      return;
+    }
+
+    contenedor.querySelectorAll(".reveal").forEach((elemento) => {
+      elemento.classList.add("active");
+    });
+  });
 }
 
 async function inicializarLocales() {

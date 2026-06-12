@@ -188,6 +188,20 @@ function renderizarPromociones(listaPromociones) {
   });
 
   contenedorPromociones.append(fragmento);
+  activarRevealsDinamicos(contenedorPromociones);
+}
+
+function activarRevealsDinamicos(contenedor) {
+  requestAnimationFrame(() => {
+    if (typeof window.inicializarReveals === "function") {
+      window.inicializarReveals();
+      return;
+    }
+
+    contenedor.querySelectorAll(".reveal").forEach((elemento) => {
+      elemento.classList.add("active");
+    });
+  });
 }
 
 async function inicializarPromociones() {
