@@ -1,4 +1,4 @@
-const CACHE_NAME = "la-lucha-v25";
+const CACHE_NAME = "la-lucha-v27";
 
 const APP_SHELL = [
   "./",
@@ -36,8 +36,6 @@ const APP_SHELL = [
   "./js/locales.js",
   "./js/promociones.js",
   "./js/animaciones.js",
-  "./data/locales.js",
-  "./data/promociones.js",
   "./assets/img/banners/hero-banner.webp",
   "./assets/img/productos/sanguches/chicharron.jpg",
   "./assets/img/productos/sanguches/pavo.jpg",
@@ -73,6 +71,13 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") {
+    return;
+  }
+
+  const requestUrl = new URL(event.request.url);
+
+  if (requestUrl.hostname === "utp-la-lucha-bd-backend.onrender.com") {
+    event.respondWith(fetch(event.request));
     return;
   }
 
