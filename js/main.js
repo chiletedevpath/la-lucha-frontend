@@ -45,9 +45,18 @@ async function inicializarComponentes() {
 document.addEventListener("DOMContentLoaded", inicializarComponentes);
 
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch((error) => {
-      console.error("No se pudo registrar el service worker:", error);
-    });
+  window.addEventListener("load", async () => {
+    try {
+      const registros = await navigator.serviceWorker.getRegistrations();
+
+      await Promise.all(registros.map((registro) => registro.unregister()));
+
+      if ("caches" in window) {
+        const nombresCache = await caches.keys();
+        await Promise.all(nombresCache.map((nombreCache) => caches.delete(nombreCache)));
+      }
+    } catch (error) {
+      console.error("No se pudo limpiar el service worker anterior:", error);
+    }
   });
 }
