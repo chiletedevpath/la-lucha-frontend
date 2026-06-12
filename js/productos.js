@@ -15,7 +15,7 @@ const btnLimpiarFiltros = document.getElementById("limpiar-filtros");
 const totalProductosHero = document.getElementById("carta-total-productos");
 const totalCategoriasHero = document.getElementById("carta-total-categorias");
 
-const API_BASE_URL = "https://utp-la-lucha-bd-backend.onrender.com/api";
+const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl;
 const PRODUCTO_ID_MAX_CATALOGO = 20;
 const PRODUCTOS_POR_PAGINA = 6;
 const IMAGENES_FALLBACK = {
@@ -104,6 +104,10 @@ function adaptarProductoApi(producto, categoriasPorId) {
 }
 
 async function obtenerJsonApi(ruta) {
+  if (!API_BASE_URL) {
+    throw new Error("No se encontro la configuracion de la API publica.");
+  }
+
   const respuesta = await fetch(`${API_BASE_URL}${ruta}`);
 
   if (!respuesta.ok) {

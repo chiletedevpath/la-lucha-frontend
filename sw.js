@@ -30,6 +30,7 @@ const APP_SHELL = [
   "./css/pedido.css",
   "./js/main.js",
   "./js/menu.js",
+  "./js/api-config.js",
   "./js/pedido.js",
   "./js/productos.js",
   "./js/locales.js",
