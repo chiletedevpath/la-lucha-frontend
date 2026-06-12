@@ -108,7 +108,7 @@ function crearCardPromocion(promocion, index) {
   const posicionInvertida = index % 2 !== 0;
 
   const articulo = document.createElement("article");
-  articulo.className = `promocion-card reveal ${
+  articulo.className = `promocion-card reveal active ${
     posicionInvertida ? "promocion-card--reverse reveal-delay-1" : ""
   }`;
   articulo.setAttribute("aria-label", `Promocion ${promocion.nombre}`);
@@ -193,11 +193,6 @@ function renderizarPromociones(listaPromociones) {
 
 function activarRevealsDinamicos(contenedor) {
   requestAnimationFrame(() => {
-    if (typeof window.inicializarReveals === "function") {
-      window.inicializarReveals();
-      return;
-    }
-
     contenedor.querySelectorAll(".reveal").forEach((elemento) => {
       elemento.classList.add("active");
     });

@@ -107,7 +107,7 @@ function crearCardLocal(local, index) {
   const posicionInvertida = index % 2 !== 0;
 
   const articulo = document.createElement("article");
-  articulo.className = `card card--location card--horizontal reveal ${
+  articulo.className = `card card--location card--horizontal reveal active ${
     posicionInvertida ? "card--reverse reveal-delay-1" : ""
   }`;
 
@@ -187,11 +187,6 @@ function renderizarLocales(listaLocales) {
 
 function activarRevealsDinamicos(contenedor) {
   requestAnimationFrame(() => {
-    if (typeof window.inicializarReveals === "function") {
-      window.inicializarReveals();
-      return;
-    }
-
     contenedor.querySelectorAll(".reveal").forEach((elemento) => {
       elemento.classList.add("active");
     });
