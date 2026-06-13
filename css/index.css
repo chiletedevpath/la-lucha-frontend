@@ -416,6 +416,7 @@
 .index-promo {
   position: relative;
   isolation: isolate;
+  overflow: hidden;
   background:
     radial-gradient(circle at 18% 22%, rgba(184, 50, 39, 0.12), transparent 20rem),
     radial-gradient(circle at 80% 18%, rgba(240, 180, 41, 0.18), transparent 18rem),
