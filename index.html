@@ -48,16 +48,16 @@
 
           <div class="index-presentacion__datos" aria-label="Datos destacados de La Lucha">
             <div>
-              <strong>3</strong>
-              <span>rutas rápidas</span>
+              <strong>Carta</strong>
+              <span>para elegir</span>
             </div>
             <div>
-              <strong>8</strong>
-              <span>productos base</span>
+              <strong>Recojo</strong>
+              <span>en tienda</span>
             </div>
             <div>
-              <strong>7</strong>
-              <span>promociones</span>
+              <strong>Delivery</strong>
+              <span>a coordinar</span>
             </div>
           </div>
         </div>
@@ -81,7 +81,7 @@
               </span>
               <span class="index-ruta__titulo">Carta criolla</span>
               <span class="index-ruta__texto">
-                Revisa sánguches, bebidas y acompañamientos antes de solicitar.
+                Revisa sánguches, bebidas y acompañamientos antes de pedir.
               </span>
             </a>
 
@@ -103,13 +103,13 @@
               <span class="index-ruta__texto">Encuentra la sede más cercana para recojo o visita.</span>
             </a>
 
-            <a class="index-ruta index-ruta--pedido reveal reveal-delay-1" href="pedido.html">
+            <a class="index-ruta index-ruta--pedido reveal reveal-delay-1" href="carta.html">
               <span class="material-symbols-rounded index-ruta__icono" aria-hidden="true">
                 edit_note
               </span>
-              <span class="index-ruta__titulo">Solicitud de pedido</span>
+              <span class="index-ruta__titulo">Armar pedido</span>
               <span class="index-ruta__texto">
-                Formulario preparado para integrarse luego con backend.
+                Agrega productos desde la carta y luego confirma recojo o delivery.
               </span>
             </a>
           </div>
@@ -120,37 +120,37 @@
         <div class="container index-pedido__grid">
           <div class="index-pedido__content">
             <p class="section-eyebrow">Pide ahora</p>
-            <h2 id="pedido-title">Favoritos listos para solicitar</h2>
+            <h2 id="pedido-title">Favoritos listos para pedir</h2>
             <p>
-              Elige un producto destacado y envía una solicitud honesta: no procesa pagos ni confirma
-              compra definitiva. La disponibilidad se valida después.
+              Empieza desde la carta, agrega tus productos favoritos y luego confirma recojo en
+              tienda o delivery con el total calculado.
             </p>
 
-            <div class="index-pedido__pasos" aria-label="Flujo de solicitud">
+            <div class="index-pedido__pasos" aria-label="Flujo de pedido">
               <div>
                 <span>1</span>
-                <p>Elige un producto o promoción.</p>
+                <p>Elige productos desde la carta.</p>
               </div>
               <div>
                 <span>2</span>
-                <p>Completa tus datos de contacto.</p>
+                <p>Define recojo o delivery.</p>
               </div>
               <div>
                 <span>3</span>
-                <p>La atención se confirma posteriormente.</p>
+                <p>Confirma tu pedido y el total.</p>
               </div>
             </div>
 
-            <a class="index-btn index-btn--secundario" href="pedido.html">
-              Consultar disponibilidad
+            <a class="index-btn index-btn--secundario" href="carta.html">
+              Armar pedido desde la carta
             </a>
           </div>
 
-          <div class="index-pedido__productos" aria-label="Productos destacados para solicitar">
+          <div class="index-pedido__productos" aria-label="Productos destacados para pedir">
             <article class="index-producto-mini reveal reveal-delay-1">
               <div class="index-producto-mini__media">
                 <img
-                  src="assets/img/productos/sanguches/chicharron.jpg"
+                  src="assets/img/productos/sanguches/chicharron.webp"
                   alt="Sánguche de Chicharrón"
                   loading="lazy"
                 />
@@ -161,8 +161,8 @@
                 <p>Chicharrón crocante, camote frito y salsa criolla.</p>
                 <div>
                   <strong>S/ 18.90</strong>
-                  <a href="pedido.html?producto=S%C3%A1nguche%20de%20Chicharr%C3%B3n">
-                    Solicitar
+                  <a href="pedido.html?productoId=1">
+                    Pedir producto
                   </a>
                 </div>
               </div>
@@ -171,7 +171,7 @@
             <article class="index-producto-mini reveal reveal-delay-2">
               <div class="index-producto-mini__media">
                 <img
-                  src="assets/img/productos/sanguches/pavo.jpg"
+                  src="assets/img/productos/sanguches/pavo.webp"
                   alt="Sánguche de Pavo"
                   loading="lazy"
                 />
@@ -182,7 +182,45 @@
                 <p>Pavo jugoso, pan artesanal y salsas de la casa.</p>
                 <div>
                   <strong>S/ 19.90</strong>
-                  <a href="pedido.html?producto=S%C3%A1nguche%20de%20Pavo">Solicitar</a>
+                  <a href="pedido.html?productoId=2">Pedir producto</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="index-producto-mini reveal reveal-delay-1">
+              <div class="index-producto-mini__media">
+                <img
+                  src="assets/img/productos/sanguches/asado.webp"
+                  alt="Sánguche de Asado"
+                  loading="lazy"
+                />
+                <span>Clásico</span>
+              </div>
+              <div class="index-producto-mini__body">
+                <h3>Sánguche de Asado</h3>
+                <p>Asado jugoso con salsa criolla y pan artesanal recién tostado.</p>
+                <div>
+                  <strong>S/ 20.90</strong>
+                  <a href="pedido.html?productoId=3">Pedir producto</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="index-producto-mini reveal reveal-delay-2">
+              <div class="index-producto-mini__media">
+                <img
+                  src="assets/img/productos/sanguches/hamburguesa.webp"
+                  alt="Hamburguesa Criolla"
+                  loading="lazy"
+                />
+                <span>Criolla</span>
+              </div>
+              <div class="index-producto-mini__body">
+                <h3>Hamburguesa Criolla</h3>
+                <p>Hamburguesa con toque criollo, papas y cremas de la casa.</p>
+                <div>
+                  <strong>S/ 16.90</strong>
+                  <a href="pedido.html?productoId=6">Pedir producto</a>
                 </div>
               </div>
             </article>
@@ -291,8 +329,8 @@
                 </div>
               </div>
               <p>
-                “La solicitud fue clara y rápida. Me gustó poder elegir el producto y dejar
-                indicaciones antes de confirmar.”
+                “El pedido fue claro y rápido. Me gustó poder elegir productos y dejar indicaciones
+                antes de confirmar.”
               </p>
             </article>
           </div>
@@ -303,10 +341,10 @@
         <div class="container index-cierre__content">
           <p class="section-eyebrow">Siguiente paso</p>
           <h2>Arma tu próxima visita con sabor criollo</h2>
-          <p>Revisa la carta completa o envía una solicitud si ya sabes qué quieres consultar.</p>
+          <p>Revisa la carta completa, agrega tus favoritos y confirma tu pedido.</p>
           <div class="index-cierre__acciones">
             <a class="index-btn index-btn--primario" href="carta.html">Ver carta completa</a>
-            <a class="index-btn index-btn--secundario" href="pedido.html">Enviar solicitud</a>
+            <a class="index-btn index-btn--secundario" href="carta.html">Armar pedido</a>
           </div>
         </div>
       </section>
