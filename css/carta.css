@@ -438,8 +438,10 @@
   line-height: var(--line-heading);
   text-decoration: none;
   background: linear-gradient(135deg, var(--color-brand), var(--color-brand-dark));
+  border: 0;
   border-radius: var(--radius-pill);
   box-shadow: 0 10px 24px rgba(104, 29, 22, 0.22);
+  cursor: pointer;
   transition:
     transform var(--transition-fast),
     box-shadow var(--transition-fast);
@@ -466,6 +468,67 @@
   border: 1px dashed color-mix(in srgb, var(--color-brand) 28%, var(--color-border));
   border-radius: var(--radius-lg);
   box-shadow: 0 14px 32px rgba(63, 18, 14, 0.08);
+}
+
+.solicitud-mini {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 30;
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  justify-content: space-between;
+  width: min(calc(100% - var(--space-6)), 28rem);
+  padding: var(--space-4);
+  color: var(--color-surface);
+  background: linear-gradient(135deg, var(--color-brand-deep), var(--color-brand-dark));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 18px 42px rgba(63, 18, 14, 0.3);
+}
+
+.solicitud-mini[hidden] {
+  display: none;
+}
+
+.solicitud-mini__info {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.solicitud-mini__label {
+  color: var(--color-accent-soft);
+  font-size: var(--text-xs);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.solicitud-mini__info strong,
+.solicitud-mini__info span {
+  overflow-wrap: anywhere;
+}
+
+.solicitud-mini__link {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.65rem;
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-brand-dark);
+  font-size: var(--text-sm);
+  font-weight: 900;
+  text-decoration: none;
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-pill);
+}
+
+.solicitud-mini__link:focus-visible {
+  outline: 3px solid var(--color-surface);
+  outline-offset: 3px;
 }
 
 .paginacion {
@@ -652,6 +715,19 @@
   }
 
   .paginacion__btn {
+    width: 100%;
+  }
+
+  .solicitud-mini {
+    right: var(--space-3);
+    bottom: var(--space-3);
+    left: var(--space-3);
+    width: auto;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .solicitud-mini__link {
     width: 100%;
   }
 }

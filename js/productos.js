@@ -14,6 +14,7 @@ const seccionProductos = document.querySelector(".carta-productos");
 const btnLimpiarFiltros = document.getElementById("limpiar-filtros");
 const totalProductosHero = document.getElementById("carta-total-productos");
 const totalCategoriasHero = document.getElementById("carta-total-categorias");
+const solicitudStore = window.LaLuchaSolicitud;
 
 const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl;
 const PRODUCTO_ID_MAX_CATALOGO = 20;
@@ -42,6 +43,58 @@ let productosCatalogo = [];
 
 function formatearPrecio(precio) {
   return `S/ ${Number(precio).toFixed(2)}`;
+}
+
+function crearMiniSolicitud() {
+  const miniSolicitud = document.createElement("aside");
+  miniSolicitud.className = "solicitud-mini";
+  miniSolicitud.id = "solicitud-mini";
+  miniSolicitud.hidden = true;
+  miniSolicitud.setAttribute("aria-live", "polite");
+
+  miniSolicitud.innerHTML = `
+    <div class="solicitud-mini__info">
+      <span class="solicitud-mini__label">Tu solicitud</span>
+      <strong id="solicitud-mini-cantidad">0 productos</strong>
+      <span id="solicitud-mini-total">Total: S/ 0.00</span>
+    </div>
+    <a class="solicitud-mini__link" href="pedido.html">Ver solicitud</a>
+  `;
+
+  document.body.append(miniSolicitud);
+  return miniSolicitud;
+}
+
+const miniSolicitud = solicitudStore ? crearMiniSolicitud() : null;
+
+function actualizarMiniSolicitud() {
+  if (!solicitudStore || !miniSolicitud) return;
+
+  const items = solicitudStore.obtenerSolicitud();
+  const { cantidadTotal, total } = solicitudStore.calcularTotales(items);
+  const cantidadTexto = cantidadTotal === 1 ? "1 producto" : `${cantidadTotal} productos`;
+
+  miniSolicitud.hidden = cantidadTotal === 0;
+  miniSolicitud.querySelector("#solicitud-mini-cantidad").textContent = cantidadTexto;
+  miniSolicitud.querySelector("#solicitud-mini-total").textContent = `Total: ${formatearPrecio(total)}`;
+}
+
+function agregarProductoASolicitud(producto) {
+  if (!solicitudStore) {
+    window.location.href = `pedido.html?productoId=${encodeURIComponent(producto.id)}`;
+    return;
+  }
+
+  solicitudStore.agregarItem({
+    id: producto.id,
+    tipo: "producto",
+    nombre: producto.nombre,
+    precio: producto.precio,
+    cantidad: 1,
+    imagen: producto.imagen
+  });
+
+  actualizarMiniSolicitud();
 }
 
 function normalizarTexto(texto) {
@@ -316,11 +369,12 @@ function crearCardProducto(producto) {
   precio.className = "card__price";
   precio.textContent = formatearPrecio(producto.precio);
 
-  const accion = document.createElement("a");
+  const accion = document.createElement("button");
   accion.className = "card__action card__action--button";
-  accion.href = `pedido.html?productoId=${encodeURIComponent(producto.id)}`;
-  accion.textContent = "Pedir producto";
-  accion.setAttribute("aria-label", `Pedir ${producto.nombre}`);
+  accion.type = "button";
+  accion.textContent = "Agregar";
+  accion.setAttribute("aria-label", `Agregar ${producto.nombre} a la solicitud`);
+  accion.addEventListener("click", () => agregarProductoASolicitud(producto));
 
   media.append(imagen, badge);
   popularidad.append(popularidadIcono, popularidadTexto);
@@ -529,3 +583,5 @@ async function inicializarCarta() {
 }
 
 inicializarCarta();
+actualizarMiniSolicitud();
+window.addEventListener("la-lucha:solicitud-actualizada", actualizarMiniSolicitud);

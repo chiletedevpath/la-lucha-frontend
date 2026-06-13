@@ -86,8 +86,14 @@
 }
 
 .pedido-resumen__texto,
-.pedido-resumen__nota {
+.pedido-form__descripcion {
   color: var(--color-muted);
+}
+
+.pedido-form__descripcion {
+  margin-top: var(--space-2);
+  margin-bottom: 0;
+  font-size: var(--text-sm);
 }
 
 .pedido-resumen__box {
@@ -136,9 +142,11 @@
 .pedido-resumen__meta {
   display: grid;
   gap: var(--space-2);
+  margin-top: var(--space-3);
 }
 
 .pedido-resumen__precio,
+.pedido-resumen__igv,
 .pedido-resumen__total {
   color: var(--color-surface);
   font-size: var(--text-sm);
@@ -150,41 +158,136 @@
   font-size: var(--text-md);
 }
 
-.pedido-integracion {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+.pedido-resumen__acciones {
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-3);
-  align-items: center;
   margin-top: var(--space-5);
-  padding: var(--space-4);
-  color: var(--color-text);
-  background: color-mix(in srgb, var(--color-fresh-soft) 48%, var(--color-surface));
-  border: 1px solid color-mix(in srgb, var(--color-fresh) 34%, var(--color-border));
-  border-radius: var(--radius-lg);
 }
 
-.pedido-integracion .material-symbols-rounded {
-  display: inline-grid;
-  width: 2.5rem;
-  height: 2.5rem;
-  place-items: center;
-  color: var(--color-surface);
-  font-size: 1.45rem;
-  background: var(--color-fresh);
-  border-radius: var(--radius-pill);
-}
-
-.pedido-integracion strong {
-  display: block;
-  color: var(--color-ink);
+.pedido-resumen__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-brand-dark);
   font-size: var(--text-sm);
+  font-weight: 900;
+  text-decoration: none;
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 10px 22px rgba(104, 29, 22, 0.16);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
-.pedido-integracion p {
-  margin: var(--space-1) 0 0;
-  color: var(--color-muted);
+.pedido-resumen__link:hover {
+  color: var(--color-brand-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(104, 29, 22, 0.22);
+}
+
+.pedido-resumen__link:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 4px;
+}
+
+.pedido-lista {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.pedido-lista__vacio {
+  margin: 0;
+  padding: var(--space-4);
+  color: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+}
+
+.pedido-item {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-3);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-md);
+}
+
+.pedido-item__imagen {
+  width: 4.5rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-sm);
+}
+
+.pedido-item__contenido {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.pedido-item__nombre {
+  color: var(--color-surface);
+  line-height: var(--line-heading);
+  overflow-wrap: anywhere;
+}
+
+.pedido-item__precio {
+  color: rgba(255, 255, 255, 0.78);
   font-size: var(--text-xs);
-  line-height: 1.55;
+  font-weight: 700;
+}
+
+.pedido-item__acciones {
+  display: grid;
+  grid-template-columns: 4.25rem auto 1fr;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.pedido-item__cantidad {
+  width: 100%;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.55rem;
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 800;
+  background: var(--color-surface);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: var(--radius-sm);
+}
+
+.pedido-item__quitar {
+  min-height: 2.25rem;
+  padding: 0.35rem var(--space-3);
+  color: var(--color-brand-dark);
+  font: inherit;
+  font-size: var(--text-xs);
+  font-weight: 900;
+  background: var(--color-accent-soft);
+  border: 0;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.pedido-item__subtotal {
+  justify-self: end;
+  color: var(--color-accent-soft);
+  font-weight: 900;
+}
+
+.pedido-item__cantidad:focus-visible,
+.pedido-item__quitar:focus-visible {
+  outline: 3px solid var(--color-surface);
+  outline-offset: 3px;
 }
 
 /* =========================
@@ -221,6 +324,31 @@
   color: var(--color-text);
   font-size: var(--text-sm);
   font-weight: 800;
+}
+
+.form-ayuda {
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+.form-error {
+  min-height: 1.2rem;
+  color: var(--color-danger, #b83227);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.form-aviso {
+  padding: var(--space-3);
+  color: var(--color-brand-dark);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  line-height: 1.5;
+  background: color-mix(in srgb, var(--color-accent-soft) 46%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-accent) 30%, var(--color-border));
+  border-radius: var(--radius-md);
 }
 
 .form-grupo input,
@@ -284,6 +412,20 @@
   overflow-wrap: anywhere;
 }
 
+.form-grupo input.is-invalid {
+  border-color: var(--color-danger, #b83227);
+  background: color-mix(in srgb, var(--color-surface) 80%, #ffe8e2);
+}
+
+.form-grupo input.is-invalid:focus {
+  border-color: var(--color-danger, #b83227);
+  box-shadow: 0 0 0 4px rgba(184, 50, 39, 0.14);
+}
+
+.pedido-form__feedback[data-estado="error"] {
+  color: var(--color-danger, #b83227);
+}
+
 /* =========================
    RESPONSIVE
 ========================= */
@@ -318,10 +460,25 @@
     width: 100%;
   }
 
-  .pedido-integracion {
+  .pedido-resumen__link {
+    width: 100%;
+  }
+
+  .pedido-item {
+    grid-template-columns: 3.75rem minmax(0, 1fr);
+  }
+
+  .pedido-item__imagen {
+    width: 3.75rem;
+  }
+
+  .pedido-item__acciones {
     grid-template-columns: 1fr;
-    justify-items: center;
-    text-align: center;
+    align-items: stretch;
+  }
+
+  .pedido-item__subtotal {
+    justify-self: start;
   }
 
   .pedido-form__title,
