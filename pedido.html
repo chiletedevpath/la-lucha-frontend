@@ -38,9 +38,6 @@
     <div id="navbar-container"></div>
 
     <main>
-      <!-- =========================
-           HERO PEDIDO
-      ========================== -->
       <section class="pedido-hero reveal">
         <div class="container pedido-hero__content">
           <p class="section-eyebrow">Solicitud de pedido</p>
@@ -54,9 +51,6 @@
         </div>
       </section>
 
-      <!-- =========================
-           FORMULARIO PEDIDO
-      ========================== -->
       <section class="pedido-section reveal" aria-labelledby="pedido-title">
         <div class="container pedido-layout">
           <article class="pedido-resumen" aria-labelledby="pedido-resumen-title">
@@ -74,6 +68,15 @@
               <strong class="pedido-resumen__nombre" id="pedido-nombre-preview">
                 Sin producto seleccionado
               </strong>
+
+              <div class="pedido-resumen__detalle" id="pedido-detalle-preview" hidden>
+                <img class="pedido-resumen__imagen" id="pedido-imagen-preview" alt="" />
+
+                <div class="pedido-resumen__meta">
+                  <span class="pedido-resumen__precio" id="pedido-precio-preview"></span>
+                  <span class="pedido-resumen__total" id="pedido-total-preview"></span>
+                </div>
+              </div>
             </div>
 
             <p class="pedido-resumen__nota">
@@ -183,7 +186,8 @@
 
     <script src="js/menu.js"></script>
     <script src="js/main.js?v=20260612-cleanup"></script>
-    <script src="js/pedido.js"></script>
+    <script src="js/api-config.js?v=20260612"></script>
+    <script src="js/pedido.js?v=20260613-resumen"></script>
     <script src="js/animaciones.js?v=20260612-visible"></script>
   </body>
 </html>

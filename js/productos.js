@@ -318,7 +318,7 @@ function crearCardProducto(producto) {
 
   const accion = document.createElement("a");
   accion.className = "card__action card__action--button";
-  accion.href = `pedido.html?producto=${encodeURIComponent(producto.nombre)}`;
+  accion.href = `pedido.html?productoId=${encodeURIComponent(producto.id)}`;
   accion.textContent = "Pedir producto";
   accion.setAttribute("aria-label", `Pedir ${producto.nombre}`);
 

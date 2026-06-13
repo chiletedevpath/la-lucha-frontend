@@ -14,9 +14,19 @@ const telefonoInput = document.getElementById("telefono");
 const correoInput = document.getElementById("correo");
 const cantidadInput = document.getElementById("cantidad");
 
+const pedidoImagenPreview = document.getElementById("pedido-imagen-preview");
+const pedidoPrecioPreview = document.getElementById("pedido-precio-preview");
+const pedidoTotalPreview = document.getElementById("pedido-total-preview");
+const pedidoDetallePreview = document.getElementById("pedido-detalle-preview");
+
 const pedidoTipoPreview = document.getElementById("pedido-tipo-preview");
 const pedidoNombrePreview = document.getElementById("pedido-nombre-preview");
 const pedidoResumenTexto = document.getElementById("pedido-resumen-texto");
+
+const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl;
+const IMAGEN_FALLBACK = "assets/img/productos/sanguches/chicharron.webp";
+
+let productoSeleccionado = null;
 
 /* =========================
    UTILIDADES
@@ -31,6 +41,14 @@ function limpiarTexto(texto) {
   return typeof texto === "string" ? texto.trim() : "";
 }
 
+function formatearPrecio(precio) {
+  const precioNumerico = Number(precio);
+
+  if (!Number.isFinite(precioNumerico)) return "";
+
+  return `S/ ${precioNumerico.toFixed(2)}`;
+}
+
 function mostrarFeedback(mensaje, tipo = "exito") {
   if (!feedbackPedido) return;
 
@@ -40,19 +58,82 @@ function mostrarFeedback(mensaje, tipo = "exito") {
 
 function obtenerEtiquetaTipo(tipo) {
   if (tipo === "producto") return "Pedido de producto";
-  if (tipo === "promocion") return "Pedido de promoción";
+  if (tipo === "promocion") return "Pedido de promocion";
   return "Solicitud general";
 }
 
-function actualizarResumen(tipo, nombre) {
+function actualizarResumen(tipo, nombre, detalle = "") {
   if (!pedidoTipoPreview || !pedidoNombrePreview || !pedidoResumenTexto) return;
 
   pedidoTipoPreview.textContent = obtenerEtiquetaTipo(tipo);
   pedidoNombrePreview.textContent = nombre || "Sin producto seleccionado";
 
-  pedidoResumenTexto.textContent = nombre
-    ? "Este es el detalle detectado desde la carta o promociones."
-    : "Puedes completar manualmente el producto o promoción que deseas solicitar.";
+  pedidoResumenTexto.textContent =
+    detalle ||
+    (nombre
+      ? "Este es el detalle detectado desde la carta o promociones."
+      : "Puedes completar manualmente el producto o promocion que deseas solicitar.");
+}
+
+function obtenerCantidadActual() {
+  const cantidad = Number(cantidadInput?.value || 1);
+
+  if (!Number.isFinite(cantidad) || cantidad < 1) return 1;
+
+  return Math.trunc(cantidad);
+}
+
+function resolverImagenProducto(producto) {
+  return limpiarTexto(producto?.imagenUrl) || IMAGEN_FALLBACK;
+}
+
+function limpiarDetalleProducto() {
+  productoSeleccionado = null;
+
+  if (pedidoDetallePreview) {
+    pedidoDetallePreview.hidden = true;
+  }
+
+  if (pedidoImagenPreview) {
+    pedidoImagenPreview.removeAttribute("src");
+    pedidoImagenPreview.alt = "";
+  }
+
+  if (pedidoPrecioPreview) {
+    pedidoPrecioPreview.textContent = "";
+  }
+
+  if (pedidoTotalPreview) {
+    pedidoTotalPreview.textContent = "";
+  }
+}
+
+function actualizarDetalleProducto(producto) {
+  if (!pedidoDetallePreview || !pedidoImagenPreview || !pedidoPrecioPreview || !pedidoTotalPreview) {
+    return;
+  }
+
+  const precio = Number(producto.precio);
+
+  if (!Number.isFinite(precio)) {
+    limpiarDetalleProducto();
+    return;
+  }
+
+  const cantidad = obtenerCantidadActual();
+  const total = precio * cantidad;
+
+  productoSeleccionado = producto;
+  pedidoDetallePreview.hidden = false;
+
+  pedidoImagenPreview.src = resolverImagenProducto(producto);
+  pedidoImagenPreview.alt = producto.nombre ? `Imagen de ${producto.nombre}` : "Producto seleccionado";
+  pedidoImagenPreview.onerror = () => {
+    pedidoImagenPreview.src = IMAGEN_FALLBACK;
+  };
+
+  pedidoPrecioPreview.textContent = `Precio unitario: ${formatearPrecio(precio)}`;
+  pedidoTotalPreview.textContent = `Total estimado: ${formatearPrecio(total)}`;
 }
 
 function sincronizarCamposOcultos(tipo, nombre) {
@@ -65,17 +146,65 @@ function sincronizarCamposOcultos(tipo, nombre) {
   }
 }
 
+async function obtenerProductoPorId(productoId) {
+  if (!API_BASE_URL) {
+    throw new Error("No se encontro la configuracion de la API publica.");
+  }
+
+  const respuesta = await fetch(`${API_BASE_URL}/productos/${productoId}`);
+
+  if (!respuesta.ok) {
+    throw new Error(`La API respondio ${respuesta.status} al buscar el producto.`);
+  }
+
+  return respuesta.json();
+}
+
 /* =========================
    PRECARGA DESDE URL
 ========================= */
 
-function prepararPedidoDesdeUrl() {
+async function prepararPedidoDesdeUrl() {
   if (!tipoPedidoSelect || !productoPedidoInput) return;
 
+  const productoId = limpiarTexto(obtenerParametroUrl("productoId"));
   const producto = limpiarTexto(obtenerParametroUrl("producto"));
   const promocion = limpiarTexto(obtenerParametroUrl("promocion"));
 
+  if (productoId) {
+    try {
+      const productoApi = await obtenerProductoPorId(productoId);
+      const nombreProducto = limpiarTexto(productoApi.nombre);
+      const precioProducto = formatearPrecio(productoApi.precio);
+
+      tipoPedidoSelect.value = "producto";
+      productoPedidoInput.value = nombreProducto;
+      sincronizarCamposOcultos("producto", nombreProducto);
+
+      if (mensajeTextarea && !mensajeTextarea.value) {
+        mensajeTextarea.value = `Hola, quiero consultar la disponibilidad del producto: ${nombreProducto}.`;
+      }
+
+      actualizarResumen(
+        "producto",
+        nombreProducto,
+        precioProducto
+          ? `Producto detectado desde la carta. Precio referencial: ${precioProducto}.`
+          : "Producto detectado desde la carta."
+      );
+      actualizarDetalleProducto(productoApi);
+      return;
+    } catch (error) {
+      console.error("No se pudo cargar el producto seleccionado desde la API.", error);
+      mostrarFeedback(
+        "No se pudo cargar el producto seleccionado. Puedes completar la solicitud manualmente.",
+        "error"
+      );
+    }
+  }
+
   if (producto) {
+    limpiarDetalleProducto();
     tipoPedidoSelect.value = "producto";
     productoPedidoInput.value = producto;
     sincronizarCamposOcultos("producto", producto);
@@ -89,12 +218,13 @@ function prepararPedidoDesdeUrl() {
   }
 
   if (promocion) {
+    limpiarDetalleProducto();
     tipoPedidoSelect.value = "promocion";
     productoPedidoInput.value = promocion;
     sincronizarCamposOcultos("promocion", promocion);
 
     if (mensajeTextarea && !mensajeTextarea.value) {
-      mensajeTextarea.value = `Hola, quiero consultar la disponibilidad de la promoción: ${promocion}.`;
+      mensajeTextarea.value = `Hola, quiero consultar la disponibilidad de la promocion: ${promocion}.`;
     }
 
     actualizarResumen("promocion", promocion);
@@ -104,6 +234,7 @@ function prepararPedidoDesdeUrl() {
   tipoPedidoSelect.value = "general";
   sincronizarCamposOcultos("general", "");
   actualizarResumen("general", "");
+  limpiarDetalleProducto();
 }
 
 /* =========================
@@ -118,6 +249,7 @@ function sincronizarResumenManual() {
 
   sincronizarCamposOcultos(tipo, nombre);
   actualizarResumen(tipo, nombre);
+  limpiarDetalleProducto();
 }
 
 function obtenerDatosPedido() {
@@ -136,12 +268,12 @@ function obtenerDatosPedido() {
 function validarDatosPedido(datosPedido) {
   return Boolean(
     datosPedido.nombre &&
-      datosPedido.telefono &&
-      datosPedido.correo &&
-      datosPedido.tipoPedido &&
-      datosPedido.itemPedido &&
-      Number.isInteger(datosPedido.cantidad) &&
-      datosPedido.cantidad > 0
+    datosPedido.telefono &&
+    datosPedido.correo &&
+    datosPedido.tipoPedido &&
+    datosPedido.itemPedido &&
+    Number.isInteger(datosPedido.cantidad) &&
+    datosPedido.cantidad > 0
   );
 }
 
@@ -165,7 +297,7 @@ async function enviarSolicitudPedido(datosPedido) {
 }
 
 /* =========================
-   ENVÍO TEMPORAL
+   ENVIO TEMPORAL
 ========================= */
 
 async function manejarEnvioPedido(event) {
@@ -188,13 +320,13 @@ async function manejarEnvioPedido(event) {
   }
 
   mostrarFeedback(
-    "Solicitud preparada correctamente. El equipo confirmará disponibilidad, precio final y atención.",
+    "Solicitud preparada correctamente. El equipo confirmara disponibilidad, precio final y atencion.",
     "exito"
   );
 }
 
 /* =========================
-   INICIALIZACIÓN
+   INICIALIZACION
 ========================= */
 
 if (
@@ -210,6 +342,11 @@ if (
 
   tipoPedidoSelect.addEventListener("change", sincronizarResumenManual);
   productoPedidoInput.addEventListener("input", sincronizarResumenManual);
+  cantidadInput.addEventListener("input", () => {
+    if (productoSeleccionado) {
+      actualizarDetalleProducto(productoSeleccionado);
+    }
+  });
 
   pedidoForm.addEventListener("submit", manejarEnvioPedido);
 }
