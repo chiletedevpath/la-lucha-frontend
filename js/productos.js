@@ -19,15 +19,15 @@ const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl;
 const PRODUCTO_ID_MAX_CATALOGO = 20;
 const PRODUCTOS_POR_PAGINA = 6;
 const IMAGENES_FALLBACK = {
-  chicharron: "assets/img/productos/sanguches/chicharron.jpg",
-  pavo: "assets/img/productos/sanguches/pavo.jpg",
-  chicha: "assets/img/productos/bebidas/chicha.jpg",
-  sanguches: "assets/img/productos/sanguches/chicharron.jpg",
-  bebidas: "assets/img/productos/bebidas/chicha.jpg",
-  acompanamientos: "assets/img/productos/sanguches/chicharron.jpg",
-  combos: "assets/img/productos/sanguches/chicharron.jpg",
-  postres: "assets/img/productos/sanguches/chicharron.jpg",
-  promociones: "assets/img/productos/sanguches/chicharron.jpg"
+  chicharron: "assets/img/productos/sanguches/chicharron.webp",
+  pavo: "assets/img/productos/sanguches/pavo.webp",
+  chicha: "assets/img/productos/bebidas/chicha.webp",
+  sanguches: "assets/img/productos/sanguches/chicharron.webp",
+  bebidas: "assets/img/productos/bebidas/chicha.webp",
+  acompanamientos: "assets/img/productos/sanguches/chicharron.webp",
+  combos: "assets/img/productos/sanguches/chicharron.webp",
+  postres: "assets/img/productos/sanguches/chicharron.webp",
+  promociones: "assets/img/productos/sanguches/chicharron.webp"
 };
 
 let categoriaActual = "todos";
@@ -80,6 +80,8 @@ function obtenerCategoriaPorId(categoriaId, categoriasPorId) {
 }
 
 function resolverImagenProducto(producto, categoria) {
+  if (producto.imagenUrl) return producto.imagenUrl;
+
   const nombreNormalizado = normalizarTexto(producto.nombre);
 
   if (nombreNormalizado.includes("chicharron")) return IMAGENES_FALLBACK.chicharron;
