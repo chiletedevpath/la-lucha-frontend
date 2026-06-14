@@ -36,6 +36,28 @@ const solicitudStore = window.LaLuchaSolicitud;
 
 const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl;
 const IMAGEN_FALLBACK = "assets/img/productos/sanguches/chicharron.webp";
+const IMAGENES_PRODUCTO = {
+  chicharron: "assets/img/productos/sanguches/chicharron.webp",
+  pavo: "assets/img/productos/sanguches/pavo.webp",
+  asado: "assets/img/productos/sanguches/asado.webp",
+  mixto: "assets/img/productos/sanguches/mixto.webp",
+  pollo: "assets/img/productos/sanguches/pollo.webp",
+  hamburguesa: "assets/img/productos/sanguches/hamburguesa.webp",
+  chicha: "assets/img/productos/bebidas/chicha.webp",
+  cafe: "assets/img/productos/bebidas/cafe.webp",
+  emoliente: "assets/img/productos/bebidas/emoliente.webp",
+  gaseosa: "assets/img/productos/bebidas/gaseosa-personal.webp",
+  limonada: "assets/img/productos/bebidas/limonada-frozen.webp",
+  camote: "assets/img/productos/acompanamientos/camote-frito.webp",
+  papasPersonales: "assets/img/productos/acompanamientos/papas-fritas-personales.webp",
+  papasFamiliares: "assets/img/productos/acompanamientos/papas-fritas-familiar.webp",
+  salsaCriolla: "assets/img/productos/acompanamientos/salsa-criolla-extra.webp",
+  comboCriollo: "assets/img/productos/combos/combo-criollo-personal.webp",
+  comboFamiliar: "assets/img/productos/combos/combo-familiar.webp",
+  comboFull: "assets/img/productos/combos/combo-full-aji.webp",
+  alfajor: "assets/img/productos/postres/alfajor-artesanal.webp",
+  mazamorra: "assets/img/productos/postres/mazamorra-morada.webp"
+};
 const HORA_RECOJO_MIN = "08:00";
 const HORA_RECOJO_MAX = "22:00";
 
@@ -50,6 +72,14 @@ function obtenerParametroUrl(nombreParametro) {
 
 function limpiarTexto(texto) {
   return typeof texto === "string" ? texto.trim() : "";
+}
+
+function normalizarTexto(texto) {
+  return String(texto)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
 }
 
 function formatearPrecio(precio) {
@@ -186,6 +216,37 @@ function validarHoraRecojoEnVivo() {
 }
 
 function resolverImagenProducto(producto) {
+  const nombreNormalizado = normalizarTexto(producto?.nombre || "");
+
+  if (nombreNormalizado.includes("chicharron")) return IMAGENES_PRODUCTO.chicharron;
+  if (nombreNormalizado.includes("pavo")) return IMAGENES_PRODUCTO.pavo;
+  if (nombreNormalizado.includes(" de asado") || nombreNormalizado.startsWith("asado")) {
+    return IMAGENES_PRODUCTO.asado;
+  }
+  if (nombreNormalizado.includes("mixto")) return IMAGENES_PRODUCTO.mixto;
+  if (nombreNormalizado.includes("pollo")) return IMAGENES_PRODUCTO.pollo;
+  if (nombreNormalizado.includes("hamburguesa")) return IMAGENES_PRODUCTO.hamburguesa;
+  if (nombreNormalizado.includes("chicha")) return IMAGENES_PRODUCTO.chicha;
+  if (nombreNormalizado.includes("cafe")) return IMAGENES_PRODUCTO.cafe;
+  if (nombreNormalizado.includes("emoliente")) return IMAGENES_PRODUCTO.emoliente;
+  if (nombreNormalizado.includes("gaseosa")) return IMAGENES_PRODUCTO.gaseosa;
+  if (nombreNormalizado.includes("limonada")) return IMAGENES_PRODUCTO.limonada;
+  if (nombreNormalizado.includes("camote")) return IMAGENES_PRODUCTO.camote;
+  if (nombreNormalizado.includes("papas") && nombreNormalizado.includes("familiar")) {
+    return IMAGENES_PRODUCTO.papasFamiliares;
+  }
+  if (nombreNormalizado.includes("papas")) return IMAGENES_PRODUCTO.papasPersonales;
+  if (nombreNormalizado.includes("salsa criolla")) return IMAGENES_PRODUCTO.salsaCriolla;
+  if (nombreNormalizado.includes("combo") && nombreNormalizado.includes("familiar")) {
+    return IMAGENES_PRODUCTO.comboFamiliar;
+  }
+  if (nombreNormalizado.includes("combo") && nombreNormalizado.includes("full")) {
+    return IMAGENES_PRODUCTO.comboFull;
+  }
+  if (nombreNormalizado.includes("combo")) return IMAGENES_PRODUCTO.comboCriollo;
+  if (nombreNormalizado.includes("alfajor")) return IMAGENES_PRODUCTO.alfajor;
+  if (nombreNormalizado.includes("mazamorra")) return IMAGENES_PRODUCTO.mazamorra;
+
   return limpiarTexto(producto?.imagen || producto?.imagenUrl) || IMAGEN_FALLBACK;
 }
 

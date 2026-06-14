@@ -23,11 +23,24 @@ const IMAGENES_FALLBACK = {
   chicharron: "assets/img/productos/sanguches/chicharron.webp",
   pavo: "assets/img/productos/sanguches/pavo.webp",
   chicha: "assets/img/productos/bebidas/chicha.webp",
+  cafe: "assets/img/productos/bebidas/cafe.webp",
+  emoliente: "assets/img/productos/bebidas/emoliente.webp",
+  gaseosa: "assets/img/productos/bebidas/gaseosa-personal.webp",
+  limonada: "assets/img/productos/bebidas/limonada-frozen.webp",
+  camote: "assets/img/productos/acompanamientos/camote-frito.webp",
+  papasPersonales: "assets/img/productos/acompanamientos/papas-fritas-personales.webp",
+  papasFamiliares: "assets/img/productos/acompanamientos/papas-fritas-familiar.webp",
+  salsaCriolla: "assets/img/productos/acompanamientos/salsa-criolla-extra.webp",
+  comboCriollo: "assets/img/productos/combos/combo-criollo-personal.webp",
+  comboFamiliar: "assets/img/productos/combos/combo-familiar.webp",
+  comboFull: "assets/img/productos/combos/combo-full-aji.webp",
+  alfajor: "assets/img/productos/postres/alfajor-artesanal.webp",
+  mazamorra: "assets/img/productos/postres/mazamorra-morada.webp",
   sanguches: "assets/img/productos/sanguches/chicharron.webp",
   bebidas: "assets/img/productos/bebidas/chicha.webp",
-  acompanamientos: "assets/img/productos/sanguches/chicharron.webp",
-  combos: "assets/img/productos/sanguches/chicharron.webp",
-  postres: "assets/img/productos/sanguches/chicharron.webp",
+  acompanamientos: "assets/img/productos/acompanamientos/papas-fritas-personales.webp",
+  combos: "assets/img/productos/combos/combo-criollo-personal.webp",
+  postres: "assets/img/productos/postres/alfajor-artesanal.webp",
   promociones: "assets/img/productos/sanguches/chicharron.webp"
 };
 
@@ -133,13 +146,38 @@ function obtenerCategoriaPorId(categoriaId, categoriasPorId) {
 }
 
 function resolverImagenProducto(producto, categoria) {
-  if (producto.imagenUrl) return producto.imagenUrl;
-
   const nombreNormalizado = normalizarTexto(producto.nombre);
 
   if (nombreNormalizado.includes("chicharron")) return IMAGENES_FALLBACK.chicharron;
   if (nombreNormalizado.includes("pavo")) return IMAGENES_FALLBACK.pavo;
+  if (nombreNormalizado.includes(" de asado") || nombreNormalizado.startsWith("asado")) {
+    return "assets/img/productos/sanguches/asado.webp";
+  }
+  if (nombreNormalizado.includes("mixto")) return "assets/img/productos/sanguches/mixto.webp";
+  if (nombreNormalizado.includes("pollo")) return "assets/img/productos/sanguches/pollo.webp";
+  if (nombreNormalizado.includes("hamburguesa")) return "assets/img/productos/sanguches/hamburguesa.webp";
   if (nombreNormalizado.includes("chicha")) return IMAGENES_FALLBACK.chicha;
+  if (nombreNormalizado.includes("cafe")) return IMAGENES_FALLBACK.cafe;
+  if (nombreNormalizado.includes("emoliente")) return IMAGENES_FALLBACK.emoliente;
+  if (nombreNormalizado.includes("gaseosa")) return IMAGENES_FALLBACK.gaseosa;
+  if (nombreNormalizado.includes("limonada")) return IMAGENES_FALLBACK.limonada;
+  if (nombreNormalizado.includes("camote")) return IMAGENES_FALLBACK.camote;
+  if (nombreNormalizado.includes("papas") && nombreNormalizado.includes("familiar")) {
+    return IMAGENES_FALLBACK.papasFamiliares;
+  }
+  if (nombreNormalizado.includes("papas")) return IMAGENES_FALLBACK.papasPersonales;
+  if (nombreNormalizado.includes("salsa criolla")) return IMAGENES_FALLBACK.salsaCriolla;
+  if (nombreNormalizado.includes("combo") && nombreNormalizado.includes("familiar")) {
+    return IMAGENES_FALLBACK.comboFamiliar;
+  }
+  if (nombreNormalizado.includes("combo") && nombreNormalizado.includes("full")) {
+    return IMAGENES_FALLBACK.comboFull;
+  }
+  if (nombreNormalizado.includes("combo")) return IMAGENES_FALLBACK.comboCriollo;
+  if (nombreNormalizado.includes("alfajor")) return IMAGENES_FALLBACK.alfajor;
+  if (nombreNormalizado.includes("mazamorra")) return IMAGENES_FALLBACK.mazamorra;
+
+  if (producto.imagenUrl) return producto.imagenUrl;
 
   return IMAGENES_FALLBACK[categoria] || IMAGENES_FALLBACK.sanguches;
 }
