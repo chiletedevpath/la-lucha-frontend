@@ -48,7 +48,6 @@
         <div class="container">
           <div class="contacto-main__grid">
             <div class="contacto-form-wrapper">
-              <!-- Sección del Formulario -->
               <div id="contacto-formulario-seccion">
                 <span class="contacto-label">Envíanos un mensaje</span>
                 <h2 class="contacto-form-titulo">¿Tienes alguna consulta?</h2>
@@ -104,7 +103,6 @@
                 </form>
               </div>
 
-              <!-- Tarjeta de Éxito (Oculta por defecto) -->
               <div id="contacto-exito" class="contacto-exito" style="display: none;">
                 <div class="exito-contenido">
                   <span class="material-symbols-rounded exito-icono" aria-hidden="true">
@@ -145,7 +143,6 @@
                 </div>
               </div>
 
-              <!-- Tarjeta de WhatsApp con número real -->
               <div class="info-card info-card--whatsapp">
                 <span class="info-card__icono" aria-hidden="true">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 1.35rem; height: 1.35rem;">
@@ -207,7 +204,6 @@
         </div>
       </section>
 
-      <!-- Sección de Preguntas Frecuentes (FAQs Acordeón) -->
       <section class="contacto-faq">
         <div class="container">
           <div class="contacto-faq__header">
@@ -283,7 +279,6 @@
       </section>
     </main>
 
-    <!-- Botón Flotante de WhatsApp -->
     <a href="https://wa.me/51977610571?text=Hola%20La%20Lucha%2C%20quisiera%20hacer%20una%20consulta..." target="_blank" rel="noopener noreferrer" class="whatsapp-flotante" aria-label="Escríbenos por WhatsApp">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.728 2.016 14.252.99 11.63.99c-5.439 0-9.863 4.372-9.867 9.802-.001 1.772.477 3.5 1.39 5.005l-.998 3.644 3.738-.981 1.164.643zm11.233-6.529c-.287-.143-1.696-.837-1.959-.933-.262-.096-.454-.143-.646.143-.192.287-.743.933-.91 1.124-.167.192-.334.215-.621.072-.287-.143-1.21-.446-2.305-1.424-.853-.761-1.429-1.701-1.597-1.988-.167-.287-.018-.442.125-.583.129-.127.287-.335.43-.502.143-.167.192-.287.287-.478.096-.191.048-.359-.024-.502-.072-.143-.646-1.554-.885-2.127-.233-.559-.47-.482-.646-.491-.167-.008-.359-.01-.55-.01s-.502.072-.766.359c-.263.287-1.004.981-1.004 2.392s1.028 2.774 1.171 2.965c.143.191 2.023 3.088 4.902 4.33.685.295 1.219.472 1.636.604.688.219 1.314.188 1.808.114.55-.082 1.696-.693 1.936-1.361.24-.668.24-1.243.167-1.361-.072-.118-.263-.192-.55-.335z"/>
@@ -296,10 +291,8 @@
     <script src="js/menu.js"></script>
     <script src="js/main.js?v=20260612-cleanup"></script>
 
-    <!-- Script interactivo para formulario y FAQ (Vanilla JavaScript de alto nivel universitario) -->
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        // --- 1. Control del Formulario e Interacción de Éxito ---
         const form = document.getElementById('form-contacto');
         const formSeccion = document.getElementById('contacto-formulario-seccion');
         const exitoSeccion = document.getElementById('contacto-exito');
@@ -309,43 +302,36 @@
 
         if (form && formSeccion && exitoSeccion) {
           form.addEventListener('submit', (e) => {
-            e.preventDefault(); // Previene la recarga de página estándar
+            e.preventDefault();
 
-            // Efecto de carga en el botón de enviar
             const nombreInput = document.getElementById('nombre').value;
             const originalText = btnEnviar.innerHTML;
             btnEnviar.disabled = true;
             btnEnviar.innerHTML = '<span>Enviando...</span>';
 
-            // Simula una petición al servidor de 1.2 segundos (Experiencia Premium)
             setTimeout(() => {
-              // Asigna el nombre al mensaje de éxito
               if (exitoNombre) {
                 exitoNombre.textContent = nombreInput;
               }
 
-              // Oculta el formulario y muestra el éxito con una transición
               formSeccion.style.display = 'none';
               exitoSeccion.style.display = 'block';
               exitoSeccion.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-              // Restablece el botón para el futuro
               btnEnviar.disabled = false;
               btnEnviar.innerHTML = originalText;
-              form.reset(); // Limpia los campos del formulario
+              form.reset();
             }, 1200);
           });
         }
 
         if (btnVolver && formSeccion && exitoSeccion) {
           btnVolver.addEventListener('click', () => {
-            // Regresa al formulario con animación
             exitoSeccion.style.display = 'none';
             formSeccion.style.display = 'block';
           });
         }
 
-        // --- 2. Acordeón Interactivo de Preguntas Frecuentes (FAQ) ---
         const faqPreguntas = document.querySelectorAll('.faq-pregunta');
 
         faqPreguntas.forEach(pregunta => {
@@ -354,7 +340,6 @@
             const respuesta = item.querySelector('.faq-respuesta');
             const estaAbierto = pregunta.getAttribute('aria-expanded') === 'true';
 
-            // Cierra las demás preguntas abiertas para comportamiento limpio (opcional, pero profesional)
             document.querySelectorAll('.faq-item').forEach(otroItem => {
               if (otroItem !== item) {
                 otroItem.classList.remove('faq-item--active');
@@ -364,7 +349,6 @@
               }
             });
 
-            // Conmutar estado actual
             if (estaAbierto) {
               pregunta.setAttribute('aria-expanded', 'false');
               item.classList.remove('faq-item--active');
@@ -373,7 +357,6 @@
             } else {
               pregunta.setAttribute('aria-expanded', 'true');
               item.classList.add('faq-item--active');
-              // Asigna la altura máxima basada en el scrollHeight real para transición CSS suave
               respuesta.style.maxHeight = respuesta.scrollHeight + 'px';
               respuesta.style.opacity = '1';
             }

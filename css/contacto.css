@@ -471,11 +471,6 @@ a.info-card__valor:hover {
   display: block;
 }
 
-/* ==========================================================================
-   NUEVAS MEJORAS INTERACTIVAS Y PREMIUM (APTAS PARA PROYECTO UNIVERSITARIO)
-   ========================================================================== */
-
-/* 1. Tarjeta de Éxito en Formulario */
 .contacto-exito {
   padding: var(--space-6) var(--space-4);
   text-align: center;
@@ -524,7 +519,6 @@ a.info-card__valor:hover {
   box-shadow: var(--shadow-sm);
 }
 
-/* 2. Sección de Preguntas Frecuentes (FAQs) */
 .contacto-faq {
   padding-block: var(--section-y);
   background: linear-gradient(180deg, var(--color-surface-warm), var(--color-surface));
@@ -612,7 +606,7 @@ a.info-card__valor:hover {
   padding-inline: var(--space-5);
   transition: 
     max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.3 cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .faq-respuesta p {
@@ -622,7 +616,6 @@ a.info-card__valor:hover {
   line-height: var(--line-body);
 }
 
-/* Estado activo del acordeón */
 .faq-item--active {
   border-color: var(--color-brand);
   box-shadow: var(--shadow-md);
@@ -637,7 +630,6 @@ a.info-card__valor:hover {
   color: var(--color-brand);
 }
 
-/* 3. Botón flotante de WhatsApp */
 .whatsapp-flotante {
   position: fixed;
   bottom: 2rem;
@@ -669,8 +661,6 @@ a.info-card__valor:hover {
   height: 1.85rem;
 }
 
-
-/* 4. Botón de "Cómo llegar" en el Mapa */
 .contacto-mapa__acciones {
   display: flex;
   justify-content: center;
@@ -711,7 +701,6 @@ a.info-card__valor:hover {
   font-size: 1.25rem;
 }
 
-/* Animaciones */
 @keyframes fadeSlideIn {
   from {
     opacity: 0;
@@ -740,7 +729,6 @@ a.info-card__valor:hover {
   }
 }
 
-/* Adaptabilidad extra para móviles */
 @media (max-width: 35rem) {
   .contacto-faq__header {
     margin-bottom: var(--space-5);
