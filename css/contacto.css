@@ -66,6 +66,10 @@
   text-transform: uppercase;
 }
 
+.contacto-form-wrapper .contacto-label {
+  color: var(--color-accent-dark);
+}
+
 .contacto-hero__titulo {
   max-width: 12ch;
   margin-inline: auto;
@@ -85,6 +89,7 @@
   padding-top: var(--section-y);
   padding-bottom: 0;
   background:
+    radial-gradient(circle at 12% 18%, rgba(216, 149, 32, 0.12), transparent 26rem),
     linear-gradient(180deg, var(--color-background), var(--color-surface-warm));
 }
 
@@ -92,15 +97,26 @@
   display: grid;
   gap: var(--space-6);
   align-items: start;
+  min-width: 0;
 }
 
 .contacto-form-wrapper,
 .contacto-info {
+  min-width: 0;
   padding: clamp(var(--space-5), 5vw, var(--space-7));
-  background: var(--color-surface);
+  background:
+    linear-gradient(180deg, var(--color-surface), color-mix(in srgb, var(--color-surface-warm) 20%, var(--color-surface)));
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
+}
+
+.contacto-form-wrapper {
+  border-left: 0.35rem solid var(--color-fresh);
+}
+
+.contacto-info {
+  border-top: 0.35rem solid var(--color-accent);
 }
 
 .contacto-form-titulo,
@@ -134,7 +150,7 @@
   padding: 0.9rem 1rem;
   color: var(--color-text);
   font: inherit;
-  background: var(--color-surface-warm);
+  background: color-mix(in srgb, var(--color-surface-warm) 82%, var(--color-surface));
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   transition:
@@ -162,9 +178,9 @@
 .form-grupo input:focus,
 .form-grupo textarea:focus {
   background: var(--color-surface);
-  border-color: var(--color-brand);
+  border-color: var(--color-fresh);
   outline: none;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-brand) 12%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-fresh) 14%, transparent);
 }
 
 .contacto-btn {
@@ -179,8 +195,8 @@
   font-weight: 700;
   line-height: 1.2;
   text-align: center;
-  background: var(--color-brand);
-  border: 1px solid var(--color-brand);
+  background: linear-gradient(135deg, var(--color-fresh), color-mix(in srgb, var(--color-fresh) 68%, var(--color-ink)));
+  border: 1px solid var(--color-fresh);
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
@@ -192,8 +208,8 @@
 }
 
 .contacto-btn:hover {
-  background: var(--color-brand-dark);
-  border-color: var(--color-brand-dark);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--color-fresh) 82%, var(--color-ink)), var(--color-ink));
+  border-color: color-mix(in srgb, var(--color-fresh) 70%, var(--color-ink));
   box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
@@ -220,8 +236,10 @@
   display: flex;
   gap: var(--space-4);
   align-items: flex-start;
+  min-width: 0;
   padding: var(--space-4);
-  background: var(--color-surface-warm);
+  background:
+    linear-gradient(180deg, var(--color-surface-warm), color-mix(in srgb, var(--color-surface) 35%, var(--color-surface-warm)));
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   transition:
@@ -244,8 +262,10 @@
   width: 2.6rem;
   height: 2.6rem;
   place-items: center;
-  color: var(--color-brand);
-  background: var(--color-brand-soft);
+  color: var(--color-fresh);
+  font-size: 1.45rem;
+  line-height: 1;
+  background: color-mix(in srgb, var(--color-fresh-soft) 72%, var(--color-surface));
   border-radius: var(--radius-pill);
 }
 
@@ -266,10 +286,11 @@
   font-size: var(--text-sm);
   font-weight: 500;
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 a.info-card__valor:hover {
-  color: var(--color-brand);
+  color: var(--color-fresh);
 }
 
 .contacto-redes {
@@ -309,7 +330,6 @@ a.info-card__valor:hover {
     color var(--transition-fast),
     transform var(--transition-fast),
     box-shadow var(--transition-fast);
-
 }
 
 .red-social:not(.red-social--disabled):hover {
@@ -345,8 +365,50 @@ a.info-card__valor:hover {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (max-width: 35rem) {
+  .contacto-hero {
+    min-height: 22rem;
+    padding: calc(var(--header-height) + var(--space-5)) var(--container-padding) var(--space-6);
+  }
 
+  .contacto-main {
+    padding-block: var(--space-6);
+  }
+
+  .contacto-form-wrapper,
+  .contacto-info {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+
+  .contacto-form-titulo,
+  .contacto-info-titulo {
+    font-size: clamp(1.8rem, 11vw, 2.25rem);
+  }
+
+  .info-card {
+    gap: var(--space-3);
+    padding: var(--space-3);
+  }
+
+  .contacto-redes__iconos,
+  .red-social {
+    width: 100%;
+  }
+}
+
+@media (max-width: 26rem) {
+  .info-card {
+    flex-direction: column;
+  }
+
+  .form-grupo input,
+  .form-grupo textarea {
+    padding-inline: var(--space-3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
   .contacto-btn,
   .form-grupo input,
   .form-grupo textarea {
@@ -357,8 +419,6 @@ a.info-card__valor:hover {
     transform: none;
   }
 }
-
-
 
 .contacto-mapa {
   padding-top: var(--space-4);

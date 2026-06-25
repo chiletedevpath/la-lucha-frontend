@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
   <head>
     <!-- =========================
@@ -9,9 +9,22 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <meta name="theme-color" content="#6f1f17" />
+
+    <meta
+      name="description"
+      content="La Lucha Sanguchería Criolla: carta, promociones, locales y contacto."
+    />
+
+    <link rel="manifest" href="site.webmanifest" />
+
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+
+    <link rel="icon" href="assets/icons/icon-192.png" />
+
     <!-- =========================
        TITLE
-  ========================== -->
+    ========================== -->
 
     <title>Carta | La Lucha Sanguchería Criolla</title>
 
@@ -30,6 +43,7 @@
     <link rel="stylesheet" href="css/carta.css" />
 
     <link rel="stylesheet" href="css/cards.css" />
+    <link rel="stylesheet" href="css/animations.css" />
 
     <!-- =========================
        GOOGLE FONTS
@@ -52,117 +66,131 @@
 
     <div id="navbar-container"></div>
 
-    <!-- =========================
-       MAIN CONTENT
-  ========================== -->
-
     <main>
-      <!-- =========================
-         HERO CARTA
-    ========================== -->
-
-      <section class="carta-hero">
-        <!-- Overlay oscuro -->
+      <section class="carta-hero reveal">
         <div class="overlay"></div>
 
         <div class="container carta-hero-content">
-          <!-- Título principal -->
+          <p class="section-eyebrow">Carta criolla</p>
           <h1>Nuestra Carta Criolla</h1>
 
-          <!-- Descripción -->
           <p class="hero-description">
-            Descubre los auténticos sabores peruanos preparados con ingredientes frescos, tradición
-            artesanal y calidad premium.
+            Sánguches artesanales, bebidas tradicionales y acompañamientos pensados para pedir con
+            sabor peruano.
           </p>
 
-          <!-- Estadísticas -->
           <div class="hero-stats">
             <div class="stat-card">
-              <strong>+20</strong>
-
-              <span>Especialidades</span>
+              <strong id="carta-total-productos">--</strong>
+              <span>productos base</span>
             </div>
 
             <div class="stat-card">
-              <strong>100%</strong>
-
-              <span>Sabor peruano</span>
+              <strong id="carta-total-categorias">--</strong>
+              <span>categorías</span>
             </div>
 
             <div class="stat-card">
-              <strong>Premium</strong>
-
-              <span>Ingredientes frescos</span>
+              <strong>6</strong>
+              <span>por página</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- =========================
-         BUSCADOR
-    ========================== -->
-
-      <section class="buscador-section">
+      <section class="carta-productos reveal" aria-labelledby="productos-title">
         <div class="container">
-          <div class="buscador-container">
-            <input
-              type="text"
-              id="buscador-input"
-              placeholder="Buscar sánguches, bebidas o postres..."
-            />
-          </div>
-        </div>
-      </section>
-      <!-- =========================
-         CATEGORÍAS
-    ========================== -->
-
-      <section class="carta-categorias">
-        <div class="container">
-          <!-- Título sección -->
           <div class="section-title">
-            <h2>Explora nuestras categorías</h2>
-
-            <p>Encuentra tu combinación favorita.</p>
+            <p class="section-eyebrow">Carta interactiva</p>
+            <h2 id="productos-title">Sabores listos para pedir</h2>
+            <p>Busca, filtra y elige tu favorito sin perder de vista los productos.</p>
           </div>
 
-          <!-- Botones filtros -->
-          <div class="categorias-lista">
-            <button type="button" data-categoria="todos" class="activo">🍽 Todos</button>
+          <div class="carta-toolbar" aria-label="Buscar y filtrar productos">
+            <div class="buscador-container">
+              <span class="material-symbols-rounded" aria-hidden="true">search</span>
+              <input
+                type="text"
+                id="buscador-input"
+                aria-label="Buscar productos en la carta"
+                placeholder="Buscar chicharrón, café, chicha..."
+              />
+            </div>
 
-            <button type="button" data-categoria="sanguches">🥪 Sánguches</button>
+            <div class="categorias-lista" aria-label="Filtrar productos por categoría">
+              <button type="button" data-categoria="todos" class="activo">
+                <span class="material-symbols-rounded" aria-hidden="true">apps</span>
+                <span class="categoria-label">Todos</span>
+                <span class="categoria-count">0</span>
+              </button>
 
-            <button type="button" data-categoria="bebidas">🥤 Bebidas</button>
+              <button type="button" data-categoria="sanguches">
+                <span class="material-symbols-rounded" aria-hidden="true">lunch_dining</span>
+                <span class="categoria-label">Sánguches</span>
+                <span class="categoria-count">0</span>
+              </button>
 
-            <button type="button" data-categoria="postres">🍰 Postres</button>
+              <button type="button" data-categoria="bebidas">
+                <span class="material-symbols-rounded" aria-hidden="true">local_cafe</span>
+                <span class="categoria-label">Bebidas</span>
+                <span class="categoria-count">0</span>
+              </button>
+
+              <button type="button" data-categoria="acompanamientos">
+                <span class="material-symbols-rounded" aria-hidden="true">restaurant</span>
+                <span class="categoria-label">Acompañamientos</span>
+                <span class="categoria-count">0</span>
+              </button>
+
+              <button type="button" data-categoria="combos">
+                <span class="material-symbols-rounded" aria-hidden="true">fastfood</span>
+                <span class="categoria-label">Combos</span>
+                <span class="categoria-count">0</span>
+              </button>
+
+              <button type="button" data-categoria="postres">
+                <span class="material-symbols-rounded" aria-hidden="true">bakery_dining</span>
+                <span class="categoria-label">Postres</span>
+                <span class="categoria-count">0</span>
+              </button>
+
+              <button type="button" data-categoria="promociones">
+                <span class="material-symbols-rounded" aria-hidden="true">sell</span>
+                <span class="categoria-label">Promociones</span>
+                <span class="categoria-count">0</span>
+              </button>
+            </div>
+
+            <button class="carta-toolbar__clear" id="limpiar-filtros" type="button" hidden>
+              Limpiar
+            </button>
           </div>
-        </div>
-      </section>
 
-      <!-- =========================
-         PRODUCTOS
-    ========================== -->
+          <div class="productos-estado" id="productos-estado" aria-live="polite"></div>
 
-      <section class="carta-productos">
-        <div class="container">
-          <!-- Encabezado -->
-          <div class="section-title">
-            <h2>Productos destacados</h2>
-
-            <p>Los favoritos de nuestros clientes.</p>
-          </div>
-
-          <!-- Productos renderizados desde JS -->
           <div class="productos-grid" id="productos-grid"></div>
 
-          <!-- Estado dinámico -->
-          <div class="productos-estado" id="productos-estado"></div>
-          <!-- Paginación futura -->
-          <div class="paginacion">
-            <button type="button">← Anterior</button>
+          <nav class="paginacion" aria-label="Paginación de productos">
+            <button
+              class="paginacion__btn"
+              id="btn-anterior"
+              type="button"
+              aria-label="Ir a la página anterior"
+            >
+              Anterior
+            </button>
 
-            <button type="button">Siguiente →</button>
-          </div>
+            <div class="paginacion__numeros" id="paginacion-numeros"></div>
+
+            <button
+              class="paginacion__btn"
+              id="btn-siguiente"
+              type="button"
+              aria-label="Ir a la página siguiente"
+            >
+              Siguiente
+            </button>
+          </nav>
         </div>
       </section>
     </main>
@@ -178,19 +206,15 @@
   ========================== -->
 
     <script src="js/menu.js"></script>
-    <script src="js/main.js"></script>
-
-    <!-- =========================
-       DATA PRODUCTOS
-  ========================== -->
-
-    <script src="data/productos.js"></script>
+    <script src="js/main.js?v=20260612-cleanup"></script>
+    <script src="js/api-config.js?v=20260612"></script>
+    <script src="js/solicitud-store.js?v=20260613-solicitud"></script>
 
     <!-- =========================
        JS CARTA
   ========================== -->
 
-    <script src="js/productos.js"></script>
-    <script src="js/animaciones.js"></script>
+    <script src="js/productos.js?v=20260613-solicitud"></script>
+    <script src="js/animaciones.js?v=20260612-visible"></script>
   </body>
 </html>

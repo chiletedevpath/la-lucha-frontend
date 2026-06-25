@@ -1,12 +1,11 @@
-/* =========================
-   PAGE HEADER
-========================= */
 
 .page-header {
-  padding-block: var(--space-10);
+  padding-block: var(--space-9);
   color: var(--color-surface);
   text-align: center;
-  background: var(--color-brand);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(216, 149, 32, 0.22), transparent 24rem),
+    linear-gradient(135deg, var(--color-brand-deep) 0%, var(--color-brand-dark) 48%, var(--color-brand) 100%);
 }
 
 .page-header h1 {
@@ -21,50 +20,78 @@
   font-size: var(--text-md);
 }
 
-/* =========================
-   LOCALES
-========================= */
-
 .locales-section {
-  background: var(--color-background);
+  background:
+    linear-gradient(180deg, var(--color-background), var(--color-surface-warm));
+  padding-block: var(--space-8);
 }
 
 #locales-container {
   display: grid;
-  gap: var(--space-7);
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  max-width: 920px;
+  margin: 0 auto;
+  padding-inline: var(--space-4);
 }
 
-/* =========================
-   INFO BARS
-========================= */
-
-.top-bar,
-.bottom-bar {
-  overflow: hidden;
-  padding-block: var(--space-3);
-  color: var(--color-ink);
-  background: var(--color-accent);
-  white-space: nowrap;
+#locales-container .card {
+  margin: 0;
 }
 
-.top-bar-track,
-.bottom-bar-track {
-  display: inline-block;
-  animation: moverTexto 18s linear infinite;
+#locales-container .card--location {
+  min-height: 0;
 }
 
-.top-bar span,
-.bottom-bar span {
-  margin-right: var(--space-10);
-  font-weight: 600;
+#locales-container .card--location .card__media {
+  min-height: clamp(14rem, 24vw, 18rem);
 }
 
-@keyframes moverTexto {
-  from {
-    transform: translateX(0);
+#locales-container .card--location .card__image {
+  object-position: center;
+}
+
+#locales-container .card--location .card__body {
+  min-height: auto;
+}
+
+#locales-container .card--location .card__actions {
+  margin-top: var(--space-4);
+}
+
+@media (max-width: 48rem) {
+  .card--horizontal {
+    display: flex;
+    flex-direction: column;
   }
 
-  to {
-    transform: translateX(-50%);
+  .card__media {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+@media (max-width: 35rem) {
+  .page-header {
+    padding-block: var(--space-6);
+  }
+
+  .locales-section {
+    padding-block: var(--space-6);
+  }
+
+  #locales-container {
+    padding-inline: 0;
+  }
+
+  #locales-container .card--location .card__media {
+    min-height: 12rem;
+  }
+
+  #locales-container .card--location .card__actions {
+    align-items: stretch;
+  }
+
+  #locales-container .card--location .card__action {
+    width: 100%;
   }
 }
