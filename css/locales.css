@@ -1,97 +1,127 @@
+/* ===================================================
+   VARIABLES Y RESETS ESTRUCTURALES
+=================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
+main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* ===================================================
+   ENCABEZADO (TEXTO PERFECTAMENTE CENTRADO)
+=================================================== */
 .page-header {
-  padding-block: var(--space-9);
-  color: var(--color-surface);
+  position: relative;
+  width: 100%;
+  padding: 60px 0; /* Ajusta el padding vertical si necesitas que sea más alta */
   text-align: center;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(216, 149, 32, 0.22), transparent 24rem),
-    linear-gradient(135deg, var(--color-brand-deep) 0%, var(--color-brand-dark) 48%, var(--color-brand) 100%);
+  color: #ffffff;
+  
+  /* Ponemos un fondo guinda de respaldo, el degradado oscuro y la ruta a tu webp */
+  background: #6f1f17 url('../assets/img/banners/hero-banner.webp') no-repeat center center;
+  background-size: cover;
+  background-blend-mode: multiply; /* Esto fusiona el guinda con la imagen de forma elegante */
 }
 
 .page-header h1 {
-  margin-bottom: var(--space-4);
-  color: var(--color-surface);
-  font-size: var(--text-3xl);
+  margin-bottom: var(--space-4, 1rem);
+  color: var(--color-surface, #ffffff);
+  font-size: var(--text-3xl, 2.5rem);
+  text-align: center;
+  width: 100%;
 }
 
 .page-header p {
   margin-inline: auto;
-  color: var(--color-surface-warm);
-  font-size: var(--text-md);
+  color: var(--color-surface-warm, #f5efe6);
+  font-size: var(--text-md, 1.1rem);
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
 }
 
+/* ===================================================
+   BARRA AMARILLA TICKER (CERO MÁRGENES / PEGADA)
+=================================================== */
+.page-header + .barra-transitoria-ticker {
+  margin-top: 0 !important;
+  border-top: none !important;
+}
+
+.barra-transitoria-ticker {
+  width: 100% !important;
+  background-color: #dfa12b !important;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 12px 0 !important;
+  display: flex !important;
+  margin: 0 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ticker-wrap {
+  display: flex;
+  width: max-content;
+  animation: scroll-infinito 25s linear infinite;
+}
+
+.ticker-item {
+  font-family: sans-serif; 
+  font-weight: 800;
+  font-size: 14px;
+  color: #1a1a1a !important;
+  white-space: nowrap;
+  padding-right: 50px;
+}
+
+.barra-transitoria-ticker:hover .ticker-wrap {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-infinito {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ===================================================
+   SECCIÓN DE TARJETAS DE LOCALES
+=================================================== */
 .locales-section {
-  background:
-    linear-gradient(180deg, var(--color-background), var(--color-surface-warm));
-  padding-block: var(--space-8);
+  background: linear-gradient(180deg, var(--color-background, #f9f6f0), var(--color-surface-warm, #f5efe6));
+  padding-block: var(--space-8, 3rem);
+  margin-top: 0 !important;
 }
 
 #locales-container {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-5);
+  gap: var(--space-5, 1.5rem);
   max-width: 920px;
   margin: 0 auto;
-  padding-inline: var(--space-4);
+  padding-inline: var(--space-4, 1rem);
 }
 
-#locales-container .card {
-  margin: 0;
+.card--location {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
-#locales-container .card--location {
-  min-height: 0;
-}
-
-#locales-container .card--location .card__media {
-  min-height: clamp(14rem, 24vw, 18rem);
-}
-
-#locales-container .card--location .card__image {
-  object-position: center;
-}
-
-#locales-container .card--location .card__body {
-  min-height: auto;
-}
-
-#locales-container .card--location .card__actions {
-  margin-top: var(--space-4);
+/* ===================================================
+   FOOTER RESET
+=================================================== */
+footer {
+  margin-top: 0 !important;
+  padding-top: 20px;
 }
 
 @media (max-width: 48rem) {
-  .card--horizontal {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .card__media {
-    aspect-ratio: 16 / 10;
-  }
-}
-
-@media (max-width: 35rem) {
-  .page-header {
-    padding-block: var(--space-6);
-  }
-
-  .locales-section {
-    padding-block: var(--space-6);
-  }
-
-  #locales-container {
-    padding-inline: 0;
-  }
-
-  #locales-container .card--location .card__media {
-    min-height: 12rem;
-  }
-
-  #locales-container .card--location .card__actions {
-    align-items: stretch;
-  }
-
-  #locales-container .card--location .card__action {
-    width: 100%;
-  }
+  #locales-container { padding-inline: 0; }
 }
