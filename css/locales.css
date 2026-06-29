@@ -19,14 +19,14 @@ main {
 .page-header {
   position: relative;
   width: 100%;
-  padding: 60px 0; /* Ajusta el padding vertical si necesitas que sea más alta */
+  padding: 60px 0; 
   text-align: center;
   color: #ffffff;
   
-  /* Ponemos un fondo guinda de respaldo, el degradado oscuro y la ruta a tu webp */
+
   background: #6f1f17 url('../assets/img/banners/hero-banner.webp') no-repeat center center;
   background-size: cover;
-  background-blend-mode: multiply; /* Esto fusiona el guinda con la imagen de forma elegante */
+  background-blend-mode: multiply; 
 }
 
 .page-header h1 {
