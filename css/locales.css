@@ -14,11 +14,12 @@ main {
 }
 
 /* ===================================================
-   ENCABEZADO (TEXTO PERFECTAMENTE CENTRADO)
+   ENCABEZADO (COLOR SINCRO + EFECTO DINÁMICO)
 =================================================== */
 .page-header {
   position: relative;
   width: 100%;
+<<<<<<< HEAD
   padding: 60px 0; 
   text-align: center;
   color: #ffffff;
@@ -27,6 +28,17 @@ main {
   background: #6f1f17 url('../assets/img/banners/hero-banner.webp') no-repeat center center;
   background-size: cover;
   background-blend-mode: multiply; 
+=======
+  padding: 80px 20px; /* Un poco más de aire vertical */
+  text-align: center;
+  color: #ffffff;
+  
+  /* Sincronizado con el guinda corporativo profundo de "Quiénes Somos" */
+  background: linear-gradient(rgba(100, 19, 13, 0.85), rgba(40, 5, 3, 0.9)), 
+              url('../assets/img/banners/hero-banner.webp') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed; /* Efecto sutil de fondo fijo al hacer scroll */
+>>>>>>> 46975f2 (mejora de diseño)
 }
 
 .page-header h1 {
@@ -90,32 +102,97 @@ main {
 }
 
 /* ===================================================
-   SECCIÓN DE TARJETAS DE LOCALES
+   SECCIÓN DE TARJETAS DE LOCALES (NUEVA REJILLA 3 COLUMNAS)
 =================================================== */
 .locales-section {
   background: linear-gradient(180deg, var(--color-background, #f9f6f0), var(--color-surface-warm, #f5efe6));
-  padding-block: var(--space-8, 3rem);
+  padding-block: var(--space-8, 3.5rem);
   margin-top: 0 !important;
 }
 
 #locales-container {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-5, 1.5rem);
-  max-width: 920px;
+  /* Distribución inteligente: se adapta automáticamente en filas de hasta 3 columnas */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-6, 2rem);
+  max-width: 1200px; /* Expandido para aprovechar los laterales en pantallas grandes */
   margin: 0 auto;
-  padding-inline: var(--space-4, 1rem);
+  padding-inline: var(--space-4, 1.5rem);
 }
 
-.card--location {
+/* Tarjeta base con comportamiento flexible interno */
+.card {
   background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 12px; /* Esquinas ligeramente más suaves y modernas */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Obliga a todas las tarjetas a alinearse al mismo alto */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza el hover */
+}
+
+/* Efecto de elevación interactiva al pasar el mouse */
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(100, 19, 13, 0.15); /* Destello guinda muy sutil */
 }
 
 /* ===================================================
-   FOOTER RESET
+   COMPONENTES INTERNOS DE LA TARJETA (FOTOS Y BOTONES)
+=================================================== */
+.card__media {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 220px; /* Altura estandarizada para todas las fotos */
+}
+
+.card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* Micro-zoom dinámico en la imagen al hacer hover */
+.card:hover .card__image {
+  transform: scale(1.05);
+}
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Hace que el cuerpo use todo el espacio disponible */
+  padding: 25px;
+}
+
+/* Estilos para que el botón se empuje siempre hacia el fondo */
+.card__actions {
+  margin-top: auto; 
+  padding-top: 20px;
+}
+
+/* Estilización premium del botón "Ver ubicación" */
+.card__action {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  background-color: #e0453a; /* Guinda de la marca */
+  color: #ffffff;
+  padding: 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.card__action:hover {
+  background-color: #e0453a; /* Cambio de color interactivo al apuntar */
+}
+
+/* ===================================================
+   FOOTER RESET & RESPONSIVE
 =================================================== */
 footer {
   margin-top: 0 !important;
@@ -123,5 +200,13 @@ footer {
 }
 
 @media (max-width: 48rem) {
+<<<<<<< HEAD
   #locales-container { padding-inline: 0; }
 }
+=======
+  #locales-container { 
+    padding-inline: var(--space-4, 1rem); 
+    grid-template-columns: 1fr; /* Vuelve a una columna solo en celulares */
+  }
+}
+>>>>>>> 46975f2 (mejora de diseño)
