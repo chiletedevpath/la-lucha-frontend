@@ -4,7 +4,7 @@
 
 const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl || ""; 
 
-// 1. Tu lista oficial e inamovible de los 13 locales con sus datos base
+
 const MIS_LOCALES_OFICIALES = [
   { clave: "miraflores", nombre: "Local Miraflores", distrito: "Miraflores", direccion: "Av. Diagonal 308, Miraflores", telefono: "987 654 321", imagen: "assets/img/locales/miraflores.webp", maps: "https://maps.google.com/?q=La+Lucha+Sangucheria+Criolla+Miraflores" },
   { clave: "surco", nombre: "Local Surco", distrito: "Santiago de Surco", direccion: "Av. Primavera 1205, Santiago de Surco", telefono: "987 654 322", imagen: "assets/img/locales/SDS.jpg", maps: "https://maps.google.com/?q=La+Lucha+Sangucheria+Criolla+Surco" },
@@ -31,7 +31,7 @@ function formatearTelefono(telefono) {
 }
 
 async function cargarYCombinarLocales() {
-  // Hacemos una copia profunda de tus 13 locales estables
+ 
   let listaFinal = JSON.parse(JSON.stringify(MIS_LOCALES_OFICIALES));
 
   try {
@@ -41,15 +41,15 @@ async function cargarYCombinarLocales() {
     if (respuesta.ok) {
       const localesApi = await respuesta.json();
 
-      // Cruzamos los datos que vengan de la API para actualizar tus locales activos
+    
       localesApi.forEach(localApi => {
         const nombreApi = normalizarTexto(localApi.nombre);
         
-        // Buscamos si este local de la API coincide con alguno de tus 13 locales
+      
         const localTuyo = listaFinal.find(tuyo => nombreApi.includes(normalizarTexto(tuyo.clave)) || normalizarTexto(tuyo.nombre).includes(nombreApi));
         
         if (localTuyo) {
-          // Si la API trae datos reales, actualizamos los campos dinámicos
+
           if (localApi.direccion) localTuyo.direccion = localApi.direccion;
           if (localApi.telefono) localTuyo.telefono = formatearTelefono(localApi.telefono);
         }
