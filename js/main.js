@@ -36,7 +36,7 @@ async function cargarComponente(idContenedor, rutaArchivo, callback) {
 
 function initNavbarScroll(contenedor) {
   const header = contenedor.querySelector("[data-navbar]");
-  
+
   if (!header) return;
 
   const evaluarScroll = () => {
@@ -54,13 +54,21 @@ function initNavbarScroll(contenedor) {
   window.addEventListener("scroll", evaluarScroll);
 }
 
+function initNavbarCompleto(contenedor) {
+  initNavbarScroll(contenedor);
+
+  if (typeof window.initNavbar === "function") {
+    window.initNavbar(contenedor);
+  }
+}
+
 /* =========================
    APP INIT
 ========================= */
 
 async function inicializarComponentes() {
   await Promise.all([
-    cargarComponente("navbar-container", "components/navbar.html", initNavbarScroll),
+    cargarComponente("navbar-container", "components/navbar.html", initNavbarCompleto),
     cargarComponente("hero-container", "components/hero.html"),
     cargarComponente("footer-container", "components/footer.html")
   ]);
