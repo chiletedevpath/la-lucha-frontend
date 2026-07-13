@@ -1,4 +1,4 @@
-const CACHE_NAME = "la-lucha-cache-v7-production-ready";
+const CACHE_NAME = "la-lucha-cache-v8-academic-notice";
 const API_ORIGIN = "https://utp-la-lucha-bd-backend.onrender.com";
 
 const APP_SHELL = [
