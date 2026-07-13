@@ -1,4 +1,4 @@
-const CACHE_NAME = "la-lucha-cache-v9-api-resilience";
+﻿const CACHE_NAME = "la-lucha-cache-v10-image-optimization";
 const API_ORIGIN = "https://utp-la-lucha-bd-backend.onrender.com";
 
 const APP_SHELL = [
@@ -45,7 +45,7 @@ const APP_SHELL = [
   "./assets/icons/icon-512.png",
   "./assets/icons/maskable-512.png",
   "./assets/img/banners/hero-banner.webp",
-  "./assets/img/banners/Contactanos-banner.jpg"
+  "./assets/img/banners/Contactanos-banner.webp"
 ];
 
 self.addEventListener("install", (event) => {
