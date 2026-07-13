@@ -1,4 +1,4 @@
-const CACHE_NAME = "la-lucha-cache-v4-react-contacto";
+const CACHE_NAME = "la-lucha-cache-v5-react-promociones";
 
 const APP_SHELL = [
   "./",
