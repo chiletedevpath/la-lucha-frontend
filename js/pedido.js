@@ -33,6 +33,9 @@ const pedidoTipoPreview = document.getElementById("pedido-tipo-preview");
 const pedidoNombrePreview = document.getElementById("pedido-nombre-preview");
 const pedidoResumenTexto = document.getElementById("pedido-resumen-texto");
 const solicitudStore = window.LaLuchaSolicitud;
+const reactCreateElement = window.React?.createElement;
+const pedidoListaReactRoot =
+  pedidoLista && window.ReactDOM ? window.ReactDOM.createRoot(pedidoLista) : null;
 
 const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl;
 const IMAGEN_FALLBACK = "assets/img/productos/sanguches/chicharron.webp";
@@ -294,67 +297,105 @@ async function obtenerProductoPorId(productoId) {
 }
 
 /* =========================
-   RENDER DE SOLICITUD
+   RESUMEN DE SOLICITUD CON REACT
 ========================= */
 
-function crearFilaSolicitud(item) {
-  const fila = document.createElement("article");
-  fila.className = "pedido-item";
-
+function PedidoItemReact({ item }) {
   const subtotal = Number(item.precio) * Number(item.cantidad);
 
-  const imagen = document.createElement("img");
-  imagen.className = "pedido-item__imagen";
-  imagen.src = resolverImagenProducto(item);
-  imagen.alt = `Imagen de ${item.nombre}`;
-  imagen.onerror = () => {
-    imagen.src = IMAGEN_FALLBACK;
-  };
-
-  const contenido = document.createElement("div");
-  contenido.className = "pedido-item__contenido";
-
-  const titulo = document.createElement("strong");
-  titulo.className = "pedido-item__nombre";
-  titulo.textContent = item.nombre;
-
-  const precio = document.createElement("span");
-  precio.className = "pedido-item__precio";
-  precio.textContent = `${formatearPrecio(item.precio)} c/u`;
-
-  const acciones = document.createElement("div");
-  acciones.className = "pedido-item__acciones";
-
-  const cantidad = document.createElement("input");
-  cantidad.className = "pedido-item__cantidad";
-  cantidad.type = "number";
-  cantidad.min = "1";
-  cantidad.value = item.cantidad;
-  cantidad.setAttribute("aria-label", `Cantidad de ${item.nombre}`);
-  cantidad.addEventListener("input", () => {
-    solicitudStore.actualizarCantidad(item.id, item.tipo, cantidad.value);
+  function actualizarCantidad(event) {
+    solicitudStore.actualizarCantidad(item.id, item.tipo, event.target.value);
     renderizarSolicitud();
-  });
+  }
 
-  const quitar = document.createElement("button");
-  quitar.className = "pedido-item__quitar";
-  quitar.type = "button";
-  quitar.textContent = "Quitar";
-  quitar.setAttribute("aria-label", `Quitar ${item.nombre} de la solicitud`);
-  quitar.addEventListener("click", () => {
+  function quitarItem() {
     solicitudStore.quitarItem(item.id, item.tipo);
     renderizarSolicitud();
-  });
+  }
 
-  const subtotalElemento = document.createElement("span");
-  subtotalElemento.className = "pedido-item__subtotal";
-  subtotalElemento.textContent = formatearPrecio(subtotal);
+  return reactCreateElement(
+    "article",
+    { className: "pedido-item" },
+    reactCreateElement("img", {
+      className: "pedido-item__imagen",
+      src: resolverImagenProducto(item),
+      alt: `Imagen de ${item.nombre}`,
+      onError: function (event) {
+        event.currentTarget.src = IMAGEN_FALLBACK;
+      }
+    }),
+    reactCreateElement(
+      "div",
+      { className: "pedido-item__contenido" },
+      reactCreateElement("strong", { className: "pedido-item__nombre" }, item.nombre),
+      reactCreateElement(
+        "span",
+        { className: "pedido-item__precio" },
+        `${formatearPrecio(item.precio)} c/u`
+      ),
+      reactCreateElement(
+        "div",
+        { className: "pedido-item__acciones" },
+        reactCreateElement("input", {
+          className: "pedido-item__cantidad",
+          type: "number",
+          min: "1",
+          value: item.cantidad,
+          "aria-label": `Cantidad de ${item.nombre}`,
+          onChange: actualizarCantidad
+        }),
+        reactCreateElement(
+          "button",
+          {
+            className: "pedido-item__quitar",
+            type: "button",
+            "aria-label": `Quitar ${item.nombre} de la solicitud`,
+            onClick: quitarItem
+          },
+          "Quitar"
+        ),
+        reactCreateElement(
+          "span",
+          { className: "pedido-item__subtotal" },
+          formatearPrecio(subtotal)
+        )
+      )
+    )
+  );
+}
 
-  acciones.append(cantidad, quitar, subtotalElemento);
-  contenido.append(titulo, precio, acciones);
-  fila.append(imagen, contenido);
+function PedidoListaReact({ items }) {
+  if (!items.length) {
+    return reactCreateElement(
+      "p",
+      { className: "pedido-lista__vacio" },
+      "Agrega productos desde la carta para ver el total de tu pedido."
+    );
+  }
 
-  return fila;
+  return reactCreateElement(
+    React.Fragment,
+    null,
+    items.map((item) =>
+      reactCreateElement(PedidoItemReact, {
+        key: `${item.tipo}-${item.id}`,
+        item
+      })
+    )
+  );
+}
+
+function renderizarListaSolicitud(items) {
+  if (!pedidoLista) return;
+
+  if (pedidoListaReactRoot && reactCreateElement) {
+    pedidoListaReactRoot.render(reactCreateElement(PedidoListaReact, { items }));
+    return;
+  }
+
+  pedidoLista.textContent = items.length
+    ? "Tu navegador no pudo cargar el resumen interactivo."
+    : "Agrega productos desde la carta para ver el total de tu pedido.";
 }
 
 function renderizarSolicitud() {
@@ -363,16 +404,7 @@ function renderizarSolicitud() {
   const items = solicitudStore.obtenerSolicitud();
   const { cantidadTotal, total, igvIncluido } = solicitudStore.calcularTotales(items);
 
-  pedidoLista.innerHTML = "";
-
-  if (!items.length) {
-    const mensajeVacio = document.createElement("p");
-    mensajeVacio.className = "pedido-lista__vacio";
-    mensajeVacio.textContent = "Agrega productos desde la carta para ver el total de tu pedido.";
-    pedidoLista.append(mensajeVacio);
-  } else {
-    items.forEach((item) => pedidoLista.append(crearFilaSolicitud(item)));
-  }
+  renderizarListaSolicitud(items);
 
   if (pedidoTipoPreview) {
     pedidoTipoPreview.textContent = items.length ? "Pedido de productos" : "Pedido";

@@ -1,8 +1,8 @@
 /* =========================
-   PROMOCIONES
+   PROMOCIONES CON REACT
 ========================= */
 
-const contenedorPromociones = document.getElementById("promociones-container");
+const e = React.createElement;
 const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl;
 
 const IMAGENES_PROMOCIONES = {
@@ -16,7 +16,7 @@ const IMAGENES_PROMOCIONES = {
 };
 
 function normalizarTexto(texto) {
-  return String(texto)
+  return String(texto || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
@@ -88,129 +88,114 @@ async function obtenerPromocionesDesdeApi() {
     .map(adaptarPromocionApi);
 }
 
-/* =========================
-   UTILIDADES
-========================= */
-
-function crearElementoTexto(etiqueta, clase, texto) {
-  const elemento = document.createElement(etiqueta);
-  elemento.className = clase;
-  elemento.textContent = texto;
-
-  return elemento;
-}
-
-/* =========================
-   CREAR CARD PROMOCION
-========================= */
-
-function crearCardPromocion(promocion, index) {
-  const posicionInvertida = index % 2 !== 0;
-
-  const articulo = document.createElement("article");
-  articulo.className = `promocion-card reveal active ${
+function PromocionCard(props) {
+  const promocion = props.promocion;
+  const posicionInvertida = props.index % 2 !== 0;
+  const clases = `promocion-card reveal active ${
     posicionInvertida ? "promocion-card--reverse reveal-delay-1" : ""
   }`;
-  articulo.setAttribute("aria-label", `Promocion ${promocion.nombre}`);
 
-  const media = document.createElement("div");
-  media.className = "promocion-imagen";
-
-  const imagen = document.createElement("img");
-  imagen.src = promocion.imagen;
-  imagen.alt = `Promocion ${promocion.nombre}`;
-  imagen.loading = "lazy";
-
-  const contenido = document.createElement("div");
-  contenido.className = "promocion-contenido";
-
-  const badge = crearElementoTexto(
-    "span",
-    "promocion-badge",
-    promocion.badge || "Promocion especial"
+  return e(
+    "article",
+    { className: clases, "aria-label": `Promocion ${promocion.nombre}` },
+    e(
+      "div",
+      { className: "promocion-imagen" },
+      e("img", {
+        src: promocion.imagen,
+        alt: `Promocion ${promocion.nombre}`,
+        loading: "lazy"
+      })
+    ),
+    e(
+      "div",
+      { className: "promocion-contenido" },
+      e("span", { className: "promocion-badge" }, promocion.badge || "Promocion especial"),
+      e("p", { className: "promocion-incluye" }, promocion.incluye),
+      e("p", { className: "promocion-extra" }, promocion.extra),
+      e(
+        "div",
+        { className: "promocion-precios", "aria-label": "Precio de la promocion" },
+        promocion.precioOriginal
+          ? e(
+              "span",
+              { className: "promocion-precio-original" },
+              promocion.precioOriginal
+            )
+          : null,
+        e("strong", { className: "promocion-precio-final" }, promocion.precioPromo)
+      ),
+      e(
+        "a",
+        {
+          className: "promocion-btn",
+          href: `pedido.html?promocion=${encodeURIComponent(promocion.nombre)}`,
+          "aria-label": `Pedir promocion ${promocion.nombre}`
+        },
+        promocion.cta || "Pedir promocion"
+      )
+    )
   );
+}
 
-  const incluye = crearElementoTexto("p", "promocion-incluye", promocion.incluye);
-  const extra = crearElementoTexto("p", "promocion-extra", promocion.extra);
+function PromocionesApp() {
+  const [promociones, setPromociones] = React.useState([]);
+  const [estado, setEstado] = React.useState("cargando");
 
-  const precios = document.createElement("div");
-  precios.className = "promocion-precios";
-  precios.setAttribute("aria-label", "Precio de la promocion");
+  React.useEffect(function () {
+    let activo = true;
 
-  if (promocion.precioOriginal) {
-    const precioOriginal = crearElementoTexto(
-      "span",
-      "promocion-precio-original",
-      promocion.precioOriginal
+    obtenerPromocionesDesdeApi()
+      .then(function (promocionesApi) {
+        if (!activo) return;
+
+        setPromociones(promocionesApi);
+        setEstado("listo");
+      })
+      .catch(function (error) {
+        if (!activo) return;
+
+        console.error("No se pudo cargar promociones desde la API publica.", error);
+        setPromociones([]);
+        setEstado("error");
+      });
+
+    return function () {
+      activo = false;
+    };
+  }, []);
+
+  if (estado === "cargando") {
+    return e("p", { className: "sin-promociones" }, "Cargando promociones desde el backend...");
+  }
+
+  if (estado === "error") {
+    return e(
+      "p",
+      { className: "sin-promociones" },
+      "No se pudo cargar promociones desde el backend publico. Intenta nuevamente en unos segundos."
     );
-
-    precios.append(precioOriginal);
   }
 
-  const precioPromo = crearElementoTexto("strong", "promocion-precio-final", promocion.precioPromo);
-
-  precios.append(precioPromo);
-
-  const boton = document.createElement("a");
-  boton.className = "promocion-btn";
-  boton.href = `pedido.html?promocion=${encodeURIComponent(promocion.nombre)}`;
-  boton.textContent = promocion.cta || "Pedir promocion";
-  boton.setAttribute("aria-label", `Pedir promocion ${promocion.nombre}`);
-
-  media.append(imagen);
-  contenido.append(badge, incluye, extra, precios, boton);
-  articulo.append(media, contenido);
-
-  return articulo;
-}
-
-/* =========================
-   RENDER PROMOCIONES
-========================= */
-
-function renderizarPromociones(listaPromociones) {
-  if (!contenedorPromociones) return;
-
-  contenedorPromociones.innerHTML = "";
-
-  if (!Array.isArray(listaPromociones) || listaPromociones.length === 0) {
-    const mensaje = document.createElement("p");
-    mensaje.className = "sin-promociones";
-    mensaje.textContent = "No se encontraron promociones disponibles.";
-    contenedorPromociones.append(mensaje);
-    return;
+  if (!promociones.length) {
+    return e("p", { className: "sin-promociones" }, "No se encontraron promociones disponibles.");
   }
 
-  const fragmento = document.createDocumentFragment();
-
-  listaPromociones.forEach((promocion, index) => {
-    fragmento.append(crearCardPromocion(promocion, index));
-  });
-
-  contenedorPromociones.append(fragmento);
-  activarRevealsDinamicos(contenedorPromociones);
+  return e(
+    React.Fragment,
+    null,
+    promociones.map(function (promocion, index) {
+      return e(PromocionCard, {
+        key: promocion.id || promocion.nombre,
+        promocion,
+        index
+      });
+    })
+  );
 }
 
-function activarRevealsDinamicos(contenedor) {
-  requestAnimationFrame(() => {
-    contenedor.querySelectorAll(".reveal").forEach((elemento) => {
-      elemento.classList.add("active");
-    });
-  });
+const promocionesRoot = document.getElementById("promociones-container");
+
+if (promocionesRoot) {
+  ReactDOM.createRoot(promocionesRoot).render(e(PromocionesApp));
 }
-
-async function inicializarPromociones() {
-  if (!contenedorPromociones) return;
-
-  contenedorPromociones.innerHTML =
-    '<p class="sin-promociones">Cargando promociones desde el backend...</p>';
-
-  try {
-    renderizarPromociones(await obtenerPromocionesDesdeApi());
-  } catch (error) {
-    console.error("No se pudo cargar promociones desde la API publica.", error);
-    renderizarPromociones([]);
-  }
-}
-
-inicializarPromociones();
