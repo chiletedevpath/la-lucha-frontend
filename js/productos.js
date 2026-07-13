@@ -4,6 +4,7 @@
 
 const e = React.createElement;
 const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl;
+const apiClient = window.LaLuchaApi;
 const solicitudStore = window.LaLuchaSolicitud;
 const PRODUCTO_ID_MAX_CATALOGO = 20;
 const PRODUCTOS_POR_PAGINA = 6;
@@ -42,6 +43,35 @@ const IMAGENES_FALLBACK = {
   postres: "assets/img/productos/postres/alfajor-artesanal.webp",
   promociones: "assets/img/productos/sanguches/chicharron.webp"
 };
+
+const CATEGORIAS_RESPALDO = [
+  { categoriaId: 1, nombre: "Sanguches" },
+  { categoriaId: 2, nombre: "Bebidas" },
+  { categoriaId: 3, nombre: "Acompanamientos" },
+  { categoriaId: 4, nombre: "Combos" },
+  { categoriaId: 5, nombre: "Postres" },
+  { categoriaId: 6, nombre: "Promociones" }
+];
+
+const PRODUCTOS_RESPALDO = [
+  { productoId: 1, nombre: "Sanguche de Chicharron", categoriaId: 1, descripcion: "Pan artesanal con chicharron crocante, camote frito y salsa criolla.", precio: 18.9, destacado: true, estado: true },
+  { productoId: 2, nombre: "Sanguche de Pavo", categoriaId: 1, descripcion: "Pavo jugoso acompanado de pan artesanal y salsas de la casa.", precio: 19.9, destacado: true, estado: true },
+  { productoId: 3, nombre: "Sanguche de Asado", categoriaId: 1, descripcion: "Asado jugoso con salsa criolla y pan artesanal recien tostado.", precio: 20.9, destacado: true, estado: true },
+  { productoId: 4, nombre: "Sanguche Mixto", categoriaId: 1, descripcion: "Jamon, queso y pan artesanal dorado.", precio: 14.9, destacado: false, estado: true },
+  { productoId: 5, nombre: "Sanguche de Pollo", categoriaId: 1, descripcion: "Pollo sazonado con acompanamientos criollos.", precio: 17.9, destacado: false, estado: true },
+  { productoId: 6, nombre: "Hamburguesa Criolla", categoriaId: 1, descripcion: "Hamburguesa con toque criollo y salsas de la casa.", precio: 18.9, destacado: false, estado: true },
+  { productoId: 7, nombre: "Chicha Morada", categoriaId: 2, descripcion: "Bebida tradicional peruana servida fria.", precio: 7.9, destacado: true, estado: true },
+  { productoId: 8, nombre: "Cafe Pasado", categoriaId: 2, descripcion: "Cafe peruano recien preparado.", precio: 6.9, destacado: false, estado: true },
+  { productoId: 9, nombre: "Emoliente", categoriaId: 2, descripcion: "Bebida herbal tradicional.", precio: 6.9, destacado: false, estado: true },
+  { productoId: 10, nombre: "Limonada Frozen", categoriaId: 2, descripcion: "Limonada helada y refrescante.", precio: 8.9, destacado: false, estado: true },
+  { productoId: 11, nombre: "Camote Frito", categoriaId: 3, descripcion: "Porcion de camote frito para acompanar.", precio: 6.9, destacado: false, estado: true },
+  { productoId: 12, nombre: "Papas Fritas Personales", categoriaId: 3, descripcion: "Papas doradas en porcion personal.", precio: 7.9, destacado: false, estado: true },
+  { productoId: 13, nombre: "Salsa Criolla Extra", categoriaId: 3, descripcion: "Porcion adicional de salsa criolla.", precio: 3.9, destacado: false, estado: true },
+  { productoId: 14, nombre: "Combo Criollo Personal", categoriaId: 4, descripcion: "Sanguche, bebida y acompanamiento.", precio: 27.9, destacado: true, estado: true },
+  { productoId: 15, nombre: "Combo Familiar", categoriaId: 4, descripcion: "Seleccion criolla para compartir.", precio: 59.9, destacado: true, estado: true },
+  { productoId: 16, nombre: "Alfajor Artesanal", categoriaId: 5, descripcion: "Postre artesanal con manjar.", precio: 6.9, destacado: false, estado: true },
+  { productoId: 17, nombre: "Mazamorra Morada", categoriaId: 5, descripcion: "Postre tradicional peruano.", precio: 7.9, destacado: false, estado: true }
+];
 
 function formatearPrecio(precio) {
   const precioNumerico = Number(precio);
@@ -140,6 +170,16 @@ function adaptarProductoApi(producto, categoriasPorId) {
 }
 
 async function obtenerJsonApi(ruta) {
+  if (apiClient) {
+    const fallbackData = ruta === "/productos" ? PRODUCTOS_RESPALDO : CATEGORIAS_RESPALDO;
+    return apiClient.getJson(ruta, {
+      cacheKey: ruta.replace("/", ""),
+      fallbackData,
+      timeoutMs: 9000,
+      retries: 1
+    });
+  }
+
   if (!API_BASE_URL) {
     throw new Error("No se encontro la configuracion de la API publica.");
   }

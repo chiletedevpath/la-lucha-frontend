@@ -3,6 +3,7 @@
 =================================================== */
 
 const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl || ""; 
+const apiClient = window.LaLuchaApi;
 
 
 const MIS_LOCALES_OFICIALES = [
@@ -35,26 +36,30 @@ async function cargarYCombinarLocales() {
   let listaFinal = JSON.parse(JSON.stringify(MIS_LOCALES_OFICIALES));
 
   try {
-    const url = API_BASE_URL ? `${API_BASE_URL}/locales` : '/api/locales';
-    const respuesta = await fetch(url);
-    
-    if (respuesta.ok) {
-      const localesApi = await respuesta.json();
+    const localesApi = apiClient
+      ? await apiClient.getJson("/locales", {
+          cacheKey: "locales",
+          timeoutMs: 9000,
+          retries: 1
+        })
+      : await fetch(`${API_BASE_URL}/locales`).then((respuesta) => {
+          if (!respuesta.ok) throw new Error(`La API respondio ${respuesta.status}`);
+          return respuesta.json();
+        });
 
     
-      localesApi.forEach(localApi => {
-        const nombreApi = normalizarTexto(localApi.nombre);
+    localesApi.forEach(localApi => {
+      const nombreApi = normalizarTexto(localApi.nombre);
         
       
-        const localTuyo = listaFinal.find(tuyo => nombreApi.includes(normalizarTexto(tuyo.clave)) || normalizarTexto(tuyo.nombre).includes(nombreApi));
+      const localTuyo = listaFinal.find(tuyo => nombreApi.includes(normalizarTexto(tuyo.clave)) || normalizarTexto(tuyo.nombre).includes(nombreApi));
         
-        if (localTuyo) {
+      if (localTuyo) {
 
-          if (localApi.direccion) localTuyo.direccion = localApi.direccion;
-          if (localApi.telefono) localTuyo.telefono = formatearTelefono(localApi.telefono);
-        }
-      });
-    }
+        if (localApi.direccion) localTuyo.direccion = localApi.direccion;
+        if (localApi.telefono) localTuyo.telefono = formatearTelefono(localApi.telefono);
+      }
+    });
   } catch (error) {
     console.warn("La API falló o está desconectada, usando datos locales de respaldo:", error);
   }

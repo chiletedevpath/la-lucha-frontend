@@ -1,4 +1,4 @@
-const CACHE_NAME = "la-lucha-cache-v8-academic-notice";
+const CACHE_NAME = "la-lucha-cache-v9-api-resilience";
 const API_ORIGIN = "https://utp-la-lucha-bd-backend.onrender.com";
 
 const APP_SHELL = [
@@ -30,6 +30,7 @@ const APP_SHELL = [
   "./css/nosotros.css",
   "./css/contacto.css",
   "./js/api-config.js",
+  "./js/api-client.js",
   "./js/main.js",
   "./js/menu.js",
   "./js/productos.js",

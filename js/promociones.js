@@ -4,6 +4,7 @@
 
 const e = React.createElement;
 const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl;
+const apiClient = window.LaLuchaApi;
 
 const IMAGENES_PROMOCIONES = {
   "combo criollo": "assets/img/promos/combocriollo.webp",
@@ -14,6 +15,15 @@ const IMAGENES_PROMOCIONES = {
   "martes 2x1": "assets/img/promos/martes.webp",
   "donde comen 2 comen 3": "assets/img/promos/dondecomen.webp"
 };
+
+const PROMOCIONES_RESPALDO = [
+  { promocionId: 1, nombre: "Combo Criollo", descripcion: "Sanguche criollo, bebida y acompanamiento.", precioPromocional: 27.9, estado: true },
+  { promocionId: 2, nombre: "La Brava de la Casa", descripcion: "Seleccion especial de la casa con sabor criollo.", precioPromocional: 32.9, estado: true },
+  { promocionId: 3, nombre: "Promo Universitario", descripcion: "Opcion rapida para estudiantes.", precioPromocional: 19.9, estado: true },
+  { promocionId: 4, nombre: "Promo Familiar", descripcion: "Promocion para compartir en familia.", precioPromocional: 59.9, estado: true },
+  { promocionId: 5, nombre: "Martes 2x1", descripcion: "Promocion especial disponible por campana.", precioPromocional: 29.9, estado: true },
+  { promocionId: 6, nombre: "Donde Comen 2 Comen 3", descripcion: "Promocion grupal para compartir.", precioPromocional: 49.9, estado: true }
+];
 
 function normalizarTexto(texto) {
   return String(texto || "")
@@ -71,6 +81,19 @@ function adaptarPromocionApi(promocion) {
 }
 
 async function obtenerPromocionesDesdeApi() {
+  if (apiClient) {
+    const promocionesApi = await apiClient.getJson("/promociones", {
+      cacheKey: "promociones",
+      fallbackData: PROMOCIONES_RESPALDO,
+      timeoutMs: 9000,
+      retries: 1
+    });
+
+    return promocionesApi
+      .filter((promocion) => promocion.estado !== false)
+      .map(adaptarPromocionApi);
+  }
+
   if (!API_BASE_URL) {
     throw new Error("No se encontro la configuracion de la API publica.");
   }

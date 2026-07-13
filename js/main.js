@@ -126,6 +126,11 @@ function prepararConexionApiPublica() {
   preconnect.crossOrigin = "anonymous";
   document.head.appendChild(preconnect);
 
+  if (window.LaLuchaApi) {
+    window.LaLuchaApi.warmup(["/health", "/productos", "/promociones", "/locales"]);
+    return;
+  }
+
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), 6000);
 

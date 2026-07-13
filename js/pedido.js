@@ -38,6 +38,7 @@ const pedidoListaReactRoot =
   pedidoLista && window.ReactDOM ? window.ReactDOM.createRoot(pedidoLista) : null;
 
 const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl;
+const apiClient = window.LaLuchaApi;
 const IMAGEN_FALLBACK = "assets/img/productos/sanguches/chicharron.webp";
 const IMAGENES_PRODUCTO = {
   chicharron: "assets/img/productos/sanguches/chicharron.webp",
@@ -63,6 +64,14 @@ const IMAGENES_PRODUCTO = {
 };
 const HORA_RECOJO_MIN = "08:00";
 const HORA_RECOJO_MAX = "22:00";
+const PRODUCTOS_RESPALDO_PEDIDO = {
+  1: { productoId: 1, nombre: "Sanguche de Chicharron", descripcion: "Pan artesanal con chicharron crocante, camote frito y salsa criolla.", precio: 18.9 },
+  2: { productoId: 2, nombre: "Sanguche de Pavo", descripcion: "Pavo jugoso acompanado de pan artesanal y salsas de la casa.", precio: 19.9 },
+  3: { productoId: 3, nombre: "Sanguche de Asado", descripcion: "Asado jugoso con salsa criolla y pan artesanal recien tostado.", precio: 20.9 },
+  7: { productoId: 7, nombre: "Chicha Morada", descripcion: "Bebida tradicional peruana servida fria.", precio: 7.9 },
+  14: { productoId: 14, nombre: "Combo Criollo Personal", descripcion: "Sanguche, bebida y acompanamiento.", precio: 27.9 },
+  15: { productoId: 15, nombre: "Combo Familiar", descripcion: "Seleccion criolla para compartir.", precio: 59.9 }
+};
 
 /* =========================
    UTILIDADES
@@ -283,6 +292,15 @@ function sincronizarCamposSolicitud(items) {
 }
 
 async function obtenerProductoPorId(productoId) {
+  if (apiClient) {
+    return apiClient.getJson(`/productos/${productoId}`, {
+      cacheKey: `producto:${productoId}`,
+      fallbackData: PRODUCTOS_RESPALDO_PEDIDO[Number(productoId)],
+      timeoutMs: 9000,
+      retries: 1
+    });
+  }
+
   if (!API_BASE_URL) {
     throw new Error("No se encontro la configuracion de la API publica.");
   }
