@@ -47,7 +47,8 @@
       <section class="contacto-main">
         <div class="container">
           <div class="contacto-main__grid">
-            <div class="contacto-form-wrapper">
+            <div class="contacto-form-wrapper" id="contacto-form-root"></div>
+            <div class="contacto-form-wrapper" hidden>
               <div id="contacto-formulario-seccion">
                 <span class="contacto-label">Envíanos un mensaje</span>
                 <h2 class="contacto-form-titulo">¿Tienes alguna consulta?</h2>
@@ -211,7 +212,8 @@
             <p class="contacto-faq__subtitulo">Resolvemos tus dudas al instante para ayudarte mejor</p>
           </div>
           
-          <div class="faq-lista">
+          <div id="contacto-faq-root"></div>
+          <div class="faq-lista" hidden>
             <div class="faq-item">
               <button class="faq-pregunta" aria-expanded="false" aria-controls="faq-ans-1">
                 <span>¿Tienen servicio de delivery a todo Lima?</span>
@@ -290,6 +292,15 @@
 
     <script src="js/menu.js"></script>
     <script src="js/main.js?v=20260612-cleanup"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="js/contacto.js?v=20260713-react-contacto"></script>
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
