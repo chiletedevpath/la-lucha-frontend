@@ -1,4 +1,5 @@
-const CACHE_NAME = "la-lucha-cache-v6-contacto-cleanup";
+const CACHE_NAME = "la-lucha-cache-v7-production-ready";
+const API_ORIGIN = "https://utp-la-lucha-bd-backend.onrender.com";
 
 const APP_SHELL = [
   "./",
@@ -50,7 +51,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(CACHE_NAME)
-      .then((cache) => cache.addAll(APP_SHELL))
+      .then((cache) => Promise.all(APP_SHELL.map((url) => cache.add(url).catch(() => null))))
       .then(() => self.skipWaiting())
   );
 });
@@ -71,27 +72,48 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
+  const url = new URL(event.request.url);
 
-      return fetch(event.request)
-        .then((networkResponse) => {
-          if (!networkResponse || networkResponse.status !== 200) {
-            return networkResponse;
-          }
+  if (url.origin === API_ORIGIN && url.pathname.startsWith("/api/")) {
+    event.respondWith(networkFirst(event.request));
+    return;
+  }
 
-          const responseCopy = networkResponse.clone();
+  if (event.request.mode === "navigate") {
+    event.respondWith(navigationFirst(event.request));
+    return;
+  }
 
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseCopy);
-          });
-
-          return networkResponse;
-        })
-        .catch(() => caches.match("./offline.html"));
-    })
-  );
+  if (url.origin === self.location.origin) {
+    event.respondWith(cacheFirst(event.request));
+  }
 });
+
+function putInCache(request, response) {
+  if (!response || response.status !== 200) {
+    return response;
+  }
+
+  const responseCopy = response.clone();
+  caches.open(CACHE_NAME).then((cache) => cache.put(request, responseCopy));
+  return response;
+}
+
+function cacheFirst(request) {
+  return caches
+    .match(request)
+    .then((cachedResponse) => cachedResponse || fetch(request).then((response) => putInCache(request, response)))
+    .catch(() => caches.match("./offline.html"));
+}
+
+function networkFirst(request) {
+  return fetch(request)
+    .then((response) => putInCache(request, response))
+    .catch(() => caches.match(request));
+}
+
+function navigationFirst(request) {
+  return fetch(request)
+    .then((response) => putInCache(request, response))
+    .catch(() => caches.match(request).then((cachedResponse) => cachedResponse || caches.match("./offline.html")));
+}

@@ -1,7 +1,7 @@
 {
-  "name": "La Lucha Sanguchería Criolla",
+  "name": "La Lucha Sangucher\u00eda Criolla",
   "short_name": "La Lucha",
-  "description": "Sitio web de La Lucha Sanguchería Criolla con carta, promociones, locales y contacto.",
+  "description": "Sitio web de La Lucha Sangucher\u00eda Criolla con carta, promociones, locales y contacto.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
