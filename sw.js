@@ -1,4 +1,4 @@
-const CACHE_NAME = "la-lucha-cache-v2-react-carta";
+const CACHE_NAME = "la-lucha-cache-v3-react-pedido";
 
 const APP_SHELL = [
   "./",
