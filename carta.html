@@ -106,91 +106,7 @@
             <p>Busca, filtra y elige tu favorito sin perder de vista los productos.</p>
           </div>
 
-          <div class="carta-toolbar" aria-label="Buscar y filtrar productos">
-            <div class="buscador-container">
-              <span class="material-symbols-rounded" aria-hidden="true">search</span>
-              <input
-                type="text"
-                id="buscador-input"
-                aria-label="Buscar productos en la carta"
-                placeholder="Buscar chicharrón, café, chicha..."
-              />
-            </div>
-
-            <div class="categorias-lista" aria-label="Filtrar productos por categoría">
-              <button type="button" data-categoria="todos" class="activo">
-                <span class="material-symbols-rounded" aria-hidden="true">apps</span>
-                <span class="categoria-label">Todos</span>
-                <span class="categoria-count">0</span>
-              </button>
-
-              <button type="button" data-categoria="sanguches">
-                <span class="material-symbols-rounded" aria-hidden="true">lunch_dining</span>
-                <span class="categoria-label">Sánguches</span>
-                <span class="categoria-count">0</span>
-              </button>
-
-              <button type="button" data-categoria="bebidas">
-                <span class="material-symbols-rounded" aria-hidden="true">local_cafe</span>
-                <span class="categoria-label">Bebidas</span>
-                <span class="categoria-count">0</span>
-              </button>
-
-              <button type="button" data-categoria="acompanamientos">
-                <span class="material-symbols-rounded" aria-hidden="true">restaurant</span>
-                <span class="categoria-label">Acompañamientos</span>
-                <span class="categoria-count">0</span>
-              </button>
-
-              <button type="button" data-categoria="combos">
-                <span class="material-symbols-rounded" aria-hidden="true">fastfood</span>
-                <span class="categoria-label">Combos</span>
-                <span class="categoria-count">0</span>
-              </button>
-
-              <button type="button" data-categoria="postres">
-                <span class="material-symbols-rounded" aria-hidden="true">bakery_dining</span>
-                <span class="categoria-label">Postres</span>
-                <span class="categoria-count">0</span>
-              </button>
-
-              <button type="button" data-categoria="promociones">
-                <span class="material-symbols-rounded" aria-hidden="true">sell</span>
-                <span class="categoria-label">Promociones</span>
-                <span class="categoria-count">0</span>
-              </button>
-            </div>
-
-            <button class="carta-toolbar__clear" id="limpiar-filtros" type="button" hidden>
-              Limpiar
-            </button>
-          </div>
-
-          <div class="productos-estado" id="productos-estado" aria-live="polite"></div>
-
-          <div class="productos-grid" id="productos-grid"></div>
-
-          <nav class="paginacion" aria-label="Paginación de productos">
-            <button
-              class="paginacion__btn"
-              id="btn-anterior"
-              type="button"
-              aria-label="Ir a la página anterior"
-            >
-              Anterior
-            </button>
-
-            <div class="paginacion__numeros" id="paginacion-numeros"></div>
-
-            <button
-              class="paginacion__btn"
-              id="btn-siguiente"
-              type="button"
-              aria-label="Ir a la página siguiente"
-            >
-              Siguiente
-            </button>
-          </nav>
+          <div id="carta-react-root"></div>
         </div>
       </section>
     </main>
@@ -214,7 +130,15 @@
        JS CARTA
   ========================== -->
 
-    <script src="js/productos.js?v=20260613-solicitud"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="js/productos.js?v=20260713-react-carta"></script>
     <script src="js/animaciones.js?v=20260612-visible"></script>
   </body>
 </html>

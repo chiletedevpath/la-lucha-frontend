@@ -1,24 +1,23 @@
 /* =========================
-   PRODUCTOS
+   CARTA CON REACT
 ========================= */
 
-const contenedorProductos = document.getElementById("productos-grid");
-const buscadorInput = document.getElementById("buscador-input");
-const botonesCategorias = document.querySelectorAll(".categorias-lista button");
-
-const btnAnterior = document.getElementById("btn-anterior");
-const btnSiguiente = document.getElementById("btn-siguiente");
-const contenedorPaginacion = document.getElementById("paginacion-numeros");
-const estadoProductos = document.getElementById("productos-estado");
-const seccionProductos = document.querySelector(".carta-productos");
-const btnLimpiarFiltros = document.getElementById("limpiar-filtros");
-const totalProductosHero = document.getElementById("carta-total-productos");
-const totalCategoriasHero = document.getElementById("carta-total-categorias");
-const solicitudStore = window.LaLuchaSolicitud;
-
+const e = React.createElement;
 const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl;
+const solicitudStore = window.LaLuchaSolicitud;
 const PRODUCTO_ID_MAX_CATALOGO = 20;
 const PRODUCTOS_POR_PAGINA = 6;
+
+const CATEGORIAS = [
+  { id: "todos", label: "Todos", icono: "apps" },
+  { id: "sanguches", label: "Sanguches", icono: "lunch_dining" },
+  { id: "bebidas", label: "Bebidas", icono: "local_cafe" },
+  { id: "acompanamientos", label: "Acompanamientos", icono: "restaurant" },
+  { id: "combos", label: "Combos", icono: "fastfood" },
+  { id: "postres", label: "Postres", icono: "bakery_dining" },
+  { id: "promociones", label: "Promociones", icono: "sell" }
+];
+
 const IMAGENES_FALLBACK = {
   chicharron: "assets/img/productos/sanguches/chicharron.webp",
   pavo: "assets/img/productos/sanguches/pavo.webp",
@@ -44,74 +43,16 @@ const IMAGENES_FALLBACK = {
   promociones: "assets/img/productos/sanguches/chicharron.webp"
 };
 
-let categoriaActual = "todos";
-let textoBusqueda = "";
-let paginaActual = 1;
-let productosActuales = [];
-let productosCatalogo = [];
-
-/* =========================
-   UTILIDADES
-========================= */
-
 function formatearPrecio(precio) {
-  return `S/ ${Number(precio).toFixed(2)}`;
-}
+  const precioNumerico = Number(precio);
 
-function crearMiniSolicitud() {
-  const miniSolicitud = document.createElement("aside");
-  miniSolicitud.className = "solicitud-mini";
-  miniSolicitud.id = "solicitud-mini";
-  miniSolicitud.hidden = true;
-  miniSolicitud.setAttribute("aria-live", "polite");
+  if (!Number.isFinite(precioNumerico)) return "S/ 0.00";
 
-  miniSolicitud.innerHTML = `
-    <div class="solicitud-mini__info">
-      <span class="solicitud-mini__label">Tu solicitud</span>
-      <strong id="solicitud-mini-cantidad">0 productos</strong>
-      <span id="solicitud-mini-total">Total: S/ 0.00</span>
-    </div>
-    <a class="solicitud-mini__link" href="pedido.html">Ver solicitud</a>
-  `;
-
-  document.body.append(miniSolicitud);
-  return miniSolicitud;
-}
-
-const miniSolicitud = solicitudStore ? crearMiniSolicitud() : null;
-
-function actualizarMiniSolicitud() {
-  if (!solicitudStore || !miniSolicitud) return;
-
-  const items = solicitudStore.obtenerSolicitud();
-  const { cantidadTotal, total } = solicitudStore.calcularTotales(items);
-  const cantidadTexto = cantidadTotal === 1 ? "1 producto" : `${cantidadTotal} productos`;
-
-  miniSolicitud.hidden = cantidadTotal === 0;
-  miniSolicitud.querySelector("#solicitud-mini-cantidad").textContent = cantidadTexto;
-  miniSolicitud.querySelector("#solicitud-mini-total").textContent = `Total: ${formatearPrecio(total)}`;
-}
-
-function agregarProductoASolicitud(producto) {
-  if (!solicitudStore) {
-    window.location.href = `pedido.html?productoId=${encodeURIComponent(producto.id)}`;
-    return;
-  }
-
-  solicitudStore.agregarItem({
-    id: producto.id,
-    tipo: "producto",
-    nombre: producto.nombre,
-    precio: producto.precio,
-    cantidad: 1,
-    imagen: producto.imagen
-  });
-
-  actualizarMiniSolicitud();
+  return `S/ ${precioNumerico.toFixed(2)}`;
 }
 
 function normalizarTexto(texto) {
-  return String(texto)
+  return String(texto || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
@@ -155,7 +96,9 @@ function resolverImagenProducto(producto, categoria) {
   }
   if (nombreNormalizado.includes("mixto")) return "assets/img/productos/sanguches/mixto.webp";
   if (nombreNormalizado.includes("pollo")) return "assets/img/productos/sanguches/pollo.webp";
-  if (nombreNormalizado.includes("hamburguesa")) return "assets/img/productos/sanguches/hamburguesa.webp";
+  if (nombreNormalizado.includes("hamburguesa")) {
+    return "assets/img/productos/sanguches/hamburguesa.webp";
+  }
   if (nombreNormalizado.includes("chicha")) return IMAGENES_FALLBACK.chicha;
   if (nombreNormalizado.includes("cafe")) return IMAGENES_FALLBACK.cafe;
   if (nombreNormalizado.includes("emoliente")) return IMAGENES_FALLBACK.emoliente;
@@ -229,397 +172,425 @@ async function cargarProductosDesdeApi() {
     .map((producto) => adaptarProductoApi(producto, categoriasPorId));
 }
 
-function actualizarMetricasHero() {
-  if (totalProductosHero) {
-    totalProductosHero.textContent = productosCatalogo.length;
-  }
-
-  if (totalCategoriasHero) {
-    const categoriasUnicas = new Set(productosCatalogo.map((producto) => producto.categoria));
-    totalCategoriasHero.textContent = categoriasUnicas.size;
-  }
-}
-
-function obtenerTotalPaginas(listaProductos) {
-  return Math.ceil(listaProductos.length / PRODUCTOS_POR_PAGINA);
-}
-
-function obtenerProductosPagina(listaProductos) {
-  const inicio = (paginaActual - 1) * PRODUCTOS_POR_PAGINA;
-  const fin = inicio + PRODUCTOS_POR_PAGINA;
-
-  return listaProductos.slice(inicio, fin);
-}
-
-function obtenerEtiquetaCategoria(categoria) {
-  if (categoria === "todos") return "productos";
-
-  const botonActivo = document.querySelector(`[data-categoria="${categoria}"]`);
-
-  if (!botonActivo) return categoria;
-
-  return (
-    botonActivo.querySelector(".categoria-label")?.textContent.trim().toLowerCase() || categoria
-  );
-}
-
 function obtenerEtiquetaPopularidad(pedido) {
-  if (Number(pedido) >= 90) return "Más pedido";
+  if (Number(pedido) >= 90) return "Mas pedido";
   if (Number(pedido) >= 80) return "Favorito criollo";
-  return "Para acompañar";
+  return "Para acompanar";
 }
 
-function actualizarEstadoProductos(totalProductos) {
-  if (!estadoProductos) return;
+function contarPorCategoria(productos, categoria) {
+  if (categoria === "todos") return productos.length;
 
-  const etiquetaCategoria = obtenerEtiquetaCategoria(categoriaActual);
-  const busqueda = textoBusqueda.trim();
-  const totalPaginas = obtenerTotalPaginas(productosActuales);
-
-  if (totalProductos === 0) {
-    estadoProductos.textContent = busqueda
-      ? `No encontramos resultados para "${busqueda}" en ${etiquetaCategoria}.`
-      : `No hay productos disponibles en ${etiquetaCategoria}.`;
-    return;
-  }
-
-  const rangoInicio = (paginaActual - 1) * PRODUCTOS_POR_PAGINA + 1;
-  const rangoFin = Math.min(paginaActual * PRODUCTOS_POR_PAGINA, totalProductos);
-  const detalleBusqueda = busqueda ? ` con la búsqueda "${busqueda}"` : "";
-
-  estadoProductos.textContent =
-    `Mostrando ${rangoInicio}-${rangoFin} de ${totalProductos} ${etiquetaCategoria}${detalleBusqueda}.` +
-    (totalPaginas > 1 ? ` Página ${paginaActual} de ${totalPaginas}.` : "");
-}
-
-function desplazarAResultados() {
-  if (!seccionProductos) return;
-
-  seccionProductos.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
-function animarResultados() {
-  if (!contenedorProductos) return;
-
-  contenedorProductos.classList.remove("is-refreshing");
-  window.requestAnimationFrame(() => {
-    contenedorProductos.classList.add("is-refreshing");
-  });
-}
-
-function contarPorCategoria(categoria) {
-  if (categoria === "todos") return productosCatalogo.length;
-
-  return productosCatalogo.filter(
+  return productos.filter(
     (producto) => normalizarTexto(producto.categoria) === normalizarTexto(categoria)
   ).length;
 }
 
-function actualizarConteosCategorias() {
-  botonesCategorias.forEach((boton) => {
-    const contador = boton.querySelector(".categoria-count");
-    if (!contador) return;
-
-    contador.textContent = contarPorCategoria(boton.dataset.categoria);
-  });
-}
-
-function actualizarBotonLimpiar() {
-  if (!btnLimpiarFiltros) return;
-
-  const hayCategoriaFiltrada = categoriaActual !== "todos";
-  const hayBusqueda = textoBusqueda.trim() !== "";
-
-  btnLimpiarFiltros.hidden = !hayCategoriaFiltrada && !hayBusqueda;
-}
-
-function activarCategoria(categoria) {
-  botonesCategorias.forEach((boton) => {
-    const esActivo = boton.dataset.categoria === categoria;
-
-    boton.classList.toggle("activo", esActivo);
-    boton.setAttribute("aria-pressed", String(esActivo));
-  });
-
-  categoriaActual = categoria;
-}
-
-function limpiarFiltros() {
-  textoBusqueda = "";
-
-  if (buscadorInput) {
-    buscadorInput.value = "";
-    buscadorInput.focus();
-  }
-
-  activarCategoria("todos");
-  filtrarProductos();
-}
-
-/* =========================
-   CREAR CARD PRODUCTO
-========================= */
-
-function crearCardProducto(producto) {
-  const articulo = document.createElement("article");
-  articulo.className = "card card--product card--interactive";
-  articulo.setAttribute("aria-label", `Producto ${producto.nombre}`);
-
-  const media = document.createElement("div");
-  media.className = "card__media";
-
-  const imagen = document.createElement("img");
-  imagen.className = "card__image";
-  imagen.src = producto.imagen;
-  imagen.alt = producto.nombre;
-  imagen.loading = "lazy";
-
-  const badge = document.createElement("span");
-  badge.className = "card__badge";
-  badge.textContent = producto.categoria;
-
-  const body = document.createElement("div");
-  body.className = "card__body";
-
-  const popularidad = document.createElement("span");
-  popularidad.className = "card__popularidad";
-
-  const popularidadIcono = document.createElement("span");
-  popularidadIcono.className = "material-symbols-rounded";
-  popularidadIcono.setAttribute("aria-hidden", "true");
-  popularidadIcono.textContent = "local_fire_department";
-
-  const popularidadTexto = document.createElement("span");
-  popularidadTexto.textContent = obtenerEtiquetaPopularidad(producto.pedido);
-
-  const titulo = document.createElement("h3");
-  titulo.className = "card__title";
-  titulo.textContent = producto.nombre;
-
-  const descripcion = document.createElement("p");
-  descripcion.className = "card__text";
-  descripcion.textContent = producto.descripcion;
-
-  const actions = document.createElement("div");
-  actions.className = "card__actions";
-
-  const precio = document.createElement("span");
-  precio.className = "card__price";
-  precio.textContent = formatearPrecio(producto.precio);
-
-  const accion = document.createElement("button");
-  accion.className = "card__action card__action--button";
-  accion.type = "button";
-  accion.textContent = "Agregar";
-  accion.setAttribute("aria-label", `Agregar ${producto.nombre} a la solicitud`);
-  accion.addEventListener("click", () => agregarProductoASolicitud(producto));
-
-  media.append(imagen, badge);
-  popularidad.append(popularidadIcono, popularidadTexto);
-  actions.append(precio, accion);
-  body.append(popularidad, titulo, descripcion, actions);
-  articulo.append(media, body);
-
-  return articulo;
-}
-
-/* =========================
-   RENDER PRODUCTOS
-========================= */
-
-function renderizarProductos(listaProductos) {
-  if (!contenedorProductos) return;
-
-  contenedorProductos.innerHTML = "";
-  actualizarEstadoProductos(listaProductos.length);
-
-  if (listaProductos.length === 0) {
-    const mensaje = document.createElement("p");
-    mensaje.className = "sin-productos";
-    mensaje.textContent = "Prueba con otra categoría o limpia la búsqueda para ver toda la carta.";
-    contenedorProductos.append(mensaje);
-    renderizarPaginacion([]);
-    return;
-  }
-
-  const productosPagina = obtenerProductosPagina(listaProductos);
-  const fragmento = document.createDocumentFragment();
-
-  productosPagina.forEach((producto) => {
-    fragmento.append(crearCardProducto(producto));
-  });
-
-  contenedorProductos.append(fragmento);
-  renderizarPaginacion(listaProductos);
-  animarResultados();
-}
-
-/* =========================
-   PAGINACIÓN
-========================= */
-
-function renderizarPaginacion(listaProductos) {
-  if (!contenedorPaginacion || !btnAnterior || !btnSiguiente) return;
-
-  const totalPaginas = obtenerTotalPaginas(listaProductos);
-
-  contenedorPaginacion.innerHTML = "";
-
-  if (totalPaginas <= 1) {
-    btnAnterior.disabled = true;
-    btnSiguiente.disabled = true;
-    btnAnterior.setAttribute("aria-disabled", "true");
-    btnSiguiente.setAttribute("aria-disabled", "true");
-    return;
-  }
-
-  btnAnterior.disabled = paginaActual === 1;
-  btnSiguiente.disabled = paginaActual === totalPaginas;
-  btnAnterior.setAttribute("aria-disabled", String(btnAnterior.disabled));
-  btnSiguiente.setAttribute("aria-disabled", String(btnSiguiente.disabled));
-
-  for (let numeroPagina = 1; numeroPagina <= totalPaginas; numeroPagina++) {
-    const botonPagina = document.createElement("button");
-    botonPagina.type = "button";
-    botonPagina.className = "paginacion__numero";
-    botonPagina.textContent = numeroPagina;
-    botonPagina.setAttribute("aria-label", `Ir a la página ${numeroPagina}`);
-
-    if (numeroPagina === paginaActual) {
-      botonPagina.classList.add("paginacion__numero--activo");
-      botonPagina.setAttribute("aria-current", "page");
-    }
-
-    botonPagina.addEventListener("click", () => {
-      paginaActual = numeroPagina;
-      renderizarProductos(productosActuales);
-      contenedorProductos.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-
-    contenedorPaginacion.append(botonPagina);
-  }
-}
-
-function irPaginaAnterior() {
-  if (paginaActual > 1) {
-    paginaActual--;
-    renderizarProductos(productosActuales);
-    contenedorProductos.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-}
-
-function irPaginaSiguiente() {
-  const totalPaginas = obtenerTotalPaginas(productosActuales);
-
-  if (paginaActual < totalPaginas) {
-    paginaActual++;
-    renderizarProductos(productosActuales);
-    contenedorProductos.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-}
-
-/* =========================
-   FILTRAR PRODUCTOS
-========================= */
-
-function filtrarProductos() {
-  if (!Array.isArray(productosCatalogo)) {
-    productosActuales = [];
-    renderizarProductos(productosActuales);
-    return;
-  }
-
+function filtrarProductos(productos, categoriaActual, textoBusqueda) {
   const busquedaNormalizada = normalizarTexto(textoBusqueda);
-  let productosFiltrados = [...productosCatalogo];
 
-  if (categoriaActual !== "todos") {
-    productosFiltrados = productosFiltrados.filter(
-      (producto) => normalizarTexto(producto.categoria) === normalizarTexto(categoriaActual)
+  return productos.filter((producto) => {
+    const coincideCategoria =
+      categoriaActual === "todos" ||
+      normalizarTexto(producto.categoria) === normalizarTexto(categoriaActual);
+    const textoProducto = normalizarTexto(
+      `${producto.nombre} ${producto.descripcion} ${producto.categoria}`
     );
-  }
+    const coincideBusqueda = !busquedaNormalizada || textoProducto.includes(busquedaNormalizada);
 
-  if (busquedaNormalizada !== "") {
-    productosFiltrados = productosFiltrados.filter((producto) => {
-      const textoProducto = normalizarTexto(
-        `${producto.nombre} ${producto.descripcion} ${producto.categoria}`
-      );
-
-      return textoProducto.includes(busquedaNormalizada);
-    });
-  }
-
-  productosActuales = productosFiltrados;
-  paginaActual = 1;
-
-  renderizarProductos(productosActuales);
-  actualizarBotonLimpiar();
-}
-
-/* =========================
-   EVENTOS
-========================= */
-
-botonesCategorias.forEach((boton) => {
-  boton.addEventListener("click", () => {
-    activarCategoria(boton.dataset.categoria);
-    filtrarProductos();
-  });
-});
-
-if (buscadorInput) {
-  buscadorInput.addEventListener("input", (event) => {
-    textoBusqueda = event.target.value;
-    filtrarProductos();
+    return coincideCategoria && coincideBusqueda;
   });
 }
 
-if (btnLimpiarFiltros) {
-  btnLimpiarFiltros.addEventListener("click", limpiarFiltros);
-}
+function actualizarMetricasHero(productos) {
+  const totalProductosHero = document.getElementById("carta-total-productos");
+  const totalCategoriasHero = document.getElementById("carta-total-categorias");
 
-if (btnAnterior) {
-  btnAnterior.addEventListener("click", irPaginaAnterior);
-}
-
-if (btnSiguiente) {
-  btnSiguiente.addEventListener("click", irPaginaSiguiente);
-}
-
-/* =========================
-   CARGA INICIAL
-========================= */
-
-botonesCategorias.forEach((boton) => {
-  boton.setAttribute("aria-pressed", String(boton.classList.contains("activo")));
-});
-
-async function inicializarCarta() {
-  if (estadoProductos) {
-    estadoProductos.textContent = "Cargando productos desde el backend...";
+  if (totalProductosHero) {
+    totalProductosHero.textContent = productos.length;
   }
 
-  try {
-    productosCatalogo = await cargarProductosDesdeApi();
-  } catch (error) {
-    console.error("No se pudo cargar productos desde la API publica.", error);
-    productosCatalogo = [];
-    actualizarConteosCategorias();
+  if (totalCategoriasHero) {
+    totalCategoriasHero.textContent = new Set(productos.map((producto) => producto.categoria)).size;
+  }
+}
 
-    if (estadoProductos) {
-      estadoProductos.textContent =
-        "No se pudo cargar la carta desde el backend publico. Intenta nuevamente en unos segundos.";
-    }
-
-    renderizarPaginacion([]);
+function agregarProductoASolicitud(producto) {
+  if (!solicitudStore) {
+    window.location.href = `pedido.html?productoId=${encodeURIComponent(producto.id)}`;
     return;
   }
 
-  actualizarMetricasHero();
-  actualizarConteosCategorias();
-  productosActuales = productosCatalogo;
-  renderizarProductos(productosActuales);
+  solicitudStore.agregarItem({
+    id: producto.id,
+    tipo: "producto",
+    nombre: producto.nombre,
+    precio: producto.precio,
+    cantidad: 1,
+    imagen: producto.imagen
+  });
 }
 
-inicializarCarta();
-actualizarMiniSolicitud();
-window.addEventListener("la-lucha:solicitud-actualizada", actualizarMiniSolicitud);
+function MiniSolicitud() {
+  const [resumen, setResumen] = React.useState({ cantidadTotal: 0, total: 0 });
+
+  React.useEffect(function () {
+    if (!solicitudStore) return undefined;
+
+    function actualizar() {
+      setResumen(solicitudStore.calcularTotales(solicitudStore.obtenerSolicitud()));
+    }
+
+    actualizar();
+    window.addEventListener("la-lucha:solicitud-actualizada", actualizar);
+
+    return function () {
+      window.removeEventListener("la-lucha:solicitud-actualizada", actualizar);
+    };
+  }, []);
+
+  if (!solicitudStore || resumen.cantidadTotal === 0) return null;
+
+  return e(
+    "aside",
+    { className: "solicitud-mini", id: "solicitud-mini", "aria-live": "polite" },
+    e(
+      "div",
+      { className: "solicitud-mini__info" },
+      e("span", { className: "solicitud-mini__label" }, "Tu solicitud"),
+      e(
+        "strong",
+        { id: "solicitud-mini-cantidad" },
+        resumen.cantidadTotal === 1 ? "1 producto" : `${resumen.cantidadTotal} productos`
+      ),
+      e("span", { id: "solicitud-mini-total" }, `Total: ${formatearPrecio(resumen.total)}`)
+    ),
+    e("a", { className: "solicitud-mini__link", href: "pedido.html" }, "Ver solicitud")
+  );
+}
+
+function Toolbar(props) {
+  return e(
+    "div",
+    { className: "carta-toolbar", "aria-label": "Buscar y filtrar productos" },
+    e(
+      "div",
+      { className: "buscador-container" },
+      e("span", { className: "material-symbols-rounded", "aria-hidden": "true" }, "search"),
+      e("input", {
+        type: "text",
+        id: "buscador-input",
+        "aria-label": "Buscar productos en la carta",
+        placeholder: "Buscar chicharron, cafe, chicha...",
+        value: props.textoBusqueda,
+        onChange: function (event) {
+          props.onBuscar(event.target.value);
+        }
+      })
+    ),
+    e(
+      "div",
+      { className: "categorias-lista", "aria-label": "Filtrar productos por categoria" },
+      CATEGORIAS.map(function (categoria) {
+        const activo = props.categoriaActual === categoria.id;
+
+        return e(
+          "button",
+          {
+            key: categoria.id,
+            type: "button",
+            className: activo ? "activo" : "",
+            "data-categoria": categoria.id,
+            "aria-pressed": String(activo),
+            onClick: function () {
+              props.onCategoria(categoria.id);
+            }
+          },
+          e("span", { className: "material-symbols-rounded", "aria-hidden": "true" }, categoria.icono),
+          e("span", { className: "categoria-label" }, categoria.label),
+          e(
+            "span",
+            { className: "categoria-count" },
+            contarPorCategoria(props.productos, categoria.id)
+          )
+        );
+      })
+    ),
+    e(
+      "button",
+      {
+        className: "carta-toolbar__clear",
+        id: "limpiar-filtros",
+        type: "button",
+        hidden: props.categoriaActual === "todos" && !props.textoBusqueda.trim(),
+        onClick: props.onLimpiar
+      },
+      "Limpiar"
+    )
+  );
+}
+
+function EstadoProductos(props) {
+  const totalPaginas = Math.ceil(props.total / PRODUCTOS_POR_PAGINA);
+  let mensaje = "";
+
+  if (props.estadoCarga === "cargando") {
+    mensaje = "Cargando productos desde el backend...";
+  } else if (props.estadoCarga === "error") {
+    mensaje = "No se pudo cargar la carta desde el backend publico. Intenta nuevamente en unos segundos.";
+  } else if (props.total === 0) {
+    mensaje = props.textoBusqueda.trim()
+      ? `No encontramos resultados para "${props.textoBusqueda.trim()}".`
+      : "No hay productos disponibles en esta categoria.";
+  } else {
+    const rangoInicio = (props.paginaActual - 1) * PRODUCTOS_POR_PAGINA + 1;
+    const rangoFin = Math.min(props.paginaActual * PRODUCTOS_POR_PAGINA, props.total);
+    const busqueda = props.textoBusqueda.trim()
+      ? ` con la busqueda "${props.textoBusqueda.trim()}"`
+      : "";
+
+    mensaje =
+      `Mostrando ${rangoInicio}-${rangoFin} de ${props.total} productos${busqueda}.` +
+      (totalPaginas > 1 ? ` Pagina ${props.paginaActual} de ${totalPaginas}.` : "");
+  }
+
+  return e(
+    "div",
+    { className: "productos-estado", id: "productos-estado", "aria-live": "polite" },
+    mensaje
+  );
+}
+
+function CardProducto(props) {
+  const producto = props.producto;
+
+  return e(
+    "article",
+    { className: "card card--product card--interactive", "aria-label": `Producto ${producto.nombre}` },
+    e(
+      "div",
+      { className: "card__media" },
+      e("img", {
+        className: "card__image",
+        src: producto.imagen,
+        alt: producto.nombre,
+        loading: "lazy"
+      }),
+      e("span", { className: "card__badge" }, producto.categoria)
+    ),
+    e(
+      "div",
+      { className: "card__body" },
+      e(
+        "span",
+        { className: "card__popularidad" },
+        e(
+          "span",
+          { className: "material-symbols-rounded", "aria-hidden": "true" },
+          "local_fire_department"
+        ),
+        e("span", null, obtenerEtiquetaPopularidad(producto.pedido))
+      ),
+      e("h3", { className: "card__title" }, producto.nombre),
+      e("p", { className: "card__text" }, producto.descripcion),
+      e(
+        "div",
+        { className: "card__actions" },
+        e("span", { className: "card__price" }, formatearPrecio(producto.precio)),
+        e(
+          "button",
+          {
+            className: "card__action card__action--button",
+            type: "button",
+            "aria-label": `Agregar ${producto.nombre} a la solicitud`,
+            onClick: function () {
+              agregarProductoASolicitud(producto);
+            }
+          },
+          "Agregar"
+        )
+      )
+    )
+  );
+}
+
+function GridProductos(props) {
+  const productosPagina = props.productosFiltrados.slice(
+    (props.paginaActual - 1) * PRODUCTOS_POR_PAGINA,
+    props.paginaActual * PRODUCTOS_POR_PAGINA
+  );
+
+  if (props.estadoCarga === "error" || props.estadoCarga === "cargando") {
+    return e("div", { className: "productos-grid", id: "productos-grid" });
+  }
+
+  return e(
+    "div",
+    { className: "productos-grid is-refreshing", id: "productos-grid" },
+    productosPagina.length
+      ? productosPagina.map(function (producto) {
+          return e(CardProducto, { key: producto.id, producto: producto });
+        })
+      : e(
+          "p",
+          { className: "sin-productos" },
+          "Prueba con otra categoria o limpia la busqueda para ver toda la carta."
+        )
+  );
+}
+
+function Paginacion(props) {
+  const totalPaginas = Math.ceil(props.total / PRODUCTOS_POR_PAGINA);
+  const deshabilitarAnterior = props.paginaActual <= 1;
+  const deshabilitarSiguiente = props.paginaActual >= totalPaginas || totalPaginas <= 1;
+
+  function cambiarPagina(pagina) {
+    props.onPagina(pagina);
+    document.querySelector(".carta-productos")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  return e(
+    "nav",
+    { className: "paginacion", "aria-label": "Paginacion de productos" },
+    e(
+      "button",
+      {
+        className: "paginacion__btn",
+        id: "btn-anterior",
+        type: "button",
+        "aria-label": "Ir a la pagina anterior",
+        "aria-disabled": String(deshabilitarAnterior),
+        disabled: deshabilitarAnterior,
+        onClick: function () {
+          cambiarPagina(Math.max(1, props.paginaActual - 1));
+        }
+      },
+      "Anterior"
+    ),
+    e(
+      "div",
+      { className: "paginacion__numeros", id: "paginacion-numeros" },
+      Array.from({ length: totalPaginas }, function (_, index) {
+        const numeroPagina = index + 1;
+        const activo = numeroPagina === props.paginaActual;
+
+        return e(
+          "button",
+          {
+            key: numeroPagina,
+            type: "button",
+            className: activo ? "paginacion__numero paginacion__numero--activo" : "paginacion__numero",
+            "aria-label": `Ir a la pagina ${numeroPagina}`,
+            "aria-current": activo ? "page" : undefined,
+            onClick: function () {
+              cambiarPagina(numeroPagina);
+            }
+          },
+          numeroPagina
+        );
+      })
+    ),
+    e(
+      "button",
+      {
+        className: "paginacion__btn",
+        id: "btn-siguiente",
+        type: "button",
+        "aria-label": "Ir a la pagina siguiente",
+        "aria-disabled": String(deshabilitarSiguiente),
+        disabled: deshabilitarSiguiente,
+        onClick: function () {
+          cambiarPagina(Math.min(totalPaginas, props.paginaActual + 1));
+        }
+      },
+      "Siguiente"
+    )
+  );
+}
+
+function CartaApp() {
+  const [productos, setProductos] = React.useState([]);
+  const [estadoCarga, setEstadoCarga] = React.useState("cargando");
+  const [categoriaActual, setCategoriaActual] = React.useState("todos");
+  const [textoBusqueda, setTextoBusqueda] = React.useState("");
+  const [paginaActual, setPaginaActual] = React.useState(1);
+
+  React.useEffect(function () {
+    let activo = true;
+
+    cargarProductosDesdeApi()
+      .then(function (productosApi) {
+        if (!activo) return;
+
+        setProductos(productosApi);
+        actualizarMetricasHero(productosApi);
+        setEstadoCarga("listo");
+      })
+      .catch(function (error) {
+        if (!activo) return;
+
+        console.error("No se pudo cargar productos desde la API publica.", error);
+        actualizarMetricasHero([]);
+        setEstadoCarga("error");
+      });
+
+    return function () {
+      activo = false;
+    };
+  }, []);
+
+  const productosFiltrados = React.useMemo(
+    function () {
+      return filtrarProductos(productos, categoriaActual, textoBusqueda);
+    },
+    [productos, categoriaActual, textoBusqueda]
+  );
+
+  React.useEffect(
+    function () {
+      setPaginaActual(1);
+    },
+    [categoriaActual, textoBusqueda]
+  );
+
+  function limpiarFiltros() {
+    setCategoriaActual("todos");
+    setTextoBusqueda("");
+  }
+
+  return e(
+    React.Fragment,
+    null,
+    e(Toolbar, {
+      productos: productos,
+      categoriaActual: categoriaActual,
+      textoBusqueda: textoBusqueda,
+      onCategoria: setCategoriaActual,
+      onBuscar: setTextoBusqueda,
+      onLimpiar: limpiarFiltros
+    }),
+    e(EstadoProductos, {
+      estadoCarga: estadoCarga,
+      total: productosFiltrados.length,
+      paginaActual: paginaActual,
+      textoBusqueda: textoBusqueda
+    }),
+    e(GridProductos, {
+      estadoCarga: estadoCarga,
+      productosFiltrados: productosFiltrados,
+      paginaActual: paginaActual
+    }),
+    e(Paginacion, {
+      total: productosFiltrados.length,
+      paginaActual: paginaActual,
+      onPagina: setPaginaActual
+    }),
+    e(MiniSolicitud)
+  );
+}
+
+const root = document.getElementById("carta-react-root");
+
+if (root) {
+  ReactDOM.createRoot(root).render(e(CartaApp));
+}
