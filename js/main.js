@@ -79,7 +79,7 @@ async function inicializarComponentes() {
 ========================= */
 
 function mostrarAvisoAcademico() {
-  if (sessionStorage.getItem("la-lucha-aviso-academico") === "v1") {
+  if (sessionStorage.getItem("la-lucha-aviso-academico") === "v2") {
     return;
   }
 
@@ -90,21 +90,26 @@ function mostrarAvisoAcademico() {
   aviso.setAttribute("aria-labelledby", "academic-notice-title");
   aviso.innerHTML = `
     <div class="academic-notice__content">
-      <div>
-        <p class="academic-notice__eyebrow">Aviso academico</p>
-        <h2 id="academic-notice-title">Proyecto universitario sin fines comerciales</h2>
+      <span class="academic-notice__icon" aria-hidden="true">i</span>
+      <div class="academic-notice__body">
+        <p class="academic-notice__eyebrow">Aviso académico</p>
+        <h2 id="academic-notice-title">Sitio de demostración universitaria</h2>
         <p>
-          Esta web es una simulacion academica desarrollada para el curso Taller de Programacion Web.
-          La Lucha Sangucheria Criolla es una marca/local real; este sitio no es oficial,
-          no tiene fines comerciales y no procesa compras reales.
+          Esta página fue desarrollada con fines académicos para el curso Taller de Programación Web.
+          No representa un canal oficial de La Lucha Sanguchería Criolla.
         </p>
+        <ul class="academic-notice__list" aria-label="Alcance del proyecto">
+          <li>No oficial</li>
+          <li>Sin ventas reales</li>
+          <li>Sin pagos en línea</li>
+        </ul>
       </div>
       <button class="academic-notice__button" type="button">Entendido</button>
     </div>
   `;
 
   aviso.querySelector("button").addEventListener("click", () => {
-    sessionStorage.setItem("la-lucha-aviso-academico", "v1");
+    sessionStorage.setItem("la-lucha-aviso-academico", "v2");
     aviso.remove();
   });
 

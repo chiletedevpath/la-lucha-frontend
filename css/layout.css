@@ -129,20 +129,33 @@ table {
   right: clamp(1rem, 3vw, 2rem);
   bottom: clamp(1rem, 3vw, 2rem);
   z-index: var(--z-modal);
-  width: min(42rem, calc(100vw - 2rem));
+  width: min(46rem, calc(100vw - 2rem));
   padding: var(--space-4);
-  border: 1px solid rgba(111, 31, 23, 0.24);
+  border: 1px solid rgba(111, 31, 23, 0.18);
   border-radius: var(--radius-lg);
   color: var(--color-text);
-  background: rgba(255, 247, 233, 0.98);
+  background:
+    linear-gradient(135deg, rgba(255, 247, 233, 0.99), rgba(255, 252, 245, 0.98));
   box-shadow: var(--shadow-lg);
 }
 
 .academic-notice__content {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: var(--space-4);
-  align-items: center;
+  align-items: start;
+}
+
+.academic-notice__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--color-surface);
+  font-weight: 900;
+  background: var(--color-brand);
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
 }
 
 .academic-notice__eyebrow {
@@ -157,7 +170,7 @@ table {
 .academic-notice h2 {
   margin-bottom: var(--space-2);
   font-family: var(--font-primary);
-  font-size: var(--text-md);
+  font-size: clamp(1rem, 2vw, 1.15rem);
   line-height: var(--line-heading);
 }
 
@@ -165,6 +178,25 @@ table {
   color: var(--color-muted);
   font-size: var(--text-sm);
   line-height: 1.55;
+}
+
+.academic-notice__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding: 0;
+  list-style: none;
+}
+
+.academic-notice__list li {
+  padding: 0.35rem 0.65rem;
+  color: var(--color-brand-dark);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  background: rgba(255, 202, 73, 0.28);
+  border: 1px solid rgba(184, 50, 39, 0.16);
+  border-radius: var(--radius-pill);
 }
 
 .academic-notice__button {
@@ -194,6 +226,10 @@ table {
 
   .academic-notice__content {
     grid-template-columns: 1fr;
+  }
+
+  .academic-notice__icon {
+    display: none;
   }
 
   .academic-notice__button {
