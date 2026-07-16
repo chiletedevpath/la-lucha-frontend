@@ -137,12 +137,15 @@ function EstadoPromociones(props) {
   } else if (props.estado === "error") {
     mensaje = "No se pudieron cargar las promociones.";
     detalle = "Intenta nuevamente o revisa tu conexión.";
+  } else if (props.source === "api") {
+    mensaje = "API pública conectada.";
+    detalle = "Promociones cargadas desde la base de datos pública.";
   } else if (props.source === "cache") {
-    mensaje = "Promociones cargadas desde datos guardados de la API pública.";
-    detalle = "La información se actualiza automáticamente cuando la conexión responde.";
+    mensaje = "Usando datos guardados de la API pública.";
+    detalle = "La información se actualizará cuando la conexión responda.";
   } else if (props.source === "fallback") {
-    mensaje = "Conexión con la API pública en recuperación.";
-    detalle = "Las promociones se mantienen disponibles temporalmente mientras se reconecta.";
+    mensaje = "Trabajando con demo disponible.";
+    detalle = "La API pública está en recuperación; se mantiene la navegación temporalmente.";
   }
 
   if (!mensaje) return null;

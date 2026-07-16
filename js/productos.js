@@ -441,10 +441,12 @@ function EstadoProductos(props) {
       `Mostrando ${rangoInicio}-${rangoFin} de ${props.total} productos${busqueda}.` +
       (totalPaginas > 1 ? ` Pagina ${props.paginaActual} de ${totalPaginas}.` : "");
 
-    if (props.fuenteDatos === "cache") {
-      detalle = "Mostrando datos guardados de la API pública mientras se actualiza la conexión.";
+    if (props.fuenteDatos === "api") {
+      detalle = "API pública conectada.";
+    } else if (props.fuenteDatos === "cache") {
+      detalle = "Usando datos guardados de la API pública.";
     } else if (props.fuenteDatos === "fallback") {
-      detalle = "Conexión con la API pública en recuperación; la carta se mantiene disponible temporalmente.";
+      detalle = "Trabajando con demo disponible mientras se recupera la API pública.";
     }
   }
 
