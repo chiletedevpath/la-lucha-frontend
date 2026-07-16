@@ -442,9 +442,9 @@ function EstadoProductos(props) {
       (totalPaginas > 1 ? ` Pagina ${props.paginaActual} de ${totalPaginas}.` : "");
 
     if (props.fuenteDatos === "cache") {
-      detalle = "Mostrando datos guardados localmente mientras la API pública responde.";
+      detalle = "Mostrando datos guardados de la API pública mientras se actualiza la conexión.";
     } else if (props.fuenteDatos === "fallback") {
-      detalle = "Mostrando respaldo académico para mantener la demo disponible.";
+      detalle = "Conexión con la API pública en recuperación; la carta se mantiene disponible temporalmente.";
     }
   }
 

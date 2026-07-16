@@ -138,11 +138,11 @@ function EstadoPromociones(props) {
     mensaje = "No se pudieron cargar las promociones.";
     detalle = "Intenta nuevamente o revisa tu conexión.";
   } else if (props.source === "cache") {
-    mensaje = "Promociones cargadas desde cache local.";
-    detalle = "La web mantiene la demo disponible mientras responde la API.";
+    mensaje = "Promociones cargadas desde datos guardados de la API pública.";
+    detalle = "La información se actualiza automáticamente cuando la conexión responde.";
   } else if (props.source === "fallback") {
-    mensaje = "Promociones de respaldo académico.";
-    detalle = "Se muestran datos locales para sostener la exposición.";
+    mensaje = "Conexión con la API pública en recuperación.";
+    detalle = "Las promociones se mantienen disponibles temporalmente mientras se reconecta.";
   }
 
   if (!mensaje) return null;
