@@ -2,6 +2,12 @@
   publish = "."
   command = ""
 
+[[redirects]]
+  from = "/api/*"
+  to = "https://utp-la-lucha-bd-backend.onrender.com/api/:splat"
+  status = 200
+  force = true
+
 [[headers]]
   for = "/*.html"
   [headers.values]

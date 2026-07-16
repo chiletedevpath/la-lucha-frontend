@@ -1,4 +1,4 @@
-const CACHE_NAME = "la-lucha-cache-v15-api-status";
+const CACHE_NAME = "la-lucha-cache-v16-netlify-api-proxy";
 const API_ORIGIN = "https://utp-la-lucha-bd-backend.onrender.com";
 
 const APP_SHELL = [
@@ -75,7 +75,7 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(event.request.url);
 
-  if (url.origin === API_ORIGIN && url.pathname.startsWith("/api/")) {
+  if ((url.origin === API_ORIGIN || url.origin === self.location.origin) && url.pathname.startsWith("/api/")) {
     event.respondWith(networkFirst(event.request));
     return;
   }

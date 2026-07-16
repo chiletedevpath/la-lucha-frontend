@@ -123,7 +123,7 @@ function mostrarAvisoAcademico() {
 function prepararConexionApiPublica() {
   const apiBaseUrl =
     window.LA_LUCHA_API_CONFIG?.baseUrl || "https://utp-la-lucha-bd-backend.onrender.com/api";
-  const apiOrigin = new URL(apiBaseUrl).origin;
+  const apiOrigin = new URL(apiBaseUrl, window.location.origin).origin;
 
   const preconnect = document.createElement("link");
   preconnect.rel = "preconnect";
