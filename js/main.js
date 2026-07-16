@@ -1,4 +1,4 @@
-/* =========================
+﻿/* =========================
    COMPONENT LOADER
 ========================= */
 
@@ -17,6 +17,7 @@ async function cargarComponente(idContenedor, rutaArchivo, callback) {
     }
 
     const contenido = await respuesta.text();
+    // Solo inserta componentes HTML internos del proyecto, no datos de la API.
     contenedor.innerHTML = contenido;
 
     if (typeof callback === "function") {
@@ -83,39 +84,75 @@ function mostrarAvisoAcademico() {
     return;
   }
 
+  function crearElemento(etiqueta, atributos = {}, hijos = []) {
+    const elemento = document.createElement(etiqueta);
+
+    Object.entries(atributos).forEach(([nombre, valor]) => {
+      if (valor !== null && valor !== undefined) {
+        elemento.setAttribute(nombre, valor);
+      }
+    });
+
+    hijos.forEach((hijo) => {
+      elemento.append(hijo instanceof Node ? hijo : document.createTextNode(hijo));
+    });
+
+    return elemento;
+  }
+
   const aviso = document.createElement("section");
   aviso.className = "academic-notice";
   aviso.setAttribute("role", "dialog");
   aviso.setAttribute("aria-modal", "false");
   aviso.setAttribute("aria-labelledby", "academic-notice-title");
-  aviso.innerHTML = `
-    <div class="academic-notice__content">
-      <span class="academic-notice__icon" aria-hidden="true">i</span>
-      <div class="academic-notice__body">
-        <p class="academic-notice__eyebrow">Aviso académico</p>
-        <h2 id="academic-notice-title">Sitio de demostración universitaria</h2>
-        <p>
-          Esta página fue desarrollada con fines académicos para el curso Taller de Programación Web.
-          No representa un canal oficial de La Lucha Sanguchería Criolla.
-        </p>
-        <ul class="academic-notice__list" aria-label="Alcance del proyecto">
-          <li>No oficial</li>
-          <li>Sin ventas reales</li>
-          <li>Sin pagos en línea</li>
-        </ul>
-      </div>
-      <button class="academic-notice__button" type="button">Entendido</button>
-    </div>
-  `;
 
-  aviso.querySelector("button").addEventListener("click", () => {
+  const botonCerrar = crearElemento(
+    "button",
+    { class: "academic-notice__button", type: "button" },
+    ["Entendido"]
+  );
+  const lista = crearElemento(
+    "ul",
+    { class: "academic-notice__list", "aria-label": "Alcance del proyecto" },
+    [
+      crearElemento("li", {}, ["No oficial"]),
+      crearElemento("li", {}, ["Sin ventas reales"]),
+      crearElemento("li", {}, ["Sin pagos en línea"])
+    ]
+  );
+  const cuerpo = crearElemento(
+    "div",
+    { class: "academic-notice__body" },
+    [
+      crearElemento("p", { class: "academic-notice__eyebrow" }, ["Aviso académico"]),
+      crearElemento("h2", { id: "academic-notice-title" }, ["Sitio de demostración universitaria"]),
+      crearElemento("p", {}, [
+        "Esta página fue desarrollada con fines académicos para el curso Taller de Programación Web. ",
+        "No representa un canal oficial de La Lucha Sanguchería Criolla."
+      ]),
+      lista
+    ]
+  );
+
+  aviso.append(
+    crearElemento(
+      "div",
+      { class: "academic-notice__content" },
+      [
+        crearElemento("span", { class: "academic-notice__icon", "aria-hidden": "true" }, ["i"]),
+        cuerpo,
+        botonCerrar
+      ]
+    )
+  );
+
+  botonCerrar.addEventListener("click", () => {
     sessionStorage.setItem("la-lucha-aviso-academico", "v2");
     aviso.remove();
   });
 
   document.body.appendChild(aviso);
 }
-
 /* =========================
    PUBLIC API WARMUP
 ========================= */
@@ -130,21 +167,6 @@ function prepararConexionApiPublica() {
   preconnect.href = apiOrigin;
   preconnect.crossOrigin = "anonymous";
   document.head.appendChild(preconnect);
-
-  if (window.LaLuchaApi) {
-    window.LaLuchaApi.warmup(["/health", "/productos", "/promociones", "/locales"]);
-    return;
-  }
-
-  const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), 6000);
-
-  fetch(`${apiBaseUrl}/health`, {
-    cache: "no-store",
-    signal: controller.signal
-  })
-    .catch(() => null)
-    .finally(() => window.clearTimeout(timeout));
 }
 
 function inicializarApp() {

@@ -118,7 +118,7 @@ function ContactoForm() {
           { className: "contacto-exito-texto" },
           "Gracias, ",
           e("strong", null, nombreEnviado),
-          ". Hemos recibido tu mensaje. Nuestro equipo se pondra en contacto contigo."
+          ". Esta es una demostración académica: el mensaje fue validado en el frontend, pero no se envió a un servidor."
         ),
         e(
           "button",
@@ -182,9 +182,14 @@ function ContactoForm() {
         multilinea: true
       }),
       e(
+        "small",
+        { className: "form-ayuda" },
+        "Demostración académica: este formulario valida datos en el frontend y no almacena ni envía mensajes reales."
+      ),
+      e(
         "button",
         { type: "submit", className: "contacto-btn", disabled: enviando },
-        enviando ? "Enviando..." : "Enviar mensaje"
+        enviando ? "Validando..." : "Validar mensaje"
       )
     )
   );
@@ -247,12 +252,8 @@ function ContactoFaq() {
           "div",
           {
             id: respuestaId,
-            className: "faq-respuesta",
-            role: "region",
-            style: {
-              maxHeight: estaAbierta ? "12rem" : 0,
-              opacity: estaAbierta ? 1 : 0
-            }
+            className: estaAbierta ? "faq-respuesta faq-respuesta--open" : "faq-respuesta",
+            role: "region"
           },
           e("p", null, item.respuesta)
         )

@@ -7,6 +7,7 @@
   const CACHE_PREFIX = "la-lucha-api-cache:";
   const DEFAULT_TIMEOUT_MS = 9000;
   const DEFAULT_RETRIES = 1;
+  const DEFAULT_CACHE_TTL_MS = 1000 * 60 * 30;
 
   function delay(ms) {
     return new Promise((resolve) => window.setTimeout(resolve, ms));
@@ -17,7 +18,18 @@
 
     try {
       const raw = localStorage.getItem(`${CACHE_PREFIX}${cacheKey}`);
-      return raw ? JSON.parse(raw).data : null;
+      if (!raw) return null;
+
+      const parsed = JSON.parse(raw);
+      const savedAt = new Date(parsed.savedAt).getTime();
+      const isExpired = !Number.isFinite(savedAt) || Date.now() - savedAt > DEFAULT_CACHE_TTL_MS;
+
+      if (isExpired) {
+        localStorage.removeItem(`${CACHE_PREFIX}${cacheKey}`);
+        return null;
+      }
+
+      return parsed.data;
     } catch (error) {
       return null;
     }
@@ -100,22 +112,9 @@
     throw lastError || new Error(`No se pudo cargar ${path}`);
   }
 
-  function warmup(paths) {
-    const routes = Array.isArray(paths) && paths.length ? paths : ["/health"];
-
-    routes.forEach((path) => {
-      getJson(path, {
-        cacheKey: `warmup:${path}`,
-        timeoutMs: 5000,
-        retries: 0
-      }).catch(() => null);
-    });
-  }
-
   window.LaLuchaApi = {
     baseUrl: API_BASE_URL,
     getJson,
-    getJsonWithMeta,
-    warmup
+    getJsonWithMeta
   };
 })();

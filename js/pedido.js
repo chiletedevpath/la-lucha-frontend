@@ -638,10 +638,10 @@ function obtenerMensajeConfirmacion(datosPedido) {
   const total = formatearPrecio(datosPedido.total);
 
   if (datosPedido.modalidadPedido === "delivery") {
-    return `Gracias por confiar en La Lucha. Recibimos tu pedido para delivery y pronto coordinaremos la entrega. Total: ${total}.`;
+    return `Solicitud simulada registrada para delivery. Total referencial: ${total}. Esta demostración valida el pedido en el frontend y no procesa compras reales.`;
   }
 
-  return `Gracias por elegir La Lucha. Recibimos tu pedido para recojo en tienda. Te atenderemos por orden de llegada. Total: ${total}.`;
+  return `Solicitud simulada registrada para recojo en tienda. Total referencial: ${total}. Esta demostración valida el pedido en el frontend y no procesa compras reales.`;
 }
 
 async function manejarEnvioPedido(event) {
