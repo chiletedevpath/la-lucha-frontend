@@ -344,7 +344,7 @@ function MiniSolicitud() {
           className: "solicitud-mini__ghost",
           type: "button",
           onClick: function () {
-            solicitudStore.vaciarSolicitud();
+            solicitudStore.limpiarSolicitud();
           }
         },
         "Vaciar"

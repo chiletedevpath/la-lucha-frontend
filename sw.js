@@ -1,4 +1,4 @@
-const CACHE_NAME = "la-lucha-cache-v16-netlify-api-proxy";
+const CACHE_NAME = "la-lucha-cache-v17-clear-request";
 const API_ORIGIN = "https://utp-la-lucha-bd-backend.onrender.com";
 
 const APP_SHELL = [
