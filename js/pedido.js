@@ -24,6 +24,7 @@ const metodoPagoSelect = document.getElementById("metodo-pago");
 const grupoLocalRecojo = document.getElementById("grupo-local-recojo");
 const grupoHoraRecojo = document.getElementById("grupo-hora-recojo");
 const grupoDireccionDelivery = document.getElementById("grupo-direccion-delivery");
+const pedidoSubmitButton = pedidoForm?.querySelector('button[type="submit"]');
 
 const pedidoPrecioPreview = document.getElementById("pedido-precio-preview");
 const pedidoIgvPreview = document.getElementById("pedido-igv-preview");
@@ -109,6 +110,12 @@ function mostrarFeedback(mensaje, tipo = "exito") {
   feedbackPedido.dataset.estado = tipo;
 }
 
+function enfocarFeedback() {
+  if (!feedbackPedido) return;
+
+  feedbackPedido.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
 function validarNombre(nombre) {
   return limpiarTexto(nombre).length >= 3;
 }
@@ -143,6 +150,20 @@ function mostrarErrorCampo(input, errorElemento, mensajeError) {
   errorElemento.textContent = mensajeError;
 
   return false;
+}
+
+function marcarCampoInvalido(input) {
+  if (!input) return;
+
+  input.classList.add("is-invalid");
+  input.setAttribute("aria-invalid", "true");
+}
+
+function limpiarCampoInvalido(input) {
+  if (!input) return;
+
+  input.classList.remove("is-invalid");
+  input.removeAttribute("aria-invalid");
 }
 
 function validarTelefonoEnVivo() {
@@ -185,6 +206,7 @@ function actualizarModalidadPedido() {
 
   if (localRecojoSelect) {
     localRecojoSelect.required = esRecojo;
+    limpiarCampoInvalido(localRecojoSelect);
     if (!esRecojo) localRecojoSelect.value = "";
   }
 
@@ -198,8 +220,12 @@ function actualizarModalidadPedido() {
 
   if (direccionDeliveryInput) {
     direccionDeliveryInput.required = esDelivery;
+    limpiarCampoInvalido(direccionDeliveryInput);
     if (!esDelivery) direccionDeliveryInput.value = "";
   }
+
+  limpiarCampoInvalido(modalidadPedidoSelect);
+  limpiarCampoInvalido(metodoPagoSelect);
 }
 
 function validarHoraRecojo(hora) {
@@ -553,10 +579,12 @@ function validarDatosPedido(datosPedido) {
   }
 
   if (!datosPedido.modalidadPedido) {
+    marcarCampoInvalido(modalidadPedidoSelect);
     return "Selecciona si deseas recojo en tienda o delivery.";
   }
 
   if (datosPedido.modalidadPedido === "recojo" && !datosPedido.localRecojo) {
+    marcarCampoInvalido(localRecojoSelect);
     return "Selecciona la tienda donde recogerás tu pedido.";
   }
 
@@ -571,24 +599,27 @@ function validarDatosPedido(datosPedido) {
   }
 
   if (datosPedido.modalidadPedido === "delivery" && datosPedido.direccionDelivery.length < 8) {
+    marcarCampoInvalido(direccionDeliveryInput);
     return "Ingresa una dirección de entrega válida.";
   }
 
   if (!datosPedido.metodoPago) {
+    marcarCampoInvalido(metodoPagoSelect);
     return "Selecciona tu método de pago preferido.";
   }
 
   if (!validarNombre(datosPedido.nombre)) {
+    marcarCampoInvalido(nombreInput);
     return "Ingresa tu nombre completo.";
   }
 
   if (!validarTelefonoPeru(datosPedido.telefono)) {
-    validarTelefonoEnVivo();
+    mostrarErrorCampo(telefonoInput, telefonoError, "Celular inválido. Usa 9 dígitos y empieza con 9.");
     return "Celular inválido. Usa 9 dígitos y empieza con 9.";
   }
 
   if (!validarCorreo(datosPedido.correo)) {
-    validarCorreoEnVivo();
+    mostrarErrorCampo(correoInput, correoError, "Correo inválido. Revisa el @ y el dominio.");
     return "Correo inválido. Revisa el @ y el dominio.";
   }
 
@@ -622,17 +653,36 @@ async function manejarEnvioPedido(event) {
 
   if (errorValidacion) {
     mostrarFeedback(errorValidacion, "error");
+    enfocarFeedback();
     return;
   }
 
-  const resultado = await enviarSolicitudPedido(datosPedido);
+  const textoOriginalBoton = pedidoSubmitButton?.textContent || "Confirmar pedido";
 
-  if (!resultado.ok) {
-    mostrarFeedback("No se pudo registrar la solicitud. Intenta nuevamente.", "error");
-    return;
+  if (pedidoSubmitButton) {
+    pedidoSubmitButton.disabled = true;
+    pedidoSubmitButton.setAttribute("aria-busy", "true");
+    pedidoSubmitButton.textContent = "Confirmando...";
   }
 
-  mostrarFeedback(obtenerMensajeConfirmacion(datosPedido), "exito");
+  try {
+    const resultado = await enviarSolicitudPedido(datosPedido);
+
+    if (!resultado.ok) {
+      mostrarFeedback("No se pudo registrar la solicitud. Intenta nuevamente.", "error");
+      enfocarFeedback();
+      return;
+    }
+
+    mostrarFeedback(obtenerMensajeConfirmacion(datosPedido), "exito");
+    enfocarFeedback();
+  } finally {
+    if (pedidoSubmitButton) {
+      pedidoSubmitButton.disabled = false;
+      pedidoSubmitButton.removeAttribute("aria-busy");
+      pedidoSubmitButton.textContent = textoOriginalBoton;
+    }
+  }
 }
 
 /* =========================
@@ -649,6 +699,10 @@ if (pedidoForm && nombreInput && telefonoInput && correoInput && solicitudStore)
   horaRecojoInput?.addEventListener("change", validarHoraRecojoEnVivo);
   telefonoInput.addEventListener("input", validarTelefonoEnVivo);
   correoInput.addEventListener("input", validarCorreoEnVivo);
+  nombreInput.addEventListener("input", () => limpiarCampoInvalido(nombreInput));
+  metodoPagoSelect?.addEventListener("change", () => limpiarCampoInvalido(metodoPagoSelect));
+  localRecojoSelect?.addEventListener("change", () => limpiarCampoInvalido(localRecojoSelect));
+  direccionDeliveryInput?.addEventListener("input", () => limpiarCampoInvalido(direccionDeliveryInput));
   pedidoForm.addEventListener("submit", manejarEnvioPedido);
   window.addEventListener("la-lucha:solicitud-actualizada", renderizarSolicitud);
 }

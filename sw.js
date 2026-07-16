@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "la-lucha-cache-v10-image-optimization";
+const CACHE_NAME = "la-lucha-cache-v11-final-polish";
 const API_ORIGIN = "https://utp-la-lucha-bd-backend.onrender.com";
 
 const APP_SHELL = [

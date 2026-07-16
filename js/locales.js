@@ -1,5 +1,5 @@
 ﻿/* ===================================================
-   LOCALES - LA LUCHA (PRODUCCIÃ“N FINAL - 13 SEDES)
+   LOCALES - LA LUCHA (PRODUCCION FINAL - 13 SEDES)
 =================================================== */
 
 const API_BASE_URL = window.LA_LUCHA_API_CONFIG?.baseUrl || ""; 
@@ -12,7 +12,7 @@ const MIS_LOCALES_OFICIALES = [
   { clave: "surquillo", nombre: "Local Surquillo", distrito: "Surquillo", direccion: "Av. Principal 456, Surquillo", telefono: "987 654 003", imagen: "assets/img/locales/surquillo.webp", maps: "https://maps.google.com/?q=La+Lucha+Sangucheria+Criolla+Surquillo" },
   { clave: "miraflores1", nombre: "Local Larco / Pardo", distrito: "Miraflores", direccion: "Av. Larco 789, Miraflores", telefono: "987 654 004", imagen: "assets/img/locales/miraflores1.webp", maps: "https://maps.google.com/?q=La+Lucha+Sangucheria+Criolla+Larco" },
   { clave: "San miguel1", nombre: "Local La Marina - San Miguel", distrito: "San Miguel", direccion: "Av. de la Marina 790, San Miguel 15088", telefono: "987 653 225", imagen: "assets/img/locales/san-miguel1.webp", maps: "https://maps.app.goo.gl/DQSuSUFCkG1jiHjh9" },
-  { clave: "cc", nombre: "Local Centro CÃ­vico", distrito: "Lima", direccion: "C.C. Real Plaza Centro CÃ­vico, Cercado de Lima", telefono: "987 654 006", imagen: "assets/img/locales/cc.webp", maps: "https://maps.google.com/?q=La+Lucha+Sangucheria+Criolla+Centro+Civico" },
+  { clave: "cc", nombre: "Local Centro Cívico", distrito: "Lima", direccion: "C.C. Real Plaza Centro Cívico, Cercado de Lima", telefono: "987 654 006", imagen: "assets/img/locales/cc.webp", maps: "https://maps.google.com/?q=La+Lucha+Sangucheria+Criolla+Centro+Civico" },
   { clave: "victoria", nombre: "Local La Victoria", distrito: "La Victoria", direccion: "Av. Gamarra 555, La Victoria", telefono: "987 654 007", imagen: "assets/img/locales/victoria.webp", maps: "https://maps.google.com/?q=La+Lucha+Sangucheria+Criolla+La+Victoria" },
   { clave: "SantaAnita", nombre: "Local Santa Anita", distrito: "Santa Anita", direccion: "C.C. Mall Aventura Santa Anita", telefono: "987 654 008", imagen: "assets/img/locales/SantaAnita.webp", maps: "https://maps.google.com/?q=La+Lucha+Sangucheria+Criolla+Santa+Anita" },
   { clave: "independencia", nombre: "Local Independencia", distrito: "Independencia", direccion: "Av. Carlos Izaguirre 123, Independencia", telefono: "987 654 009", imagen: "assets/img/locales/independencia.webp", maps: "https://maps.google.com/?q=La+Lucha+Sangucheria+Criolla+Independencia" },
@@ -61,7 +61,7 @@ async function cargarYCombinarLocales() {
       }
     });
   } catch (error) {
-    console.warn("La API fallÃ³ o estÃ¡ desconectada, usando datos locales de respaldo:", error);
+    console.warn("La API falló o está desconectada, usando datos locales de respaldo:", error);
   }
 
   return listaFinal;
@@ -80,11 +80,11 @@ function renderizarLocales(contenedor, listaLocales) {
         <div class="card__body">
           <span class="card__eyebrow">LOCAL</span>
           <h2 class="card__title">${local.nombre}</h2>
-          <p class="card__meta-item"><strong>DirecciÃ³n:</strong> ${local.direccion}</p>
-          <p class="card__meta-item"><strong>Horario:</strong> AtenciÃ³n diaria | 8:00 am - 10:00 pm</p>
-          <p class="card__meta-item"><strong>TelÃ©fono:</strong> ${local.telefono}</p>
+          <p class="card__meta-item"><strong>Dirección:</strong> ${local.direccion}</p>
+          <p class="card__meta-item"><strong>Horario:</strong> Atención diaria | 8:00 am - 10:00 pm</p>
+          <p class="card__meta-item"><strong>Teléfono:</strong> ${local.telefono}</p>
           <div class="card__actions">
-            <a href="${local.maps}" target="_blank" rel="noopener noreferrer" class="card__action">Ver ubicaciÃ³n</a>
+            <a href="${local.maps}" target="_blank" rel="noopener noreferrer" class="card__action">Ver ubicación</a>
           </div>
         </div>
       </div>

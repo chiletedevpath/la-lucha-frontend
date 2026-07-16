@@ -97,128 +97,132 @@
             <input type="hidden" id="cantidad" name="cantidad" value="1" />
             <input type="hidden" id="item-pedido" name="itemPedido" />
 
-            <div class="form-grupo">
-              <label for="modalidad-pedido">¿Cómo deseas recibir tu pedido?</label>
-              <select id="modalidad-pedido" name="modalidadPedido" required>
-                <option value="">Selecciona una opción</option>
-                <option value="recojo">Recojo en tienda</option>
-                <option value="delivery">Delivery</option>
-              </select>
+            <div class="pedido-form__grid">
+              <div class="form-grupo">
+                <label for="modalidad-pedido">¿Cómo deseas recibir tu pedido?</label>
+                <select id="modalidad-pedido" name="modalidadPedido" required>
+                  <option value="">Selecciona una opción</option>
+                  <option value="recojo">Recojo en tienda</option>
+                  <option value="delivery">Delivery</option>
+                </select>
+              </div>
+
+              <div class="form-grupo">
+                <label for="metodo-pago">Método de pago preferido</label>
+                <select id="metodo-pago" name="metodoPago" required>
+                  <option value="">Selecciona una opción</option>
+                  <option value="yape">Yape</option>
+                  <option value="plin">Plin</option>
+                  <option value="tarjeta">Tarjeta al recibir</option>
+                  <option value="efectivo">Efectivo</option>
+                </select>
+              </div>
+
+              <div class="form-grupo" id="grupo-local-recojo" hidden>
+                <label for="local-recojo">Tienda para recojo</label>
+                <select id="local-recojo" name="localRecojo">
+                  <option value="">Selecciona una tienda</option>
+                  <option value="Miraflores">Miraflores</option>
+                  <option value="Barranco">Barranco</option>
+                  <option value="San Miguel">San Miguel</option>
+                  <option value="Chorrillos">Chorrillos</option>
+                </select>
+              </div>
+
+              <div class="form-grupo" id="grupo-hora-recojo" hidden>
+                <label for="hora-recojo">Hora referencial de recojo</label>
+                <small class="form-error" id="hora-recojo-error" aria-live="polite"></small>
+                <input
+                  type="time"
+                  id="hora-recojo"
+                  name="horaRecojo"
+                  min="08:00"
+                  max="22:00"
+                  aria-describedby="hora-recojo-error"
+                />
+                <small class="form-aviso">
+                  Atención de 8:00 a 22:00. En tienda se atiende por orden de llegada.
+                </small>
+              </div>
+
+              <div class="form-grupo form-grupo--full" id="grupo-direccion-delivery" hidden>
+                <label for="direccion-delivery">Dirección de entrega</label>
+                <input
+                  type="text"
+                  id="direccion-delivery"
+                  name="direccionDelivery"
+                  placeholder="Ej: Av. La Marina 123, San Miguel"
+                />
+              </div>
             </div>
 
-            <div class="form-grupo" id="grupo-local-recojo" hidden>
-              <label for="local-recojo">Tienda para recojo</label>
-              <select id="local-recojo" name="localRecojo">
-                <option value="">Selecciona una tienda</option>
-                <option value="Miraflores">Miraflores</option>
-                <option value="Barranco">Barranco</option>
-                <option value="San Miguel">San Miguel</option>
-                <option value="Chorrillos">Chorrillos</option>
-              </select>
-            </div>
+            <div class="pedido-form__grid">
+              <div class="form-grupo">
+                <label for="nombre">Nombre completo</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  autocomplete="name"
+                  minlength="3"
+                  placeholder="Ej: Juan Pérez"
+                  required
+                />
+              </div>
 
-            <div class="form-grupo" id="grupo-hora-recojo" hidden>
-              <label for="hora-recojo">Hora referencial de recojo</label>
-              <small class="form-error" id="hora-recojo-error" aria-live="polite"></small>
-              <input
-                type="time"
-                id="hora-recojo"
-                name="horaRecojo"
-                min="08:00"
-                max="22:00"
-                aria-describedby="hora-recojo-error"
-              />
-              <small class="form-aviso">
-                Atención de 8:00 a 22:00. En tienda se atiende por orden de llegada.
-              </small>
-            </div>
+              <div class="form-grupo">
+                <label for="telefono">Teléfono o WhatsApp</label>
+                <input
+                  type="tel"
+                  id="telefono"
+                  name="telefono"
+                  autocomplete="tel"
+                  inputmode="numeric"
+                  maxlength="9"
+                  pattern="9[0-9]{8}"
+                  placeholder="Ej: 945834043"
+                  aria-describedby="telefono-error"
+                  required
+                />
+                <small class="form-error" id="telefono-error" aria-live="polite"></small>
+              </div>
 
-            <div class="form-grupo" id="grupo-direccion-delivery" hidden>
-              <label for="direccion-delivery">Dirección de entrega</label>
-              <input
-                type="text"
-                id="direccion-delivery"
-                name="direccionDelivery"
-                placeholder="Ej: Av. La Marina 123, San Miguel"
-              />
-            </div>
+              <div class="form-grupo">
+                <label for="correo">Correo electrónico</label>
+                <input
+                  type="email"
+                  id="correo"
+                  name="correo"
+                  autocomplete="email"
+                  placeholder="Ej: juan@correo.com"
+                  aria-describedby="correo-error"
+                  required
+                />
+                <small class="form-error" id="correo-error" aria-live="polite"></small>
+              </div>
 
-            <div class="form-grupo">
-              <label for="metodo-pago">Método de pago preferido</label>
-              <select id="metodo-pago" name="metodoPago" required>
-                <option value="">Selecciona una opción</option>
-                <option value="yape">Yape</option>
-                <option value="plin">Plin</option>
-                <option value="tarjeta">Tarjeta al recibir</option>
-                <option value="efectivo">Efectivo</option>
-              </select>
-            </div>
+              <div class="form-grupo form-grupo--full">
+                <label for="producto-pedido">Productos seleccionados</label>
+                <textarea
+                  id="producto-pedido"
+                  name="productoPedido"
+                  rows="4"
+                  placeholder="Agrega productos desde la carta"
+                  readonly
+                  required
+                ></textarea>
+              </div>
 
-            <div class="form-grupo">
-              <label for="nombre">Nombre completo</label>
-              <input
-                type="text"
-                id="nombre"
-                name="nombre"
-                autocomplete="name"
-                minlength="3"
-                placeholder="Ej: Juan Pérez"
-                required
-              />
-            </div>
-
-            <div class="form-grupo">
-              <label for="telefono">Teléfono o WhatsApp</label>
-              <input
-                type="tel"
-                id="telefono"
-                name="telefono"
-                autocomplete="tel"
-                inputmode="numeric"
-                maxlength="9"
-                pattern="9[0-9]{8}"
-                placeholder="Ej: 945834043"
-                aria-describedby="telefono-error"
-                required
-              />
-              <small class="form-error" id="telefono-error" aria-live="polite"></small>
-            </div>
-
-            <div class="form-grupo">
-              <label for="correo">Correo electrónico</label>
-              <input
-                type="email"
-                id="correo"
-                name="correo"
-                autocomplete="email"
-                placeholder="Ej: juan@correo.com"
-                aria-describedby="correo-error"
-                required
-              />
-              <small class="form-error" id="correo-error" aria-live="polite"></small>
-            </div>
-
-            <div class="form-grupo">
-              <label for="producto-pedido">Productos seleccionados</label>
-              <textarea
-                id="producto-pedido"
-                name="productoPedido"
-                rows="4"
-                placeholder="Agrega productos desde la carta"
-                readonly
-                required
-              ></textarea>
-            </div>
-
-            <div class="form-grupo">
-              <label for="mensaje">Notas para tu pedido</label>
-              <textarea
-                id="mensaje"
-                name="mensaje"
-                rows="5"
-                placeholder="Ej: Sin cebolla, poco ají, referencia de entrega o rango de horario."
-              ></textarea>
-              <small class="form-ayuda">Opcional. Sirve para ajustes del producto o referencias de entrega.</small>
+              <div class="form-grupo form-grupo--full">
+                <label for="mensaje">Notas para tu pedido</label>
+                <textarea
+                  id="mensaje"
+                  name="mensaje"
+                  rows="4"
+                  placeholder="Ej: Sin cebolla, poco ají, referencia de entrega o rango de horario."
+                ></textarea>
+                <small class="form-ayuda">Opcional. Sirve para ajustes del producto o referencias de entrega.</small>
+              </div>
             </div>
 
             <p
