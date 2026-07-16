@@ -82,16 +82,29 @@ function adaptarPromocionApi(promocion) {
 
 async function obtenerPromocionesDesdeApi() {
   if (apiClient) {
-    const promocionesApi = await apiClient.getJson("/promociones", {
-      cacheKey: "promociones",
-      fallbackData: PROMOCIONES_RESPALDO,
-      timeoutMs: 9000,
-      retries: 1
-    });
+    const resultado = typeof apiClient.getJsonWithMeta === "function"
+      ? await apiClient.getJsonWithMeta("/promociones", {
+          cacheKey: "promociones",
+          fallbackData: PROMOCIONES_RESPALDO,
+          timeoutMs: 9000,
+          retries: 1
+        })
+      : {
+          data: await apiClient.getJson("/promociones", {
+            cacheKey: "promociones",
+            fallbackData: PROMOCIONES_RESPALDO,
+            timeoutMs: 9000,
+            retries: 1
+          }),
+          source: "api"
+        };
 
-    return promocionesApi
-      .filter((promocion) => promocion.estado !== false)
-      .map(adaptarPromocionApi);
+    return {
+      promociones: resultado.data
+        .filter((promocion) => promocion.estado !== false)
+        .map(adaptarPromocionApi),
+      source: resultado.source
+    };
   }
 
   if (!API_BASE_URL) {
@@ -106,9 +119,70 @@ async function obtenerPromocionesDesdeApi() {
 
   const promocionesApi = await respuesta.json();
 
-  return promocionesApi
-    .filter((promocion) => promocion.estado !== false)
-    .map(adaptarPromocionApi);
+  return {
+    promociones: promocionesApi
+      .filter((promocion) => promocion.estado !== false)
+      .map(adaptarPromocionApi),
+    source: "api"
+  };
+}
+
+function EstadoPromociones(props) {
+  let mensaje = "";
+  let detalle = "";
+
+  if (props.estado === "cargando") {
+    mensaje = "Cargando promociones desde la base pública...";
+    detalle = "Si Render está iniciando, puede tardar unos segundos.";
+  } else if (props.estado === "error") {
+    mensaje = "No se pudieron cargar las promociones.";
+    detalle = "Intenta nuevamente o revisa tu conexión.";
+  } else if (props.source === "cache") {
+    mensaje = "Promociones cargadas desde cache local.";
+    detalle = "La web mantiene la demo disponible mientras responde la API.";
+  } else if (props.source === "fallback") {
+    mensaje = "Promociones de respaldo académico.";
+    detalle = "Se muestran datos locales para sostener la exposición.";
+  }
+
+  if (!mensaje) return null;
+
+  return e(
+    "div",
+    { className: `promociones-estado promociones-estado--${props.estado}`, role: "status" },
+    e("strong", null, mensaje),
+    detalle ? e("span", null, detalle) : null,
+    props.estado === "error"
+      ? e(
+          "button",
+          { className: "promociones-estado__retry", type: "button", onClick: props.onReintentar },
+          "Reintentar"
+        )
+      : null
+  );
+}
+
+function PromocionesSkeleton() {
+  return e(
+    React.Fragment,
+    null,
+    e(EstadoPromociones, { estado: "cargando" }),
+    Array.from({ length: 3 }, function (_, index) {
+      return e(
+        "article",
+        { className: "promocion-card promocion-card--skeleton", key: index, "aria-hidden": "true" },
+        e("div", { className: "promocion-skeleton__media" }),
+        e(
+          "div",
+          { className: "promocion-skeleton__body" },
+          e("span", { className: "promocion-skeleton__line promocion-skeleton__line--short" }),
+          e("span", { className: "promocion-skeleton__line promocion-skeleton__line--title" }),
+          e("span", { className: "promocion-skeleton__line" }),
+          e("span", { className: "promocion-skeleton__line promocion-skeleton__line--button" })
+        )
+      );
+    })
+  );
 }
 
 function PromocionCard(props) {
@@ -164,15 +238,20 @@ function PromocionCard(props) {
 function PromocionesApp() {
   const [promociones, setPromociones] = React.useState([]);
   const [estado, setEstado] = React.useState("cargando");
+  const [source, setSource] = React.useState("api");
+  const [intentoCarga, setIntentoCarga] = React.useState(0);
 
   React.useEffect(function () {
     let activo = true;
 
+    setEstado("cargando");
+
     obtenerPromocionesDesdeApi()
-      .then(function (promocionesApi) {
+      .then(function (resultado) {
         if (!activo) return;
 
-        setPromociones(promocionesApi);
+        setPromociones(resultado.promociones);
+        setSource(resultado.source);
         setEstado("listo");
       })
       .catch(function (error) {
@@ -186,18 +265,19 @@ function PromocionesApp() {
     return function () {
       activo = false;
     };
-  }, []);
+  }, [intentoCarga]);
 
   if (estado === "cargando") {
-    return e("p", { className: "sin-promociones" }, "Cargando promociones desde el backend...");
+    return e(PromocionesSkeleton);
   }
 
   if (estado === "error") {
-    return e(
-      "p",
-      { className: "sin-promociones" },
-      "No se pudo cargar promociones desde el backend publico. Intenta nuevamente en unos segundos."
-    );
+    return e(EstadoPromociones, {
+      estado,
+      onReintentar: function () {
+        setIntentoCarga((valor) => valor + 1);
+      }
+    });
   }
 
   if (!promociones.length) {
@@ -207,6 +287,7 @@ function PromocionesApp() {
   return e(
     React.Fragment,
     null,
+    e(EstadoPromociones, { estado, source }),
     promociones.map(function (promocion, index) {
       return e(PromocionCard, {
         key: promocion.id || promocion.nombre,

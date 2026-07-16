@@ -194,22 +194,52 @@ async function obtenerJsonApi(ruta) {
 }
 
 async function cargarProductosDesdeApi() {
-  const [productosApi, categoriasApi] = await Promise.all([
-    obtenerJsonApi("/productos"),
-    obtenerJsonApi("/categorias")
-  ]);
+  const usarMeta = typeof apiClient?.getJsonWithMeta === "function";
+  const opcionesProductos = {
+    cacheKey: "productos",
+    fallbackData: PRODUCTOS_RESPALDO,
+    timeoutMs: 9000,
+    retries: 1
+  };
+  const opcionesCategorias = {
+    cacheKey: "categorias",
+    fallbackData: CATEGORIAS_RESPALDO,
+    timeoutMs: 9000,
+    retries: 1
+  };
+  const [resultadoProductos, resultadoCategorias] = usarMeta
+    ? await Promise.all([
+        apiClient.getJsonWithMeta("/productos", opcionesProductos),
+        apiClient.getJsonWithMeta("/categorias", opcionesCategorias)
+      ])
+    : await Promise.all([
+        obtenerJsonApi("/productos").then((data) => ({ data, source: "api" })),
+        obtenerJsonApi("/categorias").then((data) => ({ data, source: "api" }))
+      ]);
+
+  const productosApi = resultadoProductos.data;
+  const categoriasApi = resultadoCategorias.data;
+  const source =
+    resultadoProductos.source === "fallback" || resultadoCategorias.source === "fallback"
+      ? "fallback"
+      : resultadoProductos.source === "cache" || resultadoCategorias.source === "cache"
+        ? "cache"
+        : "api";
 
   const categoriasPorId = categoriasApi.reduce((mapa, categoria) => {
     mapa[categoria.categoriaId] = normalizarCategoriaApi(categoria.nombre);
     return mapa;
   }, {});
 
-  return productosApi
-    .filter(
-      (producto) =>
-        producto.estado !== false && Number(producto.productoId) <= PRODUCTO_ID_MAX_CATALOGO
-    )
-    .map((producto) => adaptarProductoApi(producto, categoriasPorId));
+  return {
+    productos: productosApi
+      .filter(
+        (producto) =>
+          producto.estado !== false && Number(producto.productoId) <= PRODUCTO_ID_MAX_CATALOGO
+      )
+      .map((producto) => adaptarProductoApi(producto, categoriasPorId)),
+    source
+  };
 }
 
 function obtenerEtiquetaPopularidad(pedido) {
@@ -305,7 +335,22 @@ function MiniSolicitud() {
       ),
       e("span", { id: "solicitud-mini-total" }, `Total: ${formatearPrecio(resumen.total)}`)
     ),
-    e("a", { className: "solicitud-mini__link", href: "pedido.html" }, "Ver solicitud")
+    e(
+      "div",
+      { className: "solicitud-mini__actions" },
+      e(
+        "button",
+        {
+          className: "solicitud-mini__ghost",
+          type: "button",
+          onClick: function () {
+            solicitudStore.vaciarSolicitud();
+          }
+        },
+        "Vaciar"
+      ),
+      e("a", { className: "solicitud-mini__link", href: "pedido.html" }, "Ver solicitud")
+    )
   );
 }
 
@@ -373,11 +418,14 @@ function Toolbar(props) {
 function EstadoProductos(props) {
   const totalPaginas = Math.ceil(props.total / PRODUCTOS_POR_PAGINA);
   let mensaje = "";
+  let detalle = "";
 
   if (props.estadoCarga === "cargando") {
-    mensaje = "Cargando productos desde el backend...";
+    mensaje = "Cargando carta desde la base pública...";
+    detalle = "Si Render está iniciando, esto puede tardar unos segundos.";
   } else if (props.estadoCarga === "error") {
-    mensaje = "No se pudo cargar la carta desde el backend publico. Intenta nuevamente en unos segundos.";
+    mensaje = "No se pudo cargar la carta en este momento.";
+    detalle = "Revisa tu conexión o intenta nuevamente.";
   } else if (props.total === 0) {
     mensaje = props.textoBusqueda.trim()
       ? `No encontramos resultados para "${props.textoBusqueda.trim()}".`
@@ -392,12 +440,52 @@ function EstadoProductos(props) {
     mensaje =
       `Mostrando ${rangoInicio}-${rangoFin} de ${props.total} productos${busqueda}.` +
       (totalPaginas > 1 ? ` Pagina ${props.paginaActual} de ${totalPaginas}.` : "");
+
+    if (props.fuenteDatos === "cache") {
+      detalle = "Mostrando datos guardados localmente mientras la API pública responde.";
+    } else if (props.fuenteDatos === "fallback") {
+      detalle = "Mostrando respaldo académico para mantener la demo disponible.";
+    }
   }
 
   return e(
     "div",
-    { className: "productos-estado", id: "productos-estado", "aria-live": "polite" },
-    mensaje
+    {
+      className: `productos-estado productos-estado--${props.estadoCarga}`,
+      id: "productos-estado",
+      "aria-live": "polite"
+    },
+    e("strong", null, mensaje),
+    detalle ? e("span", null, detalle) : null,
+    props.estadoCarga === "error"
+      ? e(
+          "button",
+          { className: "productos-estado__retry", type: "button", onClick: props.onReintentar },
+          "Reintentar"
+        )
+      : null
+  );
+}
+
+function SkeletonProductos() {
+  return e(
+    "div",
+    { className: "productos-grid productos-grid--skeleton", id: "productos-grid", "aria-hidden": "true" },
+    Array.from({ length: PRODUCTOS_POR_PAGINA }, function (_, index) {
+      return e(
+        "article",
+        { className: "card card--product skeleton-card", key: index },
+        e("div", { className: "skeleton-card__media" }),
+        e(
+          "div",
+          { className: "skeleton-card__body" },
+          e("span", { className: "skeleton-line skeleton-line--short" }),
+          e("span", { className: "skeleton-line skeleton-line--title" }),
+          e("span", { className: "skeleton-line" }),
+          e("span", { className: "skeleton-line skeleton-line--button" })
+        )
+      );
+    })
   );
 }
 
@@ -461,7 +549,9 @@ function GridProductos(props) {
   );
 
   if (props.estadoCarga === "error" || props.estadoCarga === "cargando") {
-    return e("div", { className: "productos-grid", id: "productos-grid" });
+    return props.estadoCarga === "cargando"
+      ? e(SkeletonProductos)
+      : e("div", { className: "productos-grid", id: "productos-grid" });
   }
 
   return e(
@@ -551,19 +641,24 @@ function Paginacion(props) {
 function CartaApp() {
   const [productos, setProductos] = React.useState([]);
   const [estadoCarga, setEstadoCarga] = React.useState("cargando");
+  const [fuenteDatos, setFuenteDatos] = React.useState("api");
   const [categoriaActual, setCategoriaActual] = React.useState("todos");
   const [textoBusqueda, setTextoBusqueda] = React.useState("");
   const [paginaActual, setPaginaActual] = React.useState(1);
+  const [intentoCarga, setIntentoCarga] = React.useState(0);
 
   React.useEffect(function () {
     let activo = true;
 
+    setEstadoCarga("cargando");
+
     cargarProductosDesdeApi()
-      .then(function (productosApi) {
+      .then(function (resultado) {
         if (!activo) return;
 
-        setProductos(productosApi);
-        actualizarMetricasHero(productosApi);
+        setProductos(resultado.productos);
+        setFuenteDatos(resultado.source);
+        actualizarMetricasHero(resultado.productos);
         setEstadoCarga("listo");
       })
       .catch(function (error) {
@@ -577,7 +672,7 @@ function CartaApp() {
     return function () {
       activo = false;
     };
-  }, []);
+  }, [intentoCarga]);
 
   const productosFiltrados = React.useMemo(
     function () {
@@ -613,7 +708,11 @@ function CartaApp() {
       estadoCarga: estadoCarga,
       total: productosFiltrados.length,
       paginaActual: paginaActual,
-      textoBusqueda: textoBusqueda
+      textoBusqueda: textoBusqueda,
+      fuenteDatos: fuenteDatos,
+      onReintentar: function () {
+        setIntentoCarga((valor) => valor + 1);
+      }
     }),
     e(GridProductos, {
       estadoCarga: estadoCarga,

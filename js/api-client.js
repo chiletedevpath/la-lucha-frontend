@@ -60,6 +60,12 @@
   }
 
   async function getJson(path, options = {}) {
+    const resultado = await getJsonWithMeta(path, options);
+
+    return resultado.data;
+  }
+
+  async function getJsonWithMeta(path, options = {}) {
     const cacheKey = options.cacheKey || path.replace(/^\//, "");
     const fallbackData = options.fallbackData;
     const timeoutMs = options.timeoutMs || DEFAULT_TIMEOUT_MS;
@@ -71,7 +77,7 @@
       try {
         const data = await fetchWithTimeout(url, timeoutMs);
         writeCache(cacheKey, data);
-        return data;
+        return { data, source: "api", error: null };
       } catch (error) {
         lastError = error;
         if (attempt < retries) {
@@ -83,12 +89,12 @@
     const cachedData = readCache(cacheKey);
     if (cachedData) {
       console.warn(`Usando cache local para ${path}.`, lastError);
-      return cachedData;
+      return { data: cachedData, source: "cache", error: lastError };
     }
 
     if (fallbackData) {
       console.warn(`Usando datos locales de respaldo para ${path}.`, lastError);
-      return fallbackData;
+      return { data: fallbackData, source: "fallback", error: lastError };
     }
 
     throw lastError || new Error(`No se pudo cargar ${path}`);
@@ -109,6 +115,7 @@
   window.LaLuchaApi = {
     baseUrl: API_BASE_URL,
     getJson,
+    getJsonWithMeta,
     warmup
   };
 })();
